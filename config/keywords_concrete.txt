@@ -1,0 +1,20 @@
+reinforced concrete corrosion experiment
+long term durability concrete
+concrete chloride diffusion test
+reinforcement corrosion long duration exposure
+reinforced concrete half-cell potential experiment
+accelerated corrosion test concrete
+freeze-thaw concrete long term test
+wet-dry cyclic exposure concrete experiment
+reinforced concrete crack width over time
+reinforced concrete mass loss rebar corrosion
+dataset
+supplementary
+experimental
+long term
+monitoring
+sensor
+time series
+reinforced AND concrete AND corrosion AND long term
+concrete AND durability AND experiment
+chloride diffusion AND exposure

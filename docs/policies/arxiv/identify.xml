@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
+    <responseDate>2025-10-19T01:00:23Z</responseDate>
+                <request verb="Identify">http://oaipmh.arxiv.org/oai</request>
+
+
+    <Identify>
+        <repositoryName>arXiv</repositoryName>
+        <baseURL>https://oaipmh.arxiv.org/oai</baseURL>
+        <protocolVersion>2.0</protocolVersion>
+        <adminEmail>help@arxiv.org</adminEmail>
+        <earliestDatestamp>2005-09-16</earliestDatestamp>
+        <deletedRecord>persistent</deletedRecord>
+        <granularity>YYYY-MM-DD</granularity>
+            <description>
+        <eprints xmlns="http://www.openarchives.org/OAI/1.1/eprints" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/1.1/eprints http://www.openarchives.org/OAI/1.1/eprints.xsd">
+            <content>
+                <text>Author self-archived e-prints</text>
+            </content>
+            <metadataPolicy>
+                <text>Metadata harvesting permitted through OAI interface</text>
+                <URL>https://info.arxiv.org/help/oa/metadataPolicy.html</URL>
+            </metadataPolicy>
+            <dataPolicy>
+                <text>Full-content harvesting not permitted (except by special arrangement)</text>
+                <URL>https://info.arxiv.org/help/oa/dataPolicy.html</URL>
+            </dataPolicy>
+            <submissionPolicy>
+                <text>Author self-submission preferred, submissions screened for appropriateness.</text>
+                <URL>https://info.arxiv.org/help/submit/index.html</URL>
+            </submissionPolicy>
+        </eprints>
+    </description>
+
+    </Identify>
+</OAI-PMH>

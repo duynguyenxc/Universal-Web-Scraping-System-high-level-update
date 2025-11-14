@@ -1,0 +1,54 @@
+domain_keywords:
+  - education technology
+  - online learning
+  - educational research
+  - learning analytics
+  - digital education
+  - e-learning platforms
+  - educational innovation
+  - pedagogy technology
+  - learning management systems
+  - educational data mining
+  - adaptive learning
+  - educational assessment
+  - blended learning
+  - educational psychology
+  - technology enhanced learning
+
+domain_sources:
+  - https://www.crossref.org
+  - https://api.semanticscholar.org
+  - https://api.openalex.org
+
+max_depth: 2
+file_types: [pdf, html, docx, txt, csv]
+year_filter: 2015
+rate_limits:
+  requests_per_minute: 30
+  per_domain: 10
+  throttle_sec: 0.5
+  jitter_sec: 0.2
+contact_email: ddnguyen@go.olemiss.edu
+user_agent: "uwss-bot/0.1 (+ddnguyen@go.olemiss.edu)"
+timeout_sec: 30
+retry_attempts: 3
+negative_keywords:
+  - deep learning
+  - neural network
+  - machine learning
+  - transformer
+  - convolutional
+  - computer vision
+  - image segmentation
+  - object detection
+  - LLM
+  - GAN
+  - big data
+  - blockchain
+scrapy_whitelist_domains:
+  - www.education.org
+  - www.learning.com
+scrapy_path_blacklist:
+  - /education
+  - /certification
+  - /university

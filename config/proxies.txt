@@ -1,0 +1,5 @@
+# One proxy per line. Leave empty to disable proxies.
+# Format examples:
+# http://user:pass@host:port
+# https://user:pass@host:port
+

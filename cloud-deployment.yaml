@@ -1,0 +1,63 @@
+# UWSS Cloud Deployment Configuration
+# This file contains optimized settings for AWS ECS deployment
+
+# ECS Task Definition Configuration
+task_definition:
+  family: "uwss-task"
+  network_mode: "awsvpc"
+  requires_compatibilities: ["FARGATE"]
+  cpu: "1024"
+  memory: "2048"
+  
+  # Environment variables for cloud deployment
+  environment:
+    - name: "UWSS_THROTTLE_SEC"
+      value: "0.5"
+    - name: "UWSS_JITTER_SEC" 
+      value: "0.2"
+    - name: "PYTHONUNBUFFERED"
+      value: "1"
+    - name: "PYTHONDONTWRITEBYTECODE"
+      value: "1"
+  
+  # Logging configuration
+  log_configuration:
+    log_driver: "awslogs"
+    options:
+      awslogs-group: "/ecs/uwss"
+      awslogs-region: "ap-southeast-1"
+      awslogs-stream-prefix: "uwss"
+  
+  # Health check for cloud monitoring
+  health_check:
+    command: ["CMD-SHELL", "python -c 'import sys; sys.exit(0)'"]
+    interval: 30
+    timeout: 5
+    retries: 3
+    start_period: 60
+
+# Network configuration
+network:
+  subnets:
+    - "subnet-014b61616fa75544d"
+    - "subnet-0fc42de6bf604990f"
+  security_groups:
+    - "sg-074f87c48fa05a3bd"
+  assign_public_ip: "ENABLED"
+
+# IAM roles
+iam_roles:
+  execution_role: "uwssEcsTaskExecutionRole"
+  task_role: "uwssTaskRole"
+
+# S3 configuration
+s3:
+  bucket: "uwss-data-duynguyen"
+  region: "ap-southeast-1"
+  exports_prefix: "exports/"
+
+# ECR configuration
+ecr:
+  repository: "uwss"
+  region: "ap-southeast-1"
+  account_id: "167004608161"

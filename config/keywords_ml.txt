@@ -1,0 +1,21 @@
+machine learning
+deep learning
+neural networks
+computer vision
+natural language processing
+artificial intelligence
+data science
+predictive modeling
+supervised learning
+unsupervised learning
+reinforcement learning
+classification
+regression
+clustering
+feature engineering
+model selection
+cross validation
+overfitting
+underfitting
+bias variance
+

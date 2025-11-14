@@ -1,0 +1,97 @@
+# Python
+__pycache__/
+.pytest_cache/
+.venv/
+*.pyc
+
+# OS
+.DS_Store
+
+# Local databases and artifacts
+*.sqlite
+*.db
+
+# Data (large artifacts)
+data/files/**
+data/files_clean/**
+data/content/**
+data/content_clean/**
+data/runs/**
+data/runs_clean/**
+data/export/**
+data/export_clean/**
+
+# Allow keeping empty dirs if needed
+!data/.gitkeep
+
+# Python
+__pycache__/
+*.pyc
+
+# Virtual env
+.venv/
+
+# OS/Editors
+.DS_Store
+.idea/
+
+# Generated data
+data/cache/
+data/files/
+data/content/
+data/export/*.jsonl
+data/export/*.csv
+
+# Logs
+*.log
+__pycache__/
+.venv/
+.cursor/
+.DS_Store
+*.pyc
+build/
+dist/
+.pytest_cache/
+.coverage
+.env
+
+# Test files and artifacts
+test/outputs/**
+test/metrics/**
+test/databases/**
+test/phases/**
+test/reports/**
+
+# Keep test directory structure but ignore contents
+!test/.gitkeep
+!test/outputs/.gitkeep
+!test/metrics/.gitkeep
+!test/databases/.gitkeep
+!test/phases/.gitkeep
+!test/reports/.gitkeep
+
+# Scripts and tools (generated files)
+scripts/analysis/output/**
+scripts/testing/output/**
+scripts/utilities/output/**
+
+# Keep script directory structure
+!scripts/.gitkeep
+!scripts/analysis/.gitkeep
+!scripts/testing/.gitkeep
+!scripts/utilities/.gitkeep
+
+# Report files (do not push to GitHub)
+*_REPORT.md
+*_EVALUATION.md
+*_ASSESSMENT.md
+*_FEASIBILITY.md
+*_MEETING*.md
+*_SUMMARY.md
+*_PROGRESS*.md
+*_TEST*.md
+*_RESULTS.md
+COMPREHENSIVE_*.md
+FINAL_*.md
+PROFESSOR_*.md
+UNIVERSAL_*.md

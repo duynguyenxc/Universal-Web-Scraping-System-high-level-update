@@ -1,0 +1,42 @@
+# Negative keywords to downweight or exclude off-topic items for concrete deterioration
+# Safe, high-precision exclusions (mostly physics/math/CS terms unrelated to civil/materials)
+semiring
+superconducting
+superconductivity
+spintronics
+quantum
+quantized
+photonic
+photonics
+topological
+topology
+quantum dot
+graphene
+moiré
+higgs
+hadron
+hadronic
+QCD
+LHC
+astrophysics
+cosmology
+black hole
+string theory
+category theory
+homotopy
+cryptography
+blockchain
+GAN
+transformer model
+LLM
+natural language processing
+machine translation
+recommender system
+vision transformer
+image segmentation
+computer vision (ml)
+semi-supervised learning
+few-shot
+zero-shot
+large language model
+
