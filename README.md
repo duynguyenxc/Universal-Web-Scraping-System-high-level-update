@@ -1,420 +1,220 @@
 # UWSS – Universal Web Scraping System
 
-A universal, config-driven academic data harvesting and web scraping system designed to work with any academic database, research repository, or web source. The system uses a plugin-based adapter architecture that allows switching between sources or topics by changing configuration only, without rewriting the pipeline.
+[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![GitHub Repo](https://img.shields.io/badge/GitHub-Repository-black.svg)](https://github.com/duynguyenxc/Universal-Web-Scraping-System-high-level-update)
 
-## Overview
+> **UWSS** là hệ thống thu thập dữ liệu học thuật thông minh, có thể kết nối với nhiều nguồn tài liệu khoa học khác nhau chỉ bằng cách thay đổi cấu hình.
 
-UWSS is built to be **truly universal**:
-- **Multi-source support**: Works with structured databases (arXiv, TRB/TRID, Crossref, OpenAlex) via official APIs/protocols, and unstructured web content (research group websites, personal pages, scattered PDFs) via intelligent crawling
-- **Universal pipeline**: The same pipeline (discover → score → export → fetch → extract) works for any source; only the discovery adapter differs
-- **Config-driven**: Switch topics or sources by editing `config/config.yaml`; no code changes required
-- **Policy-compliant**: Respects `robots.txt`, Terms of Service, and uses official channels (OAI-PMH, REST APIs) when available
-- **Agent-ready architecture**: Designed to support AI/agent-based autonomous discovery and refinement in future phases
+## 🚀 Vấn đề UWSS giải quyết
 
-## Key Features
+Bạn đang nghiên cứu về một chủ đề khoa học và cần thu thập:
+- ✅ Bài báo từ arXiv, PubMed
+- ✅ Tài liệu từ Crossref, Semantic Scholar
+- ✅ Dữ liệu từ OpenAlex và các nguồn khác
 
-- **Database-first architecture**: Postgres (production) or SQLite (local) as single source of truth
-- **Idempotent operations**: Safe to rerun; checkpoints and upserts prevent duplicate work
-- **Comprehensive metadata extraction**: Title, abstract, authors, affiliations, keywords, DOI, access flags (open access, paywall, abstract-only)
-- **Quality assurance**: Keyword-based relevance scoring with negative keywords, sampling tools for manual review
-- **Reproducible**: Version-pinned URLs, SHA256 checksums, sidecar metadata files
-- **Observable**: Structured JSON logs, metrics, validation tools
+**UWSS giúp bạn:**
+- Tự động thu thập metadata (tiêu đề, tóm tắt, tác giả, DOI)
+- Tải xuống PDF của các bài báo
+- Lọc dữ liệu theo từ khóa liên quan
+- Xuất dữ liệu ra nhiều định dạng (JSON, CSV)
+- Quản lý và phân tích chất lượng dữ liệu
 
-## Architecture
+## ✨ Tính năng chính
 
-### Universal Pipeline
+### 🔍 Thu thập thông minh
+- **Kết nối nhiều nguồn**: arXiv, PubMed, Crossref, Semantic Scholar, OpenAlex
+- **API chính thức**: Sử dụng API chính thức của từng nguồn, tuân thủ quy định
+- **Tự động phân loại**: Lọc bài báo liên quan dựa trên từ khóa
 
-```
-DISCOVER → SCORE → EXPORT → FETCH → EXTRACT
-   ↑
-   └─ Source-specific adapters (OAI-PMH, REST API, sitemap crawler, web spider)
-```
+### 📊 Quản lý dữ liệu
+- **Database chuyên nghiệp**: SQLite (local) hoặc PostgreSQL (production)
+- **Metadata đầy đủ**: Tiêu đề, tóm tắt, tác giả, DOI, năm xuất bản
+- **PDF tự động**: Tải xuống và lưu trữ PDF
 
-### Adapter Pattern
+### 🛠️ Dễ sử dụng
+- **Cấu hình đơn giản**: Chỉ cần chỉnh file config.yaml
+- **Lệnh command line**: Giao diện dòng lệnh trực quan
+- **Scripts hỗ trợ**: Công cụ phân tích và kiểm tra dữ liệu
 
-Each source has its own discovery adapter, but all sources share the same pipeline:
+## 🏗️ Cách UWSS hoạt động
 
-- **arXiv**: OAI-PMH adapter → official metadata harvesting
-- **TRB/TRID**: Sitemap crawler → parse sitemap.xml, crawl HTML pages
-- **Web of Science/Scopus**: REST API adapter (requires institutional subscription + API keys)
-- **Web crawling**: Scrapy-based spider for research groups, personal pages, scattered PDFs
-
-After discovery, all documents flow through the same pipeline:
-- **Score**: Keyword-based relevance scoring (configurable positive/negative keywords)
-- **Export**: Filter and export to JSONL/CSV with various criteria
-- **Fetch**: Download PDFs with retry/backoff, rate limiting, integrity checks
-- **Extract**: Full-text extraction (GROBID, local PDF parsing)
-
-### Database Schema
-
-All sources map to the same universal `Document` model:
-
-## Project Structure
+### Quy trình 5 bước
 
 ```
-uwss/
-├── config/                 # Configuration files
-│   ├── config.yaml        # Main configuration
-│   └── keywords*.txt      # Keyword files
-├── data/                  # Production data and PDFs
-│   ├── paperscraper_export.jsonl
-│   ├── new_sources_final.jsonl
-│   └── paperscraper_pdfs/
-├── docs/                  # Documentation
-│   ├── development/       # Development docs
-│   ├── integration/       # Integration guides
-│   ├── project/          # Project docs
-│   └── reports/          # Analysis reports
-├── scripts/               # Utility scripts
-│   ├── analysis/         # Data analysis scripts
-│   ├── testing/          # Testing scripts
-│   └── utilities/        # Maintenance scripts
-├── src/uwss/             # Main source code
-│   ├── cli/              # Command-line interface
-│   ├── sources/          # Source adapters
-│   └── [modules]/        # Core modules
-├── test/                 # Test artifacts and data
-│   ├── outputs/          # Test results
-│   ├── metrics/          # Performance metrics
-│   ├── databases/        # Test databases
-│   └── reports/          # Test reports
-└── tests/                # Unit/integration tests
+1️⃣ KHÁM PHÁ 📚 → 2️⃣ ĐÁNH GIÁ 🎯 → 3️⃣ XUẤT DỮ LIỆU 📄 → 4️⃣ TẢI PDF 📎 → 5️⃣ TRÍCH XUẤT TEXT 📖
 ```
-- Identification: `title`, `abstract`, `authors`, `affiliations`, `keywords`, `doi`, `year`
-- Source tracking: `source`, `source_url`, `landing_url`
-- Access flags: `oa_status`, `pdf_url`, `pdf_status`
-- Scoring: `relevance_score`, `keywords_found`
-- Files: `local_path`, `content_path`, `checksum_sha256`
 
-## Quick Start
+**Giải thích từng bước:**
 
-### Prerequisites
+1. **🔍 Khám phá**: Tìm kiếm bài báo từ các nguồn (arXiv, PubMed, v.v.)
+2. **🎯 Đánh giá**: Lọc bài báo liên quan bằng từ khóa
+3. **📄 Xuất dữ liệu**: Lưu metadata vào file JSON/CSV
+4. **📎 Tải PDF**: Download file PDF của bài báo
+5. **📖 Trích xuất**: Lấy nội dung text từ PDF
 
-- Python 3.8+
-- (Optional) Postgres for production use
-- (Optional) GROBID service for advanced PDF parsing
+### Nguồn dữ liệu hỗ trợ
 
-### Installation
+| Nguồn | Loại | Số lượng bài báo mẫu |
+|-------|------|---------------------|
+| **arXiv** | Preprints | 269 bài báo |
+| **PubMed** | Y khoa | Đã tích hợp |
+| **Crossref** | Đa ngành | 268 bài báo |
+| **Semantic Scholar** | AI nghiên cứu | 283 bài báo |
+| **OpenAlex** | Mở dữ liệu | Đã tích hợp |
+
+### Dữ liệu thu thập
+
+Mỗi bài báo bao gồm:
+- 📝 **Tiêu đề** và **tóm tắt**
+- 👥 **Tác giả** và **đơn vị**
+- 🏷️ **Từ khóa** và **DOI**
+- 📅 **Năm xuất bản**
+- 🔗 **Link PDF** (nếu có)
+
+## 🚀 Bắt đầu sử dụng
+
+### 1. Cài đặt
 
 ```bash
 # Clone repository
-git clone <repository-url>
-cd uwss
+git clone https://github.com/duynguyenxc/Universal-Web-Scraping-System-high-level-update.git
+cd Universal-Web-Scraping-System-high-level-update
 
-# Create virtual environment
-python -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+# Tạo môi trường ảo
+python -m venv uwss-env
+uwss-env\Scripts\activate  # Windows
+# source uwss-env/bin/activate  # Linux/Mac
 
-# Install dependencies
+# Cài đặt thư viện
 pip install -r requirements.txt
 ```
 
-### Basic Workflow (arXiv Example)
+### 2. Cấu hình
 
-1. **Validate configuration**
-```bash
-python -m src.uwss.cli config-validate --config config/config.yaml
-```
+Chỉnh sửa file `config/config.yaml`:
 
-2. **Harvest metadata** (arXiv via OAI-PMH)
-```bash
-python -m src.uwss.cli arxiv-harvest-oai \
-  --from 2024-10-01 --max 100 --resume \
-  --metrics-out data/runs/arxiv_h.json
-```
-
-3. **Score by relevance**
-```bash
-python -m src.uwss.cli score-keywords \
-  --config config/config.yaml \
-  --db data/uwss.sqlite
-```
-
-4. **Export filtered results**
-```bash
-python -m src.uwss.cli export \
-  --db data/uwss.sqlite \
-  --out data/export/filtered.jsonl \
-  --require-match --year-min 1995 \
-  --ids-out data/export/filtered_ids.txt
-```
-
-5. **Fetch PDFs** (only for exported IDs)
-```bash
-python -m src.uwss.cli arxiv-fetch-pdf \
-  --ids-file data/export/filtered_ids.txt \
-  --limit 200 \
-  --metrics-out data/runs/arxiv_p.json
-```
-
-6. **Extract full text**
-```bash
-python -m src.uwss.cli extract-full-text \
-  --db data/uwss.sqlite \
-  --content-dir data/content \
-  --limit 200
-```
-
-### Switching Sources
-
-To use a different source, simply change the discovery command:
-
-```bash
-# TRB/TRID (sitemap crawling - coming soon)
-python -m src.uwss.cli trid-discover-sitemap --max 100
-
-# After discovery, same pipeline:
-python -m src.uwss.cli score-keywords --config config/config.yaml
-python -m src.uwss.cli export --require-match
-python -m src.uwss.cli fetch-pdfs --ids-file ids.txt
-```
-
-## Configuration
-
-Edit `config/config.yaml` to customize:
-
-- **Domain keywords**: Positive keywords for relevance scoring
-- **Negative keywords**: Terms to penalize/exclude (e.g., physics terms for civil engineering focus)
-- **Rate limits**: Throttling and jitter for polite crawling
-- **Contact info**: Email and User-Agent for compliance
-
-Example:
 ```yaml
+# Từ khóa tìm kiếm
 domain_keywords:
-  - "concrete deterioration"
-  - "chloride diffusion"
-  - "corrosion"
+  - "concrete corrosion"
+  - "steel reinforcement"
+  - "chloride attack"
 
+# Từ khóa loại trừ
 negative_keywords:
-  - "quantum"
-  - "neural network"
+  - "quantum physics"
   - "machine learning"
 
-rate_limits:
-  throttle_sec: 1.0
-  jitter_sec: 0.5
+# Email liên hệ (cho API)
+contact_email: "your.email@university.edu"
 ```
 
-## Data Storage
+### 3. Chạy thử nghiệm đầu tiên
 
-- **Database**: `data/uwss.sqlite` (or Postgres via `--db-url`)
-  - Tables: `documents`, `visited_urls`, `ingestion_state`
-- **PDFs**: `data/files/{source}_{id}.pdf` with sidecar `{source}_{id}.meta.json`
-- **Content**: `data/content/doc_{id}.txt` (extracted full text)
-- **Metrics**: `data/runs/*.json` (harvest/fetch/extract metrics)
-- **Policy snapshots**: `docs/policies/{source}/` (compliance artifacts)
-
-## Monitoring & Quality Assurance
-
-### Recent Downloads
 ```bash
-python -m src.uwss.cli recent-downloads \
-  --hours 1 --limit 10 \
-  --source arxiv \
-  --json-out data/runs/recent.json
+# Thu thập dữ liệu từ arXiv
+python -m src.uwss.cli paperscraper-discover --max 10
+
+# Lọc dữ liệu liên quan
+python -m src.uwss.cli score-keywords --config config/config.yaml
+
+# Xuất kết quả
+python -m src.uwss.cli export --require-match --out results.jsonl
 ```
 
-### Sampling for Manual Review
+## 📋 Ví dụ sử dụng
+
+### Thu thập bài báo về "concrete corrosion"
+
 ```bash
-python -m src.uwss.cli sample-records \
-  --db data/uwss.sqlite \
-  --out data/samples/manual_review.jsonl \
-  --n 50 --pdf-only --require-match
+# 1. Khám phá từ nhiều nguồn
+python -m src.uwss.cli paperscraper-discover --max 50
+python -m src.uwss.cli crossref-lib-discover --max 50
+python -m src.uwss.cli semantic-scholar-lib-discover --max 50
+
+# 2. Đánh giá độ liên quan
+python -m src.uwss.cli score-keywords --config config/config.yaml
+
+# 3. Xuất dữ liệu chất lượng cao
+python -m src.uwss.cli export --require-match --min-score 0.5 --out corrosion_papers.jsonl
+
+# 4. Tải PDF
+python -m src.uwss.cli fetch-pdfs --ids-file filtered_ids.txt --limit 20
 ```
 
-### Validation & Statistics
+### Phân tích kết quả
+
 ```bash
-python -m src.uwss.cli validate \
-  --db data/uwss.sqlite \
-  --json-out data/export/validation.json
+# Xem thống kê
+python scripts/analysis/show_source_summary.py
 
-python -m src.uwss.cli stats \
-  --db data/uwss.sqlite \
-  --json-out data/export/stats.json
+# Kiểm tra chất lượng dữ liệu
+python scripts/analysis/check_paperscraper_data.py
+
+# Trực quan hóa kết quả
+python scripts/analysis/view_scale_test_results.py
 ```
 
-## Scripts & Utilities
+## 📂 Cấu trúc thư mục
 
-The project includes comprehensive scripts for analysis, testing, and utilities:
-
-### Analysis Scripts (`scripts/analysis/`)
-```bash
-# Data quality checking and visualization
-python scripts/analysis/check_paperscraper_data.py    # Validate Paperscraper data
-python scripts/analysis/show_source_summary.py        # Show source statistics
-python scripts/analysis/view_scale_test_results.py    # View test results
-
-# Data exploration and sampling
-python scripts/analysis/show_detailed_metadata.py     # Detailed metadata view
-python scripts/analysis/quick_analysis.py             # Quick data analysis
+```
+uwss/
+├── config/          # Cấu hình từ khóa và thiết lập
+├── data/            # Dữ liệu và file PDF đã tải
+├── scripts/         # Công cụ hỗ trợ
+│   ├── analysis/    # Phân tích dữ liệu
+│   ├── testing/     # Test hệ thống
+│   └── utilities/   # Bảo trì dữ liệu
+├── src/uwss/        # Code chính của hệ thống
+├── test/            # Kết quả test (không commit)
+└── docs/            # Tài liệu hướng dẫn
 ```
 
-### Testing Scripts (`scripts/testing/`)
-```bash
-# Component testing
-python scripts/testing/test_full_pipeline.py          # Full pipeline test
-python scripts/testing/test_paperscraper_discovery.py # Paperscraper discovery test
-python scripts/testing/run_scale_test.py              # Large-scale testing
+## 🎯 Tại sao dùng UWSS?
 
-# API and integration testing
-python scripts/testing/test_pyalex_direct.py          # OpenAlex API test
-python scripts/testing/test_semanticscholar_direct.py # Semantic Scholar API test
-```
+**Trước khi có UWSS:**
+- 🔴 Tìm bài báo thủ công trên nhiều website
+- 🔴 Copy-paste metadata từ từng trang
+- 🔴 Download PDF một cách rời rạc
+- 🔴 Quản lý dữ liệu hỗn loạn
 
-### Utility Scripts (`scripts/utilities/`)
-```bash
-# Data maintenance and fixes
-python scripts/utilities/fix_year_in_database.py      # Fix year data issues
-python scripts/utilities/create_viewer_files.py       # Generate viewer files
-```
+**Sau khi có UWSS:**
+- ✅ **Tự động hóa hoàn toàn** quy trình thu thập
+- ✅ **Nguồn dữ liệu đa dạng** từ 5+ nguồn uy tín
+- ✅ **Chất lượng đảm bảo** với hệ thống lọc thông minh
+- ✅ **Dễ mở rộng** cho các chủ đề nghiên cứu mới
 
-## Current Status
+## 🆘 Hỗ trợ & Đóng góp
 
-### ✅ **FULLY IMPLEMENTED & OPERATIONAL**
+### Báo cáo vấn đề
+Nếu gặp lỗi, hãy:
+1. Kiểm tra log files trong `data/runs/`
+2. Chạy scripts phân tích: `python scripts/analysis/check_*.py`
+3. Tạo issue trên GitHub với log chi tiết
 
-#### **Multi-Source Academic Database Integration**
-- **✅ Paperscraper (arXiv + PubMed)**: Complete integration with 269 harvested documents, 40+ PDFs downloaded
-- **✅ Crossref**: Full API integration with habanero library, HTML cleaning, 268 documents harvested
-- **✅ Semantic Scholar**: Complete API integration with semantic_scholar library, 283 documents harvested
-- **✅ OpenAlex**: Technical integration complete (pyalex library), database coverage analysis performed
-- **✅ DOAJ**: Directory of Open Access Journals integration ready
+### Thêm nguồn dữ liệu mới
+Hệ thống được thiết kế để dễ dàng thêm nguồn mới:
+1. Tạo adapter trong `src/uwss/sources/`
+2. Thêm lệnh CLI trong `src/uwss/cli/commands/`
+3. Test và validate dữ liệu
 
-#### **Universal Pipeline - COMPLETE**
-- **✅ DISCOVER**: All sources working with modular adapters
-- **✅ SCORE**: Keyword-based relevance scoring with positive/negative keywords
-- **✅ EXPORT**: JSONL/CSV export with comprehensive metadata
-- **✅ FETCH**: PDF downloading with retry logic, 40+ PDFs successfully downloaded
-- **✅ EXTRACT**: Full-text extraction from PDFs (framework ready)
+## 📞 Liên hệ
 
-#### **Database & Storage**
-- **✅ SQLite/PostgreSQL**: Dual database support implemented and tested
-- **✅ Deduplication**: DOI/URL/title-based duplicate prevention
-- **✅ Data Quality**: HTML cleaning, normalization, validation
-- **✅ File Management**: Organized storage with checksums
+**Tác giả:** Duy Nguyen  
+**Email:** [your.email@university.edu]  
+**GitHub:** https://github.com/duynguyenxc
 
-#### **Quality Assurance & Monitoring**
-- **✅ Comprehensive Testing**: 30+ test scripts across analysis, testing, utilities
-- **✅ Metrics Collection**: Performance tracking and analysis tools
-- **✅ Data Validation**: Quality checks and sampling tools
-- **✅ Error Handling**: Robust retry logic and exception management
+## 📄 License
 
-#### **Professional Organization**
-- **✅ Modular Architecture**: Clean separation of concerns
-- **✅ Script Organization**: 30 scripts categorized in `scripts/` directory
-- **✅ Documentation**: Comprehensive docs in `docs/` with multiple categories
-- **✅ Test Management**: Organized test artifacts in `test/` directory
-- **✅ GitHub Integration**: Complete repository with CI/CD ready
+Dự án này sử dụng license MIT. Xem file LICENSE để biết thêm chi tiết.
 
-### 🚧 **IN PROGRESS**
+---
 
-- **TRB/TRID integration**: Sitemap crawling adapter (identified correct approach)
-- **Web crawling expansion**: Research groups, personal pages, scattered PDFs
-- **Researcher finder**: Extract researcher info, ORCID integration
+<div align="center">
 
-### 📋 **READY FOR EXTENSION**
+**UWSS - Khi nghiên cứu khoa học gặp công nghệ tự động hóa**
 
-- **Subscription databases**: Web of Science, Scopus, ScienceDirect (requires institutional access + API keys)
-- **Agent framework**: LLM-based autonomous discovery and refinement
-- **Cloud deployment**: AWS-hosted platform with usage instructions
+*🚀 Thu thập thông tin học thuật chưa bao giờ dễ dàng đến thế!*
 
-## Compliance & Policy
-
-UWSS is designed to be policy-compliant:
-
-- **Official channels only**: Uses OAI-PMH, REST APIs, sitemap crawling (not unauthorized scraping)
-- **Respects robots.txt**: Checks and honors robots.txt before crawling
-- **Rate limiting**: Configurable throttling and jitter to avoid overwhelming servers
-- **Policy snapshots**: Stores compliance artifacts (Identify responses, robots.txt, links)
-- **Terms of Service**: Subscription databases only integrated with proper institutional access and API credentials
-
-## Roadmap
-
-### Phase 1: Core Infrastructure ✅ **COMPLETED**
-- ✅ Universal pipeline architecture (DISCOVER → SCORE → EXPORT → FETCH → EXTRACT)
-- ✅ arXiv integration (OAI-PMH) with batch processing and retry logic
-- ✅ Generic adapters (OAI-PMH, RSS/Atom parsers)
-- ✅ Database-first architecture (SQLite/PostgreSQL)
-- ✅ Modular CLI system with comprehensive commands
-
-### Phase 2: Multi-Source Support ✅ **COMPLETED**
-- ✅ **Paperscraper**: arXiv + PubMed integration (269 documents, 40+ PDFs)
-- ✅ **Crossref**: Full API integration with habanero (268 documents)
-- ✅ **Semantic Scholar**: Complete API integration (283 documents)
-- ✅ **OpenAlex**: Technical integration complete with coverage analysis
-- ✅ **DOAJ**: Directory integration framework ready
-- 🚧 TRB/TRID (sitemap crawling - identified approach)
-
-### Phase 3: Web Crawling Expansion 🚧 **IN PROGRESS**
-- ✅ Research paper PDF discovery and downloading (40+ PDFs collected)
-- 🚧 Research group website discovery (framework ready)
-- 🚧 Personal faculty page crawling (extractors implemented)
-- 🚧 Scattered PDF discovery (seed finder implemented)
-- ✅ Search API integration (multiple sources integrated)
-
-### Phase 4: Researcher & Group Finder 📋 **READY**
-- ✅ Extract researcher information (extractors implemented)
-- 🚧 ORCID integration (framework ready)
-- 🚧 Contact info extraction (extractors implemented)
-- 🚧 Institution tracking (framework ready)
-
-### Phase 5: Agent Framework 📋 **PLANNED**
-- 🚧 LLM orchestration (architecture designed)
-- 🚧 Autonomous discovery (framework ready)
-- 🚧 Iterative refinement (pipeline supports)
-- 🚧 Tool integration (CLI extensible)
-
-### Phase 6: Production & Scale 🚧 **IN PROGRESS**
-- ✅ Professional project organization (scripts/, docs/, test/ structure)
-- ✅ GitHub integration with CI/CD ready
-- 🚧 Cloud deployment (Docker, AWS ready)
-- 🚧 Performance optimization (indexes, caching)
-- 🚧 Monitoring dashboard (metrics collection ready)
-
-## Contributing
-
-This project follows a modular, adapter-based architecture that has been successfully implemented for 5+ sources. To add a new source:
-
-### ✅ **Proven Implementation Pattern**
-
-1. **Create discovery adapter** in `src/uwss/sources/{source_name}/`
-   - Implement `discover_{source_name}()` function
-   - Use existing libraries (habanero, pyalex, semanticscholar, paperscraper) when available
-   - Follow the `Document` schema mapping
-
-2. **Add CLI command** in `src/uwss/cli/commands/`
-   - Register command in `cli.py`
-   - Follow existing command patterns
-   - Add proper argument validation
-
-3. **Create mapper** if needed
-   - Map source-specific fields to universal `Document` schema
-   - Handle data normalization (HTML cleaning, empty strings to None)
-
-4. **Test integration**
-   - Use scripts in `scripts/testing/` for validation
-   - Run analysis scripts in `scripts/analysis/` to verify data quality
-   - Add comprehensive tests in `tests/integration/`
-
-5. **Document compliance**
-   - Add policy compliance info in `docs/policies/`
-   - Document API requirements and limitations
-
-### 📚 **Available Examples**
-- **Paperscraper**: `src/uwss/sources/paperscraper/`
-- **Crossref**: `src/uwss/sources/crossref_lib/`
-- **Semantic Scholar**: `src/uwss/sources/semantic_scholar_lib/`
-- **OpenAlex**: `src/uwss/sources/openalex_lib/`
-
-### 🛠️ **Development Scripts**
-Use organized scripts for development:
-- `scripts/testing/` - Test new integrations
-- `scripts/analysis/` - Validate data quality
-- `scripts/utilities/` - Maintenance and fixes
-
-## License
-
-[Specify license]
-
-## Contact
-
-[Specify contact information]
+</div>
