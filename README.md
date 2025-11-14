@@ -202,12 +202,12 @@ The system is designed for easy addition of new sources:
 ## 📞 Contact
 
 **Author:** Duy Nguyen
-**Email:** [your.email@university.edu]
+**Email:** 
 **GitHub:** https://github.com/duynguyenxc
 
 ## 📄 License
 
-This project uses MIT License. See LICENSE file for details.
+This project uses MIT License. 
 
 ---
 
