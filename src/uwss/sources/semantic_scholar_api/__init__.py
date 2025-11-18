@@ -6,3 +6,4 @@ from .mapper import SemanticScholarMapper
 
 __all__ = ['SemanticScholarAPIAdapter', 'SemanticScholarMapper']
 
+

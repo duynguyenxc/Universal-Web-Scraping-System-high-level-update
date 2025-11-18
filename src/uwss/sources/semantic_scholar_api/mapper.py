@@ -111,3 +111,4 @@ class SemanticScholarMapper:
 
         return has_identifier
 
+

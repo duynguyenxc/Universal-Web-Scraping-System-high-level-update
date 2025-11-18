@@ -6,3 +6,4 @@ from .mapper import ElsevierMapper
 
 __all__ = ['ElsevierAPIAdapter', 'ElsevierMapper']
 
+

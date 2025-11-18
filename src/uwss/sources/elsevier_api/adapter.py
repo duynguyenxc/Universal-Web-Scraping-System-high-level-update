@@ -349,3 +349,4 @@ class ElsevierAPIAdapter:
             logger.warning(f"Failed to parse ScienceDirect response: {e}")
             return None
 
+
