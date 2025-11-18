@@ -15,3 +15,5 @@ paperscraper>=0.3.0
 habanero>=1.2.0
 pyalex>=1.0.0
 semanticscholar>=2.0.0
+trafilatura>=2.0.0
+selenium>=4.15.0

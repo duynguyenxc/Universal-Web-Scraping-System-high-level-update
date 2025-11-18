@@ -2322,6 +2322,150 @@ def build_parser() -> argparse.ArgumentParser:
 
 	p_bfs.set_defaults(func=_cmd_bfs)
 
+	# semantic-scholar-api-discover
+	p_ssa = sub.add_parser("semantic-scholar-api-discover", help="Discover papers from Semantic Scholar API")
+	p_ssa.add_argument("--max", type=int, default=50, help="Maximum papers to discover")
+	p_ssa.add_argument("--start-year", type=int, default=2015, help="Start year for papers")
+	p_ssa.add_argument("--output", default=str(Path("data") / "semantic_scholar_api_corrosion.jsonl"), help="Output file")
+	p_ssa.add_argument("--api-key", default="mi2Gv4dHkE8Zk4gNWItxJ747ijFIKLVX7ZZjMkjT", help="Semantic Scholar API key")
+
+	def _cmd_ssa(args: argparse.Namespace) -> int:
+		from uwss.cli.commands.semantic_scholar_api_discover import semantic_scholar_api_discover
+		semantic_scholar_api_discover.main([
+			"--max", str(args.max),
+			"--start-year", str(args.start_year),
+			"--output", args.output,
+			"--api-key", args.api_key
+		], standalone_mode=False)
+		return 0
+
+	p_ssa.set_defaults(func=_cmd_ssa)
+
+	# elsevier-api-discover
+	p_ea = sub.add_parser("elsevier-api-discover", help="Discover papers from Elsevier APIs")
+	p_ea.add_argument("--max", type=int, default=50, help="Maximum papers to discover")
+	p_ea.add_argument("--start-year", type=int, default=2015, help="Start year for papers")
+	p_ea.add_argument("--output", default=str(Path("data") / "elsevier_api_corrosion.jsonl"), help="Output file")
+	p_ea.add_argument("--api-key", default="b2348f7fe711df80e68432559d8da23f", help="Elsevier API key")
+
+	def _cmd_ea(args: argparse.Namespace) -> int:
+		from uwss.cli.commands.elsevier_api_discover import elsevier_api_discover
+		elsevier_api_discover.main([
+			"--max", str(args.max),
+			"--start-year", str(args.start_year),
+			"--output", args.output,
+			"--api-key", args.api_key
+		], standalone_mode=False)
+		return 0
+
+	p_ea.set_defaults(func=_cmd_ea)
+
+	# web-crawler-scrapy-discover
+	try:
+		import sys
+		import json
+		import yaml
+		_src_path = str(Path(__file__).parent.parent.parent)
+		if _src_path not in sys.path:
+			sys.path.insert(0, _src_path)
+		from src.uwss.sources.web_crawler_scrapy.adapter import discover_web_crawler_scrapy
+		p_scrapy = sub.add_parser("web-crawler-scrapy-discover", help="Crawl research group websites using Scrapy")
+		# NOTE: this config can be either a dedicated Scrapy config
+		# (e.g. config/web_crawler_scrapy.yaml with global_keywords/seed_urls)
+		# or the main UWSS config.yaml which contains domain_keywords
+		p_scrapy.add_argument(
+			"--config",
+			default=str(Path("config") / "web_crawler_scrapy.yaml"),
+			help="Path to crawler config file (can also be config/config.yaml to reuse domain_keywords)",
+		)
+		p_scrapy.add_argument("--seed-url", help="Single seed URL to crawl (overrides config)", type=str)
+		p_scrapy.add_argument("--keywords", help="Comma-separated keywords (overrides config)", type=str)
+		p_scrapy.add_argument("--max-depth", help="Maximum crawl depth (overrides config)", type=int)
+		p_scrapy.add_argument("--max-pages", help="Maximum pages to crawl (overrides config)", type=int)
+		p_scrapy.add_argument("--output", help="Output JSONL file path", type=str, default=str(Path("data") / "web_crawler_scrapy_results.jsonl"))
+		p_scrapy.add_argument("--max-records", help="Maximum records to collect", type=int, default=100)
+		
+		def _cmd_scrapy(args: argparse.Namespace) -> int:
+			try:
+				# Load config
+				config_data = {}
+				if Path(args.config).exists():
+					with open(args.config, 'r', encoding='utf-8') as f:
+						config_data = yaml.safe_load(f) or {}
+				
+				# Get parameters
+				seed_url = args.seed_url
+
+				# Resolve keywords priority:
+				# 1) --keywords flag
+				# 2) global_keywords in crawler config (web_crawler_scrapy.yaml)
+				# 3) domain_keywords in main UWSS config.yaml
+				if args.keywords:
+					keywords = [k.strip() for k in args.keywords.split(',') if k.strip()]
+				else:
+					keywords = config_data.get('global_keywords')
+					if not keywords:
+						# Fall back to main UWSS corrosion keywords
+						keywords = config_data.get('domain_keywords', [])
+
+				max_depth = args.max_depth or config_data.get('crawl_settings', {}).get('max_depth', 2)
+				max_pages = args.max_pages or config_data.get('crawl_settings', {}).get('max_pages', 100)
+				
+				if not seed_url:
+					# Try to get from config
+					seed_urls = config_data.get('seed_urls', [])
+					if seed_urls:
+						seed_url = seed_urls[0].get('url')
+					else:
+						console.print("[red]Error: Must provide --seed-url or configure seed_urls in config file[/red]")
+						return 1
+				
+				# Extract allowed domains from seed URL
+				from urllib.parse import urlparse
+				parsed = urlparse(seed_url)
+				domain = parsed.netloc
+				if domain.startswith('www.'):
+					domain = domain[4:]
+				allowed_domains = [domain]
+				
+				console.print(f"[cyan]Starting Scrapy crawl: {seed_url}[/cyan]")
+				console.print(f"[cyan]Keywords: {', '.join(keywords[:5])}...[/cyan]")
+				console.print(f"[cyan]Max depth: {max_depth}, Max pages: {max_pages}[/cyan]")
+				
+				# Collect items
+				items = []
+				for item in discover_web_crawler_scrapy(
+					seed_url=seed_url,
+					keywords=keywords,
+					allowed_domains=allowed_domains,
+					max_depth=max_depth,
+					max_pages=min(max_pages, args.max_records),
+				):
+					items.append(item)
+					if len(items) >= args.max_records:
+						break
+				
+				# Save to file
+				output_path = Path(args.output)
+				output_path.parent.mkdir(parents=True, exist_ok=True)
+				with open(output_path, 'w', encoding='utf-8') as f:
+					for item in items:
+						f.write(json.dumps(item, ensure_ascii=False) + '\n')
+				
+				console.print(f"[green]Crawl completed! Found {len(items)} relevant pages[/green]")
+				console.print(f"[green]Results saved to: {args.output}[/green]")
+				
+				return 0
+			except Exception as e:
+				console.print(f"[red]Crawl failed: {e}[/red]")
+				import traceback
+				traceback.print_exc()
+				return 1
+		
+		p_scrapy.set_defaults(func=_cmd_scrapy)
+	except Exception as e:
+		console.print(f"[yellow]Warning: web-crawler-scrapy-discover command not available: {e}[/yellow]")
+
 	return parser
 
 

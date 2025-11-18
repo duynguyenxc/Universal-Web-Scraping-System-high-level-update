@@ -24,6 +24,7 @@ You're conducting research on a scientific topic and need to collect:
 
 ### 🔍 Intelligent Collection
 - **Multiple Sources**: arXiv, PubMed, Crossref, Semantic Scholar, OpenAlex
+- **Web Domain Crawling**: Academic-focused web crawling from proven domains
 - **Official APIs**: Uses official APIs from each source, compliant with regulations
 - **Auto Classification**: Filters relevant papers based on keywords
 
@@ -133,13 +134,19 @@ python -m src.uwss.cli paperscraper-discover --max 50
 python -m src.uwss.cli crossref-lib-discover --max 50
 python -m src.uwss.cli semantic-scholar-lib-discover --max 50
 
-# 2. Score relevance
+# 2. Generate web crawl targets from database analysis
+python -m src.uwss.cli generate-web-targets --max-domains 20
+
+# 3. Crawl academic domains for additional content
+python -m src.uwss.cli web-domain-crawl-discover --max 100
+
+# 4. Score relevance for all discovered content
 python -m src.uwss.cli score-keywords --config config/config.yaml
 
-# 3. Export high-quality data
+# 5. Export high-quality data
 python -m src.uwss.cli export --require-match --min-score 0.5 --out corrosion_papers.jsonl
 
-# 4. Download PDFs
+# 6. Download PDFs
 python -m src.uwss.cli fetch-pdfs --ids-file filtered_ids.txt --limit 20
 ```
 

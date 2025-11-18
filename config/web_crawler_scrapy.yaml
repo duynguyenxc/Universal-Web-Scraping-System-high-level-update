@@ -1,0 +1,63 @@
+# Configuration for Scrapy-based web crawler
+# This crawler starts from seed URLs (research group websites) and follows links
+# to find relevant content based on keywords
+
+# Seed URLs - starting points for crawling
+# Each entry should be a research group homepage or project page
+seed_urls:
+  - url: "https://example-research-group.edu"
+    name: "Example Research Group"
+    keywords:
+      - corrosion
+      - reinforced concrete
+      - durability
+      - chloride
+    allowed_domains:
+      - example-research-group.edu
+    max_depth: 2
+    max_pages: 50
+
+# Global keywords - applied to all crawls if not specified per seed
+global_keywords:
+  - corrosion
+  - reinforced concrete
+  - concrete durability
+  - chloride diffusion
+  - carbonation
+  - rebar corrosion
+  - concrete degradation
+  - service life
+  - accelerated testing
+  - long-term exposure
+
+# Negative keywords - pages containing these will be filtered out
+negative_keywords:
+  - deep learning
+  - neural network
+  - machine learning
+  - computer vision
+  - blockchain
+
+# Crawl settings
+crawl_settings:
+  max_depth: 2  # Maximum link depth from seed URL
+  max_pages: 100  # Maximum pages to crawl per seed
+  download_delay: 1.0  # Delay between requests (seconds)
+  concurrent_requests_per_domain: 2
+  respect_robots_txt: true
+  follow_external_links: false  # Only follow links within allowed_domains
+
+# Metadata extraction settings
+extraction:
+  min_content_length: 100  # Minimum text length to consider a page
+  max_content_length: 50000  # Maximum content to extract
+  abstract_max_length: 2000
+  max_authors: 20
+  max_emails: 10
+
+# Output settings
+output:
+  format: jsonl  # jsonl or json
+  save_to_file: true
+  save_to_database: true
+

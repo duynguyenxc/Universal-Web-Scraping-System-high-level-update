@@ -58,38 +58,60 @@ def discover_semantic_scholar(
     sch = SemanticScholar(api_key=api_key) if api_key else SemanticScholar()
 
     # Build search query from keywords
-    # Semantic Scholar search works best with focused queries
-    # Use first 3 keywords for better results
-    limited_keywords = keywords[:3]
-    search_query = " ".join(limited_keywords)
+    # Check if this is corrosion research (based on keywords)
+    is_corrosion_search = any(term.lower() in ['corrosion', 'concrete', 'steel', 'reinforced', 'chloride', 'civil engineering']
+                             for term in keywords)
+
+    if is_corrosion_search:
+        # Use corrosion-specific search queries for better results
+        corrosion_queries = [
+            "corrosion reinforced concrete",
+            "steel corrosion protection",
+            "concrete corrosion chloride",
+            "corrosion inhibition civil engineering",
+            "corrosion stainless steel concrete",
+            "corrosion cracking concrete",
+            "corrosion durability concrete"
+        ]
+        logger.info(f"Using corrosion-specific search with {len(corrosion_queries)} queries")
+    else:
+        # Semantic Scholar search works best with focused queries
+        # Use first 3 keywords for better results
+        corrosion_queries = [" ".join(keywords[:3])]
 
     count = 0
-    limit = min(max_records or 100, 100)  # Semantic Scholar max is 100 per request
+    seen_titles = set()  # For deduplication across queries
+    limit_per_query = min((max_records or 100) // len(corrosion_queries), 50)  # Distribute limit
 
     try:
-        # Polite rate limiting
-        if throttle_sec > 0:
-            time.sleep(throttle_sec)
+        for query_idx, search_query in enumerate(corrosion_queries):
+            if max_records is not None and count >= max_records:
+                break
 
-        # Use SemanticScholar's search_paper() method
-        # Returns PaginatedResults object, need to iterate
-        try:
-            # Build query parameters - year filter is not directly supported in search_paper
-            query_params = {
-                "query": search_query,
-                "limit": limit,
-            }
+            logger.info(f"Query {query_idx + 1}/{len(corrosion_queries)}: '{search_query}'")
 
-            results = sch.search_paper(**query_params)
+            # Polite rate limiting
+            if throttle_sec > 0:
+                time.sleep(throttle_sec)
 
-            if not results:
-                logger.info("No items from Semantic Scholar API")
-                return
+            # Use SemanticScholar's search_paper() method
+            try:
+                # Build query parameters
+                query_params = {
+                    "query": search_query,
+                    "limit": limit_per_query,
+                }
 
-            # results is a PaginatedResults object, iterate through it
-            for paper in results:
-                if max_records is not None and count >= max_records:
-                    break
+                results = sch.search_paper(**query_params)
+
+                if not results:
+                    logger.info(f"No results for query: {search_query}")
+                    continue
+
+                # results is a PaginatedResults object, iterate through it
+                for paper in results:
+                    if max_records is not None and count >= max_records:
+                        break
 
                 # Convert paper object to dict if needed
                 # Semantic Scholar returns Paper objects, not dicts

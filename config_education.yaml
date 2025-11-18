@@ -52,3 +52,5 @@ scrapy_path_blacklist:
   - /education
   - /certification
   - /university
+
+
