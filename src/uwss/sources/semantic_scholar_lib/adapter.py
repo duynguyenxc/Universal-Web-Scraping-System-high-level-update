@@ -24,144 +24,137 @@ except ImportError:
 
 
 def discover_semantic_scholar(
-    keywords: list[str],
-    max_records: Optional[int] = None,
-    year_filter: Optional[int] = None,
-    api_key: Optional[str] = None,
-    throttle_sec: float = 0.1,  # Semantic Scholar allows fast requests
-    **kwargs,
+	keywords: list[str],
+	max_records: Optional[int] = None,
+	year_filter: Optional[int] = None,
+	api_key: Optional[str] = None,
+	throttle_sec: float = 0.1,
+	**kwargs,
 ) -> Iterator[dict]:
-    """Discover Semantic Scholar papers via semanticscholar library.
+	"""Discover Semantic Scholar papers via semanticscholar library.
 
-    Args:
-        keywords: List of keywords to search for
-        max_records: Maximum number of records to discover
-        year_filter: Optional year filter (e.g., 2020)
-        api_key: Optional API key for higher rate limits
-        throttle_sec: Delay between requests (seconds)
-        **kwargs: Additional arguments passed to semanticscholar
+	Args:
+		keywords: List of keywords to search for.
+		max_records: Maximum number of records to discover.
+		year_filter: Optional minimum publication year (e.g., 2020).
+		api_key: Optional API key for higher rate limits.
+		throttle_sec: Delay between requests (seconds).
 
-    Yields:
-        Dictionary with fields matching Document model
+	Yields:
+		Dictionary with fields matching Document model.
 
-    Raises:
-        ImportError: If semanticscholar is not installed
-    """
-    if not SEMANTICSCHOLAR_AVAILABLE:
-        raise ImportError(
-            "semanticscholar library is required. Install with: pip install semanticscholar"
-        )
+	Raises:
+		ImportError: If semanticscholar is not installed.
+	"""
+	if not SEMANTICSCHOLAR_AVAILABLE:
+		raise ImportError(
+			"semanticscholar library is required. Install with: pip install semanticscholar"
+		)
 
-    logger.info(f"Starting Semantic Scholar discovery via semanticscholar with {len(keywords)} keywords")
+	if not keywords:
+		return
 
-    # Initialize SemanticScholar client
-    sch = SemanticScholar(api_key=api_key) if api_key else SemanticScholar()
+	logger.info(
+		"Starting Semantic Scholar discovery via semanticscholar with %d keywords",
+		len(keywords),
+	)
 
-    # Build search query from keywords
-    # Check if this is corrosion research (based on keywords)
-    is_corrosion_search = any(term.lower() in ['corrosion', 'concrete', 'steel', 'reinforced', 'chloride', 'civil engineering']
-                             for term in keywords)
+	# Initialize SemanticScholar client
+	sch = SemanticScholar(api_key=api_key) if api_key else SemanticScholar()
 
-    if is_corrosion_search:
-        # Use corrosion-specific search queries for better results
-        corrosion_queries = [
-            "corrosion reinforced concrete",
-            "steel corrosion protection",
-            "concrete corrosion chloride",
-            "corrosion inhibition civil engineering",
-            "corrosion stainless steel concrete",
-            "corrosion cracking concrete",
-            "corrosion durability concrete"
-        ]
-        logger.info(f"Using corrosion-specific search with {len(corrosion_queries)} queries")
-    else:
-        # Semantic Scholar search works best with focused queries
-        # Use first 3 keywords for better results
-        corrosion_queries = [" ".join(keywords[:3])]
+	# Build search query list
+	is_corrosion_search = any(
+		term.lower()
+		in [
+			"corrosion",
+			"concrete",
+			"steel",
+			"reinforced",
+			"chloride",
+			"civil engineering",
+		]
+		for term in keywords
+	)
 
-    count = 0
-    seen_titles = set()  # For deduplication across queries
-    limit_per_query = min((max_records or 100) // len(corrosion_queries), 50)  # Distribute limit
+	if is_corrosion_search:
+		queries = [
+			"corrosion reinforced concrete",
+			"steel corrosion protection",
+			"concrete corrosion chloride",
+			"corrosion inhibition civil engineering",
+			"corrosion stainless steel concrete",
+			"corrosion cracking concrete",
+			"corrosion durability concrete",
+		]
+		logger.info("Using corrosion-specific Semantic Scholar queries: %d", len(queries))
+	else:
+		# Use first few keywords as one focused query
+		queries = [" ".join(keywords[:3])]
 
-    try:
-        for query_idx, search_query in enumerate(corrosion_queries):
-            if max_records is not None and count >= max_records:
-                break
+	total_limit = max_records or 100
+	limit_per_query = max(1, min(50, total_limit // len(queries)))
+	count = 0
 
-            logger.info(f"Query {query_idx + 1}/{len(corrosion_queries)}: '{search_query}'")
+	for idx, q in enumerate(queries, start=1):
+		if max_records is not None and count >= max_records:
+			break
 
-            # Polite rate limiting
-            if throttle_sec > 0:
-                time.sleep(throttle_sec)
+		logger.info("Semantic Scholar query %d/%d: %r", idx, len(queries), q)
 
-            # Use SemanticScholar's search_paper() method
-            try:
-                # Build query parameters
-                query_params = {
-                    "query": search_query,
-                    "limit": limit_per_query,
-                }
+		if throttle_sec > 0:
+			time.sleep(throttle_sec)
 
-                results = sch.search_paper(**query_params)
+		try:
+			results = sch.search_paper(query=q, limit=limit_per_query)
+		except Exception as e:  # pragma: no cover - network / API errors
+			logger.error("Error during Semantic Scholar API call: %s", e)
+			if "429" in str(e) or "rate limit" in str(e).lower():
+				wait_time = 60
+				logger.warning("Rate limited. Waiting %d seconds...", wait_time)
+				time.sleep(wait_time)
+			continue
 
-                if not results:
-                    logger.info(f"No results for query: {search_query}")
-                    continue
+		if not results:
+			logger.info("No results for query: %r", q)
+			continue
 
-                # results is a PaginatedResults object, iterate through it
-                for paper in results:
-                    if max_records is not None and count >= max_records:
-                        break
+		for paper in results:
+			if max_records is not None and count >= max_records:
+				break
 
-                # Convert paper object to dict if needed
-                # Semantic Scholar returns Paper objects, not dicts
-                paper_dict = {}
-                if hasattr(paper, '__dict__'):
-                    paper_dict = paper.__dict__
-                elif hasattr(paper, 'to_dict'):
-                    paper_dict = paper.to_dict()
-                else:
-                    # Try to access attributes directly
-                    paper_dict = {
-                        'title': getattr(paper, 'title', None),
-                        'year': getattr(paper, 'year', None),
-                        'abstract': getattr(paper, 'abstract', None),
-                        'authors': getattr(paper, 'authors', []),
-                        'doi': getattr(paper, 'externalIds', {}).get('DOI') if hasattr(paper, 'externalIds') else None,
-                        'url': getattr(paper, 'url', None),
-                        'venue': getattr(paper, 'venue', None),
-                        'openAccessPdf': getattr(paper, 'openAccessPdf', None),
-                    }
+			# Convert Paper object to dict
+			if hasattr(paper, "to_dict"):
+				paper_dict = paper.to_dict()
+			elif hasattr(paper, "__dict__"):
+				paper_dict = dict(paper.__dict__)
+			else:
+				paper_dict = {
+					"title": getattr(paper, "title", None),
+					"year": getattr(paper, "year", None),
+					"abstract": getattr(paper, "abstract", None),
+					"authors": getattr(paper, "authors", []),
+					"externalIds": getattr(paper, "externalIds", {}),
+					"url": getattr(paper, "url", None),
+					"venue": getattr(paper, "venue", None),
+					"openAccessPdf": getattr(paper, "openAccessPdf", None),
+				}
 
-                # Apply year filter if specified
-                if year_filter:
-                    pub_year = paper_dict.get("year") or getattr(paper, 'year', None)
-                    if pub_year:
-                        try:
-                            if int(pub_year) < year_filter:
-                                continue
-                        except (ValueError, TypeError):
-                            pass
+			# Year filter
+			if year_filter:
+				pub_year = paper_dict.get("year") or getattr(paper, "year", None)
+				if pub_year:
+					try:
+						if int(pub_year) < year_filter:
+							continue
+					except (ValueError, TypeError):
+						pass
 
-                # Map Semantic Scholar output to Document schema
-                # Pass both dict and object to mapper
-                mapped = map_semantic_scholar_to_document(paper_dict, source="semantic_scholar", paper_obj=paper)
-                if mapped:
-                    yield mapped
-                    count += 1
+			mapped = map_semantic_scholar_to_document(
+				paper_dict, source="semantic_scholar", paper_obj=paper
+			)
+			if mapped:
+				yield mapped
+				count += 1
 
-        except Exception as e:
-            logger.error(f"Error during Semantic Scholar API call: {e}")
-            # If it's a rate limit error, wait longer
-            if "429" in str(e) or "rate limit" in str(e).lower():
-                wait_time = 60
-                logger.warning(f"Rate limited. Waiting {wait_time} seconds...")
-                time.sleep(wait_time)
-            raise
-
-        logger.info(f"Semantic Scholar discovery complete: {count} records")
-
-    except Exception as e:
-        logger.error(f"Error during Semantic Scholar discovery: {e}")
-        raise
+	logger.info("Semantic Scholar discovery complete: %d records", count)
 

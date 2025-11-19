@@ -3,7 +3,7 @@
 
 import logging
 import re
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 
 from ...store.models import Document
 

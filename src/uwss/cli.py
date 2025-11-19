@@ -73,7 +73,8 @@ def _log_json(enabled: bool, event: str, **kwargs: Any) -> None:
 # Helper: choose DB engine from --db-url or fallback to SQLite path
 
 def _get_engine_session(args, sqlite_path: Path):
-	from .store import create_sqlite_engine, create_engine_from_url
+	# Use absolute imports so this works reliably when invoked via `python -m src.uwss.cli`
+	from src.uwss.store import create_sqlite_engine, create_engine_from_url
 	if getattr(args, "db_url", None):
 		return create_engine_from_url(args.db_url)
 	return create_sqlite_engine(sqlite_path)
@@ -133,7 +134,7 @@ def build_parser() -> argparse.ArgumentParser:
 	p_mig.add_argument("--db", default=str(Path("data") / "uwss.sqlite"))
 
 	def _cmd_migrate(args: argparse.Namespace) -> int:
-		from .store import migrate_db
+		from src.uwss.store import migrate_db
 		migrate_db(Path(args.db))
 		console.print(f"[green]DB migration completed:[/green] {args.db}")
 		return 0
@@ -314,8 +315,8 @@ def build_parser() -> argparse.ArgumentParser:
 	p_crossref.add_argument("--log-json", action="store_true")
 
 	def _cmd_crossref(args: argparse.Namespace) -> int:
-		from .discovery import iter_crossref_results
-		from .store import Document, Base
+		from src.uwss.discovery import iter_crossref_results
+		from src.uwss.store import Document, Base, IngestionState
 		import json
 
 		data = load_config(Path(args.config))
@@ -328,7 +329,6 @@ def build_parser() -> argparse.ArgumentParser:
 		engine, SessionLocal = _get_engine_session(args, Path(args.db))
 		Base.metadata.create_all(engine)
 		session = SessionLocal()
-		from .store import IngestionState
 		start_offset = 0
 		if args.resume:
 			st = session.query(IngestionState).filter(IngestionState.source == "crossref", IngestionState.checkpoint_key == "offset").first()
@@ -422,8 +422,8 @@ def build_parser() -> argparse.ArgumentParser:
 	p_arxiv.add_argument("--log-json", action="store_true")
 
 	def _cmd_arxiv(args: argparse.Namespace) -> int:
-		from .discovery import iter_arxiv_results
-		from .store import Document, Base
+		from src.uwss.discovery import iter_arxiv_results
+		from src.uwss.store import Document, Base, IngestionState
 		import json
 		data = load_config(Path(args.config))
 		validate_config(data)
@@ -433,7 +433,6 @@ def build_parser() -> argparse.ArgumentParser:
 		engine, SessionLocal = _get_engine_session(args, Path(args.db))
 		Base.metadata.create_all(engine)
 		session = SessionLocal()
-		from .store import IngestionState
 		start = 0
 		if args.resume:
 			st = session.query(IngestionState).filter(IngestionState.source == "arxiv", IngestionState.checkpoint_key == "start").first()
@@ -557,8 +556,8 @@ def build_parser() -> argparse.ArgumentParser:
 	p_eupmc.add_argument("--log-json", action="store_true")
 
 	def _cmd_eupmc(args: argparse.Namespace) -> int:
-		from .discovery import iter_eupmc_results
-		from .store import Document, Base
+		from src.uwss.discovery import iter_eupmc_results
+		from src.uwss.store import Document, Base
 		import json
 		data = load_config(Path(args.config))
 		validate_config(data)
@@ -569,7 +568,7 @@ def build_parser() -> argparse.ArgumentParser:
 		engine, SessionLocal = _get_engine_session(args, Path(args.db))
 		Base.metadata.create_all(engine)
 		session = SessionLocal()
-		from .store import IngestionState
+		from src.uwss.store import IngestionState
 		start_cursor = "*"
 		if args.resume:
 			st = session.query(IngestionState).filter(IngestionState.source == "europe_pmc", IngestionState.checkpoint_key == "cursor").first()
@@ -654,8 +653,8 @@ def build_parser() -> argparse.ArgumentParser:
 	p_pmc.add_argument("--log-json", action="store_true")
 
 	def _cmd_pmc(args: argparse.Namespace) -> int:
-		from .discovery import iter_pmc_results
-		from .store import Document, Base, IngestionState
+		from src.uwss.discovery import iter_pmc_results
+		from src.uwss.store import Document, Base, IngestionState
 		import json
 		data = load_config(Path(args.config))
 		validate_config(data)
@@ -754,8 +753,8 @@ def build_parser() -> argparse.ArgumentParser:
 	p_doaj.add_argument("--log-json", action="store_true")
 
 	def _cmd_doaj(args: argparse.Namespace) -> int:
-		from .discovery import iter_doaj_results
-		from .store import Document, Base, IngestionState
+		from src.uwss.discovery import iter_doaj_results
+		from src.uwss.store import Document, Base, IngestionState
 		import json
 		data = load_config(Path(args.config))
 		validate_config(data)
@@ -842,8 +841,8 @@ def build_parser() -> argparse.ArgumentParser:
 	p_s2.add_argument("--log-json", action="store_true")
 
 	def _cmd_s2(args: argparse.Namespace) -> int:
-		from .discovery import iter_semanticscholar_results
-		from .store import Document, Base
+		from src.uwss.discovery import iter_semanticscholar_results
+		from src.uwss.store import Document, Base
 		import json
 		data = load_config(Path(args.config))
 		validate_config(data)
@@ -853,7 +852,7 @@ def build_parser() -> argparse.ArgumentParser:
 		engine, SessionLocal = _get_engine_session(args, Path(args.db))
 		Base.metadata.create_all(engine)
 		session = SessionLocal()
-		from .store import IngestionState
+		from src.uwss.store import IngestionState
 		start_offset = 0
 		if args.resume:
 			st = session.query(IngestionState).filter(IngestionState.source == "semantic_scholar", IngestionState.checkpoint_key == "offset").first()
@@ -931,8 +930,8 @@ def build_parser() -> argparse.ArgumentParser:
 
 	def _cmd_oai(args: argparse.Namespace) -> int:
 		from sqlalchemy import select
-		from .store import Document, IngestionState, Base
-		from .discovery.oai import iter_oai_dc
+		from src.uwss.store import Document, IngestionState, Base
+		from src.uwss.discovery.oai import iter_oai_dc
 		engine, SessionLocal = _get_engine_session(args, Path(args.db))
 		Base.metadata.create_all(engine)
 		s = SessionLocal()
@@ -993,8 +992,8 @@ def build_parser() -> argparse.ArgumentParser:
 	p_rss.add_argument("--max", type=int, default=100)
 
 	def _cmd_rss(args: argparse.Namespace) -> int:
-		from .discovery.rss import iter_rss
-		from .store import Document, Base
+		from src.uwss.discovery.rss import iter_rss
+		from src.uwss.store import Document, Base
 		engine, SessionLocal = _get_engine_session(args, Path(args.db))
 		Base.metadata.create_all(engine)
 		s = SessionLocal()
@@ -1066,7 +1065,7 @@ def build_parser() -> argparse.ArgumentParser:
 		ns_year = args.year_min if args.year_min is not None else p["year_min"]
 		# Reuse export selection logic
 		from sqlalchemy import select
-		from .store import Document
+		from src.uwss.store import Document
 		import json, csv
 		engine, SessionLocal = _get_engine_session(args, Path(args.db))
 		session = SessionLocal()
@@ -1158,7 +1157,7 @@ def build_parser() -> argparse.ArgumentParser:
 		ms = defaults[args.preset]["min_score"]
 		# Delegate to existing sample-records implementation by selecting and writing file here (reuse selection quickly)
 		from sqlalchemy import select
-		from .store import Document
+		from src.uwss.store import Document
 		import json, random
 		engine, SessionLocal = _get_engine_session(args, Path(args.db))
 		s = SessionLocal()
@@ -1195,8 +1194,8 @@ def build_parser() -> argparse.ArgumentParser:
 	p_gbs.add_argument("--limit", type=int, default=50)
 	p_gbs.add_argument("--grobid-url", default=os.getenv("UWSS_GROBID_URL", "http://localhost:8070"))
 	def _cmd_gbs(args: argparse.Namespace) -> int:
-		from .parse.grobid_client import parse_with_grobid
-		from .store import Base
+		from src.uwss.parse.grobid_client import parse_with_grobid
+		from src.uwss.store import Base
 		engine, SessionLocal = _get_engine_session(args, Path(args.db))
 		Base.metadata.create_all(engine)
 		s = SessionLocal()
@@ -1276,8 +1275,8 @@ def build_parser() -> argparse.ArgumentParser:
 	p_gb.add_argument("--log-json", action="store_true")
 	p_gb.add_argument("--metrics-out", default=None)
 	def _cmd_gb(args: argparse.Namespace) -> int:
-		from .parse.grobid_client import parse_with_grobid
-		from .store import Base
+		from src.uwss.parse.grobid_client import parse_with_grobid
+		from src.uwss.store import Base
 		engine, SessionLocal = _get_engine_session(args, Path(args.db))
 		Base.metadata.create_all(engine)
 		s = SessionLocal()
@@ -1354,7 +1353,7 @@ def build_parser() -> argparse.ArgumentParser:
 
 	def _cmd_manifest(args: argparse.Namespace) -> int:
 		from sqlalchemy import select
-		from .store import Document
+		from src.uwss.store import Document
 		import json
 		engine, SessionLocal = _get_engine_session(args, Path(args.db))
 		session = SessionLocal()
@@ -1419,7 +1418,7 @@ def build_parser() -> argparse.ArgumentParser:
 
 	def _cmd_del(args: argparse.Namespace) -> int:
 		from sqlalchemy import select
-		from .store import Document
+		from src.uwss.store import Document
 		engine, SessionLocal = _get_engine_session(args, Path(args.db))
 		s = SessionLocal()
 		try:
@@ -1617,7 +1616,7 @@ def build_parser() -> argparse.ArgumentParser:
 	def _cmd_import_jsonl(args: argparse.Namespace) -> int:
 		import hashlib
 		from sqlalchemy import select
-		from .store import Document
+		from src.uwss.store import Document
 
 		in_path = Path(args.in_file)
 		if not in_path.exists():
@@ -1765,7 +1764,7 @@ def build_parser() -> argparse.ArgumentParser:
 	def _cmd_sample(args: argparse.Namespace) -> int:
 		import random, json
 		from sqlalchemy import select
-		from .store import Document
+		from src.uwss.store import Document
 		engine, SessionLocal = _get_engine_session(args, Path(args.db))
 		s = SessionLocal()
 		try:
@@ -1933,7 +1932,7 @@ def build_parser() -> argparse.ArgumentParser:
 	def _cmd_research_crawl(args: argparse.Namespace) -> int:
 		from scrapy.crawler import CrawlerProcess
 		from src.uwss.crawl.scrapy_project.spiders.research_spider import ResearchSpider
-		from .discovery.seed_finder import find_seeds_from_database
+		from src.uwss.discovery.seed_finder import find_seeds_from_database
 		
 		try:
 			# Get seeds
@@ -2152,7 +2151,7 @@ def build_parser() -> argparse.ArgumentParser:
 	def _cmd_recent(args: argparse.Namespace) -> int:
 		from sqlalchemy import select
 		from datetime import datetime, timedelta
-		from .store import Document
+		from src.uwss.store import Document
 		import json
 		engine, SessionLocal = _get_engine_session(args, Path(args.db))
 		s = SessionLocal()
@@ -2235,7 +2234,7 @@ def build_parser() -> argparse.ArgumentParser:
 
 	def _cmd_validate(args: argparse.Namespace) -> int:
 		from sqlalchemy import select, func
-		from .store import Document
+		from src.uwss.store import Document
 		import json, os
 		engine, SessionLocal = _get_engine_session(args, Path(args.db))
 		s = SessionLocal()
@@ -2349,7 +2348,7 @@ def build_parser() -> argparse.ArgumentParser:
 	p_ea.add_argument("--api-key", default="b2348f7fe711df80e68432559d8da23f", help="Elsevier API key")
 
 	def _cmd_ea(args: argparse.Namespace) -> int:
-		from uwss.cli.commands.elsevier_api_discover import elsevier_api_discover
+		from src.uwss.cli.commands.elsevier_api_discover import elsevier_api_discover
 		elsevier_api_discover.main([
 			"--max", str(args.max),
 			"--start-year", str(args.start_year),
