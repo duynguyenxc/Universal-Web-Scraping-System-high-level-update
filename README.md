@@ -1,16 +1,86 @@
 ## Overview
 
-**Universal Web Scraping System (UWSS)** is a configurable pipeline for collecting, storing, and analyzing academic documents about **corrosion and long‑term durability of reinforced concrete**.  
-It combines **official academic databases** (Crossref, OpenAlex, Semantic Scholar, PubMed, arXiv via libraries) with a **Scrapy web crawler** for research‑group websites, and stores everything in a unified database and JSONL exports.
+**Universal Web Scraping System (UWSS)** is a **config‑driven pipeline** for collecting, scoring, and organizing academic documents, currently configured for the topic **“corrosion and long‑term durability of reinforced concrete”**.  
+It combines **official academic databases** (Crossref, OpenAlex, Semantic Scholar, PubMed, arXiv via libraries) with a **Scrapy web crawler** for research‑group websites, and stores everything in a **unified database + JSONL exports** that are easy to inspect or analyze in notebooks.
 
-At a high level, the system:
-- **Discovers** candidate papers and pages from multiple sources.
-- **Scores** them for relevance using your corrosion/durability keywords.
-- **Exports** high‑quality metadata to JSONL for inspection or downstream use.
-- **Fetches PDFs** and records provenance (status, checksum, size, paths).
-- **Extracts content** for deeper text analysis (optional, via GROBID).
+In practical terms, UWSS can:
+- **Discover** candidate papers and pages from multiple scholarly APIs and the open web.
+- **Score** them for relevance using a configurable keyword model (corrosion/durability).
+- **Export** the best hits to JSONL (and optionally CSV) for manual or automated analysis.
+- **Fetch PDFs** when available and record provenance (status, checksum, size, local path).
+- **Extract full text** from PDFs for downstream NLP or content analysis (optional, via GROBID).
 
-The design goal: **one config‑driven toolchain** that can be reused for different research topics by changing keywords and seeds, without rewriting the pipeline.
+The design goal is to have **one reusable toolchain**: by editing a few YAML configs (keywords, seeds, rate limits), you can point the same pipeline at a different research topic without changing the core code.
+
+
+## Quick start (if you only have 5 minutes)
+
+This is the minimum you need to run to see the system working end‑to‑end.
+
+1. **Create a virtualenv and install dependencies**
+
+```bash
+git clone https://github.com/duynguyenxc/Universal-Web-Scraping-System-high-level-update.git
+cd Universal-Web-Scraping-System-high-level-update
+
+python -m venv uwss-env
+uwss-env\Scripts\activate    # Windows
+
+pip install -r requirements.txt
+```
+
+2. **Configure your corrosion/durability keywords** in `config/config.yaml` (see example below).
+
+3. **Initialize the local SQLite database**
+
+```bash
+python -m src.uwss.cli db-init --db data/uwss.sqlite
+```
+
+4. **Discover papers from modern academic APIs (improved adapters)**
+
+```bash
+# Crossref
+python -m src.uwss.cli crossref-lib-discover   --config config/config.yaml --db data/uwss.sqlite --max 100
+
+# OpenAlex
+python -m src.uwss.cli openalex-lib-discover   --config config/config.yaml --db data/uwss.sqlite --max 100
+
+# Semantic Scholar
+python -m src.uwss.cli semantic-scholar-lib-discover --config config/config.yaml --db data/uwss.sqlite --max 100
+
+# PubMed / arXiv via paperscraper
+python -m src.uwss.cli paperscraper-discover   --config config/config.yaml --db data/uwss.sqlite --source pubmed --max 100
+python -m src.uwss.cli paperscraper-discover   --config config/config.yaml --db data/uwss.sqlite --source arxiv  --max 100
+```
+
+5. **Score, export, and fetch PDFs**
+
+```bash
+# Score relevance using your corrosion/durability keywords
+python -m src.uwss.cli score-keywords --config config/config.yaml --db data/uwss.sqlite
+
+# Export a high‑quality subset to JSONL
+python -m src.uwss.cli export \
+  --db data/uwss.sqlite \
+  --out data/corrosion_papers.jsonl \
+  --require-match \
+  --min-score 0.5 \
+  --require-abstract \
+  --min-abstract-length 80
+
+# Download a small batch of PDFs (if available)
+python -m src.uwss.cli fetch \
+  --db data/uwss.sqlite \
+  --outdir data/files \
+  --limit 20 \
+  --config config/config.yaml
+```
+
+After this, you will have:
+- A populated **SQLite DB** (`data/uwss.sqlite`) with deduplicated documents from Crossref, OpenAlex, Semantic Scholar, PubMed, and arXiv.  
+- A filtered **JSONL dump** of relevant papers at `data/corrosion_papers.jsonl`.  
+- A folder of **downloaded PDFs** under `data/files/` (for those sources that expose full text).
 
 
 ## High‑Level Architecture
@@ -232,7 +302,7 @@ You can then post‑process `data/corrosion_papers.jsonl` in notebooks or script
 
 ## Stage 4 – Fetch PDFs
 
-To download a small batch of open‑access PDFs:
+To download a batch of open‑access PDFs for already‑scored documents:
 
 ```bash
 python -m src.uwss.cli fetch \
@@ -242,12 +312,12 @@ python -m src.uwss.cli fetch \
   --config config/config.yaml
 ```
 
-Under the hood (`src/uwss/crawl/__init__.py`):
+Under the hood (`src/uwss/crawl` + `src/uwss/fetch`):
 - Calls **Unpaywall** to enrich open‑access information for documents with DOIs.
-- Resolves publisher links where needed.
-- Downloads PDFs (preferring `pdf_url`, then `source_url`).
-- Writes files into `data/files` with stable names.
-- Updates `local_path`, `pdf_status`, `http_status`, `mime_type`, `file_size`, `checksum_sha256` in the DB.
+- Optionally resolves publisher links to improve `pdf_url` hit rate.
+- Downloads PDFs (preferring `pdf_url`, then `source_url` when appropriate).
+- Writes files into `data/files/` with stable, safe filenames.
+- Updates `local_path`, `pdf_status`, `http_status`, `mime_type`, `file_size`, `checksum_sha256` in the DB so you can trace provenance later.
 
 
 ## Stage 5 – (Optional) Full‑Text Extraction
