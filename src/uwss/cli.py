@@ -859,6 +859,7 @@ def build_parser() -> argparse.ArgumentParser:
 	p_s3.add_argument("--include-docjson", action="store_true", help="Upload per-document doc.json (identification)")
 	p_s3.add_argument("--include-content", action="store_true", help="Upload extracted content if available")
 	p_s3.add_argument("--layout", choices=["flat", "by-id"], default="flat", help="Key layout: flat or by-id/<id>/...")
+	p_s3.add_argument("--db-url", default=os.getenv("UWSS_DB_URL"), help="Optional DB URL for cloud/Postgres uploads")
 
 	def _cmd_s3(args: argparse.Namespace) -> int:
 		from .upload import upload_files_to_s3
@@ -872,6 +873,7 @@ def build_parser() -> argparse.ArgumentParser:
 			include_docjson=bool(getattr(args, "include_docjson", False)),
 			include_content=bool(getattr(args, "include_content", False)),
 			layout=str(getattr(args, "layout", "flat")),
+			db_url=getattr(args, "db_url", None),
 		)
 		console.print(f"[green]Uploaded {count} files to s3://{args.bucket}/{args.prefix}[/green]")
 		return 0

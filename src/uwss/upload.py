@@ -7,7 +7,7 @@ import os
 import boto3
 from botocore.config import Config as BotoConfig
 
-from .store import create_sqlite_engine, Document
+from .store import create_sqlite_engine, create_engine_from_url, Document
 from sqlalchemy import select
 
 
@@ -22,13 +22,29 @@ def upload_files_to_s3(
 	include_docjson: bool = False,
 	include_content: bool = False,
 	layout: Literal["flat", "by-id"] = "flat",
+	db_url: Optional[str] = None,
 ) -> int:
 	"""
 	Upload downloaded files referenced by Document.local_path to S3.
 	Skips files that are missing locally. Uses key: prefix + basename(local_path).
+
+	Args:
+	    db_path: Path to SQLite database file (used when db_url is not provided).
+	    files_dir: Base directory where PDFs and related files are stored.
+	    bucket: Target S3 bucket name.
+	    prefix: Key prefix inside the bucket.
+	    region: Optional AWS region for the S3 client.
+	    include_sidecars: Also upload .meta.json sidecar files if present.
+	    include_docjson: Upload per-document JSON metadata (doc.json) for each PDF.
+	    include_content: Upload extracted content files if referenced by Document.content_path.
+	    layout: Key layout strategy ("flat" or \"by-id\").
+	    db_url: Optional SQLAlchemy DB URL (e.g. postgresql+psycopg2://...) for cloud/Postgres.
 	"""
 	s3 = boto3.client("s3", region_name=region, config=BotoConfig(retries={"max_attempts": 3, "mode": "standard"}))
-	engine, SessionLocal = create_sqlite_engine(db_path)
+	if db_url:
+		engine, SessionLocal = create_engine_from_url(db_url)
+	else:
+		engine, SessionLocal = create_sqlite_engine(db_path)
 	s = SessionLocal()
 	count = 0
 	try:
