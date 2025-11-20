@@ -130,6 +130,9 @@ class ResearchGroupSpider(CrawlSpider):
                 'authors': self._extract_authors(response, text_content),
                 'group': self._extract_group(response, text_content),
                 'emails': self._extract_emails(text_content),
+                # Keep raw HTML for downstream researcher extraction;
+                # pipelines are responsible for dropping this field from final output.
+                'raw_html': response.text,
                 'content': text_content[:50000],  # Limit content size
                 'depth': depth,
                 'topic': 'web-crawl',

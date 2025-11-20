@@ -3,6 +3,8 @@
 import logging
 from typing import Dict, Any
 
+from ...crawl.extractors.researcher_extractor import extract_researcher_info
+
 logger = logging.getLogger(__name__)
 
 
@@ -11,6 +13,48 @@ class MetadataExtractionPipeline:
     
     def process_item(self, item: Dict[str, Any], spider) -> Dict[str, Any]:
         """Process and clean item metadata."""
+        # --- Researcher-level enrichment (name, email, affiliation, etc.) ---
+        # If raw HTML is present, try to extract structured researcher info.
+        raw_html = item.get("raw_html")
+        if raw_html:
+            try:
+                info = extract_researcher_info(raw_html, item.get("source_url", ""))
+
+                # Prefer a clean researcher name as author if available.
+                name = (info.get("name") or "").strip()
+                if name:
+                    authors = item.get("authors") or []
+                    if isinstance(authors, str):
+                        authors = [a.strip() for a in authors.split(",")]
+                    if name not in authors:
+                        authors = [name] + authors
+                    item["authors"] = authors[:20]
+
+                # Prefer academic email if found.
+                email = (info.get("email") or "").strip()
+                if email:
+                    emails = item.get("emails") or []
+                    if isinstance(emails, str):
+                        emails = [e.strip() for e in emails.split(",")]
+                    if email not in emails:
+                        emails = [email] + emails
+                    item["emails"] = emails[:10]
+
+                # Use affiliation as group when group is missing.
+                affiliation = (info.get("affiliation") or "").strip()
+                if affiliation and not item.get("group"):
+                    item["group"] = affiliation
+            except Exception:
+                # Best-effort enrichment; never fail the crawl because of extractor.
+                logger.debug("researcher_extractor failed for %s", item.get("source_url", ""))
+            finally:
+                # Drop raw_html so it does not end up in exported JSONL.
+                item.pop("raw_html", None)
+        else:
+            # Ensure we never leak raw_html.
+            item.pop("raw_html", None)
+
+        # --- Generic metadata cleaning ---
         # Ensure required fields exist
         if not item.get('title'):
             item['title'] = item.get('source_url', '').split('/')[-1] or 'Untitled'

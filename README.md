@@ -236,7 +236,7 @@ python -m src.uwss.cli paperscraper-discover \
 
 ## Stage 1b – Discover (Scrapy web crawler for research groups)
 
-For research‑group websites and structural‑durability centers, use the Scrapy adapter:
+For research‑group websites and structural‑durability centers, UWSS includes a **Scrapy‑based adapter** that crawls a given site and pulls out pages related to corrosion/durability, together with researcher/contact info.
 
 ```bash
 python -m src.uwss.cli web-crawler-scrapy-discover \
@@ -247,14 +247,22 @@ python -m src.uwss.cli web-crawler-scrapy-discover \
   --output data/web_crawler_scrapy_results.jsonl
 ```
 
-The crawler:
-- Starts from a seed (research group homepage).
-- Stays inside allowed domains.
-- Filters pages by corrosion/durability keywords (phrase + token matching).
-- Extracts `title`, `abstract`/summary, `year`, `authors`, `group`, `emails`, `depth`.
-- Converts each relevant page into a UWSS document structure (via pipelines).
+- **How it works**
+  - Starts from a **seed URL** (e.g. research group, lab, center homepage).  
+  - Automatically infers `allowed_domains` from the seed and **stays inside that domain**.  
+  - Follows links up to `max_depth` / `max_pages`, obeying robots.txt and polite throttling.  
+  - For each page, extracts text and checks **relevance to corrosion/durability** using the same keyword set (phrase + token matching), **not** full semantic embedding.  
 
-Details of the crawler design and experiments are documented in `web_crawler_scrapy_report.md`.
+- **What it extracts**
+  - Page‑level metadata: `source_url`, `title`, `abstract`/summary, `year`.  
+  - Researcher/group metadata when present: `authors` (names), `group`/institution, `emails`, `depth`.  
+  - Uses a dedicated researcher extractor to improve name/email/affiliation detection on people/profile pages.
+
+- **Output**
+  - Writes each relevant page as one line of JSON in `data/web_crawler_scrapy_results.jsonl`.  
+  - Each line is a UWSS‑style document with `source = "web-crawler-scrapy"` plus extra `metadata` for group/emails/depth.  
+
+Details of the crawler design and experiments (including seed selection strategy and limitations) are documented in `web_crawler_scrapy_report.md`.
 
 
 ## Stage 2 – Score (keyword‑based relevance)
