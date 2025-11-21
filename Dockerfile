@@ -33,8 +33,10 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
 # The application expects working dir root with config/ and data/ mounted
 VOLUME ["/app/data", "/app/config", "/app/logs"]
 
-# Default command prints CLI help; override with args, e.g.:
-# docker run --rm -v $PWD/data:/app/data uwss:latest python -m src.uwss.cli stats --db data/uwss.sqlite
+# Default command: show UWSS CLI help.
+# Override with your own command when running the container, for example:
+#   docker run --rm -v $PWD/data:/app/data uwss:latest \
+#     python -m src.uwss.cli db-migrate --db data/uwss.sqlite --config config/config.yaml
 CMD ["python", "-m", "src.uwss.cli"]
 
 

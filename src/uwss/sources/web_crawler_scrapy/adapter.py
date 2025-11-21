@@ -88,34 +88,67 @@ def discover_web_crawler_scrapy(
     from twisted.internet.task import deferLater
     
     # Setup Scrapy settings
+    #
+    # IMPORTANT for this project:
+    # - We keep the crawl very conservative so that:
+    #   * Small tests finish quickly (even if the seed site is slow or irrelevant)
+    #   * We never run an unbounded crawl when keywords do not match anything
+    # - Limits are enforced in TWO layers:
+    #   * Inside the spider via max_pages / max_depth
+    #   * At the engine level via CLOSESPIDER_* and DOWNLOAD_TIMEOUT
     settings = {
+        # Politeness / robots
         'ROBOTSTXT_OBEY': True,
-        'DOWNLOAD_DELAY': 1.0,
-        'RANDOMIZE_DOWNLOAD_DELAY': 0.5,
+        # Keep a small delay, but not too large, so tiny debug runs (3–5 pages)
+        # finish quickly even on slow sites.
+        'DOWNLOAD_DELAY': 0.5,
+        'RANDOMIZE_DOWNLOAD_DELAY': 0.25,
         'CONCURRENT_REQUESTS_PER_DOMAIN': 2,
-        'AUTOTHROTTLE_ENABLED': True,
-        'AUTOTHROTTLE_START_DELAY': 1,
-        'AUTOTHROTTLE_MAX_DELAY': 10,
-        'AUTOTHROTTLE_TARGET_CONCURRENCY': 2.0,
+        # For our small, supervised crawls we disable autotrottle; the explicit
+        # delay + strict limits below are enough and keep behaviour predictable.
+        'AUTOTHROTTLE_ENABLED': False,
+        # Hard safety limits so the crawl cannot run "forever"
+        #
+        # Abort the crawl once Scrapy has scheduled roughly this many pages,
+        # even if something goes wrong in the spider logic.
+        'CLOSESPIDER_PAGECOUNT': max_pages,
+        # Global wall‑clock timeout for the whole crawl (in seconds).
+        # Make this small so that a quick test (3 pages) never runs for minutes.
+        'CLOSESPIDER_TIMEOUT': 20,
+        # Per‑request timeout (seconds). If a server is very slow or hangs,
+        # we will give up on that request instead of waiting too long.
+        'DOWNLOAD_TIMEOUT': 10,
+        # Pipelines and extensions
+        # NOTE: dùng đường dẫn đầy đủ theo package thực tế `src.uwss.*` để
+        # Scrapy không còn báo lỗi "No module named 'uwss'" sau khi crawl xong.
         'ITEM_PIPELINES': {
-            'uwss.sources.web_crawler_scrapy.pipeline.MetadataExtractionPipeline': 300,
-            'uwss.sources.web_crawler_scrapy.pipeline.EmailExtractionPipeline': 400,
-            'uwss.sources.web_crawler_scrapy.pipeline.UWSSDocumentPipeline': 500,
-            'uwss.sources.web_crawler_scrapy.adapter.CollectingPipeline': 600,
+            'src.uwss.sources.web_crawler_scrapy.pipeline.MetadataExtractionPipeline': 300,
+            'src.uwss.sources.web_crawler_scrapy.pipeline.EmailExtractionPipeline': 400,
+            'src.uwss.sources.web_crawler_scrapy.pipeline.UWSSDocumentPipeline': 500,
+            'src.uwss.sources.web_crawler_scrapy.adapter.CollectingPipeline': 600,
         },
         'EXTENSIONS': {
-            'uwss.sources.web_crawler_scrapy.adapter.ItemCollectorExtension': 500,
+            'src.uwss.sources.web_crawler_scrapy.adapter.ItemCollectorExtension': 500,
         },
         'LOG_LEVEL': 'INFO',
     }
     
     # Create crawler runner
     runner = CrawlerRunner(settings)
-    
+
+    # Derive a hard wall‑clock timeout for this crawl.
+    # Heuristic: at most ~5s cho mỗi trang + trần trên tuyệt đối 60s.
+    timeout_sec = min(max_pages * 5, 60)
+
     # Create deferred for crawling
     @defer.inlineCallbacks
     def crawl():
         try:
+            # Schedule a hard stop on the reactor as a safety net.
+            # Nếu vì lý do gì đó Scrapy không đóng spider đúng cách,
+            # reactor.stop() này sẽ đảm bảo toàn bộ job kết thúc.
+            reactor.callLater(timeout_sec, reactor.stop)
+
             yield runner.crawl(
                 ResearchGroupSpider,
                 seed_url=seed_url,
@@ -125,7 +158,9 @@ def discover_web_crawler_scrapy(
                 max_pages=max_pages,
             )
         finally:
-            reactor.stop()
+            # Safe to call nhiều lần; Twisted sẽ bỏ qua nếu reactor đã dừng.
+            if reactor.running:
+                reactor.stop()
     
     # Check if reactor is already running
     if not reactor.running:
