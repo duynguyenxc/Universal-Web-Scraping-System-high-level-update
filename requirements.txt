@@ -1,4 +1,4 @@
-﻿PyYAML==6.0.2
+PyYAML==6.0.2
 requests==2.32.3
 beautifulsoup4==4.12.3
 lxml==5.3.0
@@ -13,7 +13,8 @@ pdfminer.six==20231228
 psycopg2-binary==2.9.9
 paperscraper>=0.3.0
 habanero>=1.2.0
-pyalex>=1.0.0
+# Latest pyalex on PyPI is <1.0; 0.19 is the stable version we've used in tests.
+pyalex==0.19
 semanticscholar>=2.0.0
 trafilatura>=2.0.0
 selenium>=4.15.0
