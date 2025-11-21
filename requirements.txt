@@ -15,6 +15,7 @@ paperscraper>=0.3.0
 habanero>=1.2.0
 # Latest pyalex on PyPI is <1.0; 0.19 is the stable version we've used in tests.
 pyalex==0.19
-semanticscholar>=2.0.0
+# Latest semanticscholar on PyPI is 0.11.0; pin to that tested version.
+semanticscholar==0.11.0
 trafilatura>=2.0.0
 selenium>=4.15.0
