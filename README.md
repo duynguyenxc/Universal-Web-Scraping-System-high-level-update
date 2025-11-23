@@ -374,6 +374,21 @@ This step:
 ```
 
 
+## Running UWSS on AWS (EC2 + S3)
+
+This project has been successfully **deployed and run on AWS EC2**, with all outputs synchronized to **Amazon S3**:
+
+- On **EC2**, we run the standard UWSS pipeline (database init, discover, score, export, fetch) exactly as documented above.
+- All generated data under `data/` (SQLite DB, JSONL exports, downloaded PDFs, etc.) are uploaded to S3 via a single sync command:
+
+  ```bash
+  aws s3 sync /home/ubuntu/Universal-Web-Scraping-System-high-level-update/data s3://data-new-ec2/uwss-data/
+  ```
+
+This follows a production‑style pattern where **EC2 provides compute** and **S3 acts as the durable storage layer**.  
+For a detailed step‑by‑step guide (launch EC2, set up the project, configure AWS CLI, and sync to S3), see `docs/project/EC2_S3_SETUP.md`.
+
+
 ## Summary for New Collaborators
 
 - Edit `config/config.yaml` to define your **corrosion/durability** keyword space.
