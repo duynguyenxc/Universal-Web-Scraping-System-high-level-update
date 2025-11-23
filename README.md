@@ -24,7 +24,10 @@ git clone https://github.com/duynguyenxc/Universal-Web-Scraping-System-high-leve
 cd Universal-Web-Scraping-System-high-level-update
 
 python -m venv uwss-env
-uwss-env\Scripts\activate    # Windows
+# Windows
+uwss-env\Scripts\activate
+# Linux / macOS
+# source uwss-env/bin/activate
 
 pip install -r requirements.txt
 ```
