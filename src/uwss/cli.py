@@ -1883,7 +1883,7 @@ def build_parser() -> argparse.ArgumentParser:
 		if _src_path not in sys.path:
 			sys.path.insert(0, _src_path)
 		from src.uwss.sources.web_crawler_scrapy.adapter import discover_web_crawler_scrapy
-		p_scrapy = sub.add_parser("web-crawler-scrapy-discover", help="Crawl research group websites using Scrapy")
+		p_scrapy = sub.add_parser("web-crawler-scrapy-discover", help="Crawl research group websites using Scrapy (keyword filter)")
 		# NOTE: this config can be either a dedicated Scrapy config
 		# (e.g. config/web_crawler_scrapy.yaml with global_keywords/seed_urls)
 		# or the main UWSS config.yaml which contains domain_keywords
@@ -1977,6 +1977,170 @@ def build_parser() -> argparse.ArgumentParser:
 				return 1
 		
 		p_scrapy.set_defaults(func=_cmd_scrapy)
+
+		# web-crawler-semantic-discover
+		p_scrapy_sem = sub.add_parser(
+			"web-crawler-semantic-discover",
+			help="Crawl research group websites using Scrapy + semantic filtering",
+		)
+		p_scrapy_sem.add_argument(
+			"--config",
+			default=str(Path("config") / "web_crawler_scrapy.yaml"),
+			help="Path to crawler config file (or main config/config.yaml with domain_keywords)",
+		)
+		p_scrapy_sem.add_argument("--seed-url", help="Single seed URL to crawl (overrides config)", type=str)
+		p_scrapy_sem.add_argument("--keywords", help="Comma-separated keywords (overrides config)", type=str)
+		p_scrapy_sem.add_argument(
+			"--topic",
+			help="Free-text topic description used to build the semantic query (overrides keywords/domain_keywords)",
+			type=str,
+		)
+		p_scrapy_sem.add_argument("--max-depth", help="Maximum crawl depth (overrides config)", type=int)
+		p_scrapy_sem.add_argument("--max-pages", help="Maximum pages to crawl (overrides config)", type=int)
+		p_scrapy_sem.add_argument(
+			"--output",
+			help="Output JSONL file path",
+			type=str,
+			default=str(Path("data") / "web_crawler_semantic_results.jsonl"),
+		)
+		p_scrapy_sem.add_argument(
+			"--max-records",
+			help="Maximum records to keep after semantic filtering",
+			type=int,
+			default=100,
+		)
+		p_scrapy_sem.add_argument(
+			"--semantic-model",
+			help="Sentence-transformers model name for semantic similarity",
+			type=str,
+			default="sentence-transformers/all-MiniLM-L6-v2",
+		)
+		p_scrapy_sem.add_argument(
+			"--semantic-threshold",
+			help="Minimum semantic similarity score in [0,1] to keep a page",
+			type=float,
+			default=0.4,
+		)
+
+		def _cmd_scrapy_sem(args: argparse.Namespace) -> int:
+			from src.uwss.semantic import compute_semantic_score
+
+			# Load config
+			config_data = {}
+			if Path(args.config).exists():
+				with open(args.config, "r", encoding="utf-8") as f:
+					config_data = yaml.safe_load(f) or {}
+
+			# Seed URL
+			seed_url = args.seed_url
+			if not seed_url:
+				seed_urls = config_data.get("seed_urls", [])
+				if seed_urls:
+					seed_url = seed_urls[0].get("url")
+				else:
+					console.print("[red]Error: Must provide --seed-url or configure seed_urls in config file[/red]")
+					return 1
+
+			# Keywords (for baseline keyword filter inside Scrapy)
+			if args.keywords:
+				keywords = [k.strip() for k in args.keywords.split(",") if k.strip()]
+			else:
+				keywords = config_data.get("global_keywords")
+				if not keywords:
+					keywords = config_data.get("domain_keywords", [])
+
+			max_depth = args.max_depth or config_data.get("crawl_settings", {}).get("max_depth", 2)
+			max_pages = args.max_pages or config_data.get("crawl_settings", {}).get("max_pages", 100)
+
+			# Topic text for semantic similarity
+			topic_text = args.topic
+			if not topic_text:
+				if keywords:
+					topic_text = " ".join(keywords)
+				else:
+					topic_text = "corrosion and long-term durability of reinforced concrete structures"
+
+			# Extract allowed domains from seed URL
+			from urllib.parse import urlparse
+
+			parsed = urlparse(seed_url)
+			domain = parsed.netloc
+			if domain.startswith("www."):
+				domain = domain[4:]
+			allowed_domains = [domain]
+
+			console.print(f"[cyan]Starting semantic Scrapy crawl: {seed_url}[/cyan]")
+			console.print(f"[cyan]Keywords (for baseline filter): {', '.join(keywords[:5])}[/cyan]")
+			console.print(f"[cyan]Topic text for semantic filter: {topic_text[:120]}[/cyan]")
+			console.print(f"[cyan]Max depth: {max_depth}, Max pages: {max_pages}[/cyan]")
+
+			# First step: run the existing Scrapy-based crawler to get candidate pages
+			raw_items = []
+			for item in discover_web_crawler_scrapy(
+				seed_url=seed_url,
+				keywords=keywords,
+				allowed_domains=allowed_domains,
+				max_depth=max_depth,
+				max_pages=max_pages,
+			):
+				raw_items.append(item)
+
+			if not raw_items:
+				console.print("[yellow]No pages collected by Scrapy (before semantic filtering).[/yellow]")
+				return 0
+
+			# Second step: apply semantic scoring and filter
+			semantic_model = args.semantic_model
+			threshold = args.semantic_threshold
+
+			# Score and keep best item per URL
+			best_by_url: dict[str, dict[str, Any]] = {}
+			for item in raw_items:
+				# Build a representative text: title + abstract + content
+				parts = []
+				for key in ("title", "abstract", "content"):
+					val = item.get(key)
+					if isinstance(val, str) and val.strip():
+						parts.append(val.strip())
+				text = " ".join(parts)
+				score = compute_semantic_score(text, topic_text, model_name=semantic_model)
+				item["semantic_score"] = score
+
+				if score < threshold:
+					continue
+
+				url = item.get("source_url") or item.get("landing_url")
+				if not url:
+					continue
+
+				prev = best_by_url.get(url)
+				if prev is None or score > float(prev.get("semantic_score", 0.0)):
+					best_by_url[url] = item
+
+			# Sort by semantic score (descending) and enforce max_records
+			filtered = sorted(
+				best_by_url.values(),
+				key=lambda it: float(it.get("semantic_score", 0.0)),
+				reverse=True,
+			)
+			if args.max_records and len(filtered) > args.max_records:
+				filtered = filtered[: args.max_records]
+
+			# Save to file
+			output_path = Path(args.output)
+			output_path.parent.mkdir(parents=True, exist_ok=True)
+			with open(output_path, "w", encoding="utf-8") as f:
+				for item in filtered:
+					f.write(json.dumps(item, ensure_ascii=False) + "\n")
+
+			console.print(
+				f"[green]Semantic crawl completed! Collected {len(raw_items)} pages, "
+				f"{len(filtered)} unique URLs passed semantic threshold {threshold:.2f}.[/green]"
+			)
+			console.print(f"[green]Output: {output_path}[/green]")
+			return 0
+
+		p_scrapy_sem.set_defaults(func=_cmd_scrapy_sem)
 	except Exception as e:
 		console.print(f"[yellow]Warning: web-crawler-scrapy-discover command not available: {e}[/yellow]")
 

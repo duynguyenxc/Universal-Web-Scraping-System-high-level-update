@@ -111,7 +111,7 @@ class ResearchGroupSpider(CrawlSpider):
         if depth > self.max_depth:
             logger.debug(f"Max depth reached for {url}")
             return
-        
+
         # Extract text content for relevance check
         text_content = self._extract_text(response)
         
@@ -154,11 +154,33 @@ class ResearchGroupSpider(CrawlSpider):
                     )
     
     def _extract_text(self, response: Response) -> str:
-        """Extract clean text from response."""
-        # Remove script and style elements
-        text = ' '.join(response.css('body *::text').getall())
+        """Extract clean main-text content from response.
+
+        We first try `trafilatura` to remove navigation/boilerplate and get the
+        main article content. If that fails for any reason, we fall back to a
+        simpler CSS-based text extraction.
+        """
+        html = response.text
+        text = ""
+        try:
+            # Lazy import so that other parts of the system do not require
+            # trafilatura unless the crawler is used.
+            import trafilatura
+
+            extracted = trafilatura.extract(
+                html,
+                include_comments=False,
+                include_tables=False,
+                no_fallback=True,
+            )
+            if extracted:
+                text = extracted
+        except Exception:
+            # Fallback to previous simple behaviour
+            text = " ".join(response.css("body *::text").getall())
+
         # Clean up whitespace
-        text = ' '.join(text.split())
+        text = " ".join(text.split())
         return text.lower()
     
     def _check_relevance(self, text: str) -> bool:
