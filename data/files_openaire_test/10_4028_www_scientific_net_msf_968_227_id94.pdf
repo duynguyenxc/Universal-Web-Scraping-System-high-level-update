@@ -1,0 +1,1367 @@
+
+
+
+<!DOCTYPE html>
+
+<html lang="iv" dir="ltr">
+
+<head>
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+        
+        
+
+
+<link rel="canonical" href="https://www.scientific.net/MSF.968.227" />
+
+<meta property="og:title" content="Experimental Studies of Reinforced Concrete and Fiber-Reinforced Concrete Beams with Short-Term and Long-Term Loads | Scientific.Net" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://www.scientific.net/MSF.968.227" />
+<meta property="og:image" content="/Content/app/scinet5/images/metadata_logo.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="261" />
+<meta property="og:image:height" content="260" />
+<meta property="og:image:alt" content="Scientific.Net Logo" />
+
+
+<meta name="citation_language" content="en" />
+<meta name="citation_publisher" content="Trans Tech Publications Ltd" />
+<meta name="citation_title" content="Experimental Studies of Reinforced Concrete and Fiber-Reinforced Concrete Beams with Short-Term and Long-Term Loads" />
+<meta name="citation_publication_date" content="2019" />
+<meta name="citation_online_date" content="2019/08/23" />
+<meta name="citation_conference_title" content="Actual problems of  engineering mechanics" />
+<meta name="citation_journal_title" content="Materials Science Forum" />
+<meta name="citation_issn" content="1662-9752" />
+<meta name="citation_volume" content="968" />
+<meta name="citation_firstpage" content="227" />
+<meta name="citation_lastpage" content="233" />
+<meta name="citation_pdf_url" content="https://www.scientific.net/MSF.968.227.pdf" />
+<meta name="citation_abstract_html_url" content="https://www.scientific.net/MSF.968.227" />
+<meta name="citation_keywords" content="Beam;Bearing Capacity;Deformations;Experiment;Fiber-Reinforced Concrete;Long-Term Load;Stress" />
+<meta name="citation_doi" content="10.4028/www.scientific.net/MSF.968.227" />
+<meta name="citation_author" content="Stepan Neutov" />
+<meta name="citation_author" content="Maryna Sydorchuk" />
+<meta name="citation_author" content="Mykola Surianinov" />
+<meta name="citation_reference" content="K.V. Talantova, Arch. i stroit. Tez. dokl. konf., Tomsk, 16-17 (2002)." />
+<meta name="citation_reference" content="S.H. Kwon, R.P. Ferron, Y. Akkaya, S.P. Shah, Int. Journ. Of Conc. Str. And Mat., 54, 205-221, (2007)." />
+<meta name="citation_reference" content="citation_title=Experimental studies of fiber concrete creep; citation_author=Irina Korneeva; citation_author=Stepan Neutov; citation_author=Mykola Suriyaninov; citation_volume=116; citation_publication_date=2017/7/10; citation_pages=02021; citation_doi=10.1051/matecconf/201711602021" />
+<meta name="citation_reference" content="A.V. Mishina, Nauch.-tehn. Journ. Str. I rekonctr.,, 6(38), 70-74, (2011)." />
+<meta name="citation_reference" content="D.A. Smirnov, Vestn. Grazhdan. Inzhen., 3(28), 56-60, (2010)." />
+<meta name="citation_reference" content="A.A. Gvozdev, New in design of concrete and reinforced concrete structures, Stroyizdat, Moscow, (1978)." />
+<meta name="citation_reference" content="N.I. Karpenko, General models of reinforced concrete mechanics, Stroyizdat, Moscow, (1996)." />
+<meta name="citation_reference" content="Matija Orešković, Aleksej Aniskin, Yevgenii Klymenko, Goran Kozina / Analysis of Damaged Concrete Columns of Circular Cross-Section / Technical gazette, Vol.25 No.2 April 2018. Pages 337-343." />
+<meta name="citation_reference" content="G. Ryush, Investigation of the work of bending elements with regard to elastoplastic deformations, Gosstroyizdat, Mscow, (1961)." />
+<meta name="citation_reference" content="citation_title=Modeling of bond between near-surface mounted CFRP laminate strips and concrete; citation_author=Jos&#233; Sena Cruz; citation_author=Joaquim Barros; citation_volume=82; citation_issue=17-19; citation_publication_date=2004/7; citation_pages=1513-1521; citation_doi=10.1016/j.compstruc.2004.03.047" />
+<meta name="person" content="Stepan Neutov, Maryna Sydorchuk, Mykola Surianinov" />
+<meta name="description" content="Experimental studies of the stress-strain state of reinforced concrete and fiber-reinforced concrete beams under short-term and long-term loads were carried out. The tests were carried out on three series of beams of different types - from ordinary concrete, steel fiber concrete and combined section, when the lower zone of the beam with a height of 0.5h is made of steel fiber concrete, and the upper one is made of ordinary concrete. During short-term loading, the load was applied in steps with a 10-minute exposure at each step to failure or to a predetermined level of a continuously acting load. In the interval between the steps, the process of cracking was tracked. After reaching a given level of loading, the load was fixed and maintained unchanged with a spring cassette for 300 days. Deformations were measured using strain gauges and dial gauges. Deflections and relative deformations of the extreme upper and extreme lower fibers for three types of beams are determined. It has been established that stabilization of deflections in beams from steel fiber concrete occurs much earlier (100 days) than in beams made of ordinary concrete (175 days). Studies have shown that the beams of ordinary concrete in the process of long-acting load lowered the carrying capacity by 5.5%. The bearing capacity of steel concrete beams, in contrast, increased by 7.6%." />
+<meta name="keywords" content="Beam, Bearing Capacity, Deformations, Experiment, Fiber-Reinforced Concrete, Long-Term Load, Stress" />
+<meta name="copyright" content="2019 Trans Tech Publications Ltd. All Rights Reserved" />
+
+    
+    
+    
+
+
+    <title>Experimental Studies of Reinforced Concrete and Fiber-Reinforced Concrete Beams with Short-Term and Long-Term Loads | Scientific.Net</title>
+    <link href="/Content/app/scinet5/images/favicon.ico" rel="shortcut icon" />
+
+    <link href="/Content/public.min.css?v=lXfq_6JX4yyEflDXevw2FTsPOqzogxRQkycofr7poso" rel="stylesheet" />
+
+        <link rel="preconnect" href="https://www.google-analytics.com">
+        <link rel="preconnect" href="https://www.gstatic.com">
+        <link rel="preconnect" href="https://www.googletagmanager.com">
+
+    <link rel="icon" href="/Content/app/scinet5/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/Content/app/scinet5/images/apple-touch-icon.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css?family=Open&#x2B;Sans&#x2B;Condensed:300,700%7COpen&#x2B;Sans:300i,400,400i,600,600i,700&amp;display=swap" rel="stylesheet">
+    <!-- HTML5 shim support of HTML5 elements and media queries -->
+    <!--[if lte IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    
+    
+
+
+    <!-- Google Tag Manager -->
+    <script>
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+                })(window,document,'script','dataLayer','GTM-T3VDKWV');</script>
+    <!-- End Google Tag Manager -->
+</head>
+<body>
+    <noscript>
+        <!-- Google Tag Manager (noscript) -->
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T3VDKWV" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager tracking frame"></iframe>
+    </noscript>
+    <div class="sc-content-container">
+        <div class="sc-content">
+            
+
+
+<div role="banner" class="header-menu-container">
+
+    <div class="identity-menu-container header-menu-container-not-logged-in">
+        <div class="container">
+            <div class="row">
+
+                <ul class="role-menu">
+
+                    <li class="user-menu between normal-user-menu">
+                        <div class="hdivider-100"></div>
+
+                        
+
+    <div class="cart-info">
+        <a href="https://main.scientific.net/Payment/Cart">
+            <i class="inline-icon cart-icon-white"></i>
+            <span id="cartInfoTotalItemsCount"></span>
+        </a>
+    </div>
+    
+
+
+                            <div class="user-menu-login-or-register">
+                                <a href="https://main.scientific.net/Account/Registration?ReturnUrl=https%3A%2F%2Fwww.scientific.net%2FMSF.968.227" rel="nofollow">
+                                    Registration
+                                </a>
+                                <a href="https://main.scientific.net/Account/Login?ReturnUrl=https%3A%2F%2Fwww.scientific.net%2FMSF.968.227" rel="nofollow">
+                                    Log In
+                                </a>
+                            </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-fluid">
+        <div class="container">
+            <div class="row">
+                <div class="block-header">
+                    <div class="logo-block">
+                        <a href="/" class="application-logo inline-icon logo-icon" aria-label="Home page"></a>
+
+                        <div class="burger-menu-button visible-xs">
+                            <div class="hamburger-box">
+                                <div class="hamburger-inner"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-and-search-block">
+                        <div class="burger-menu">
+                            <nav class="burger-menu-items">
+                                <div class="public-menu">
+            <ul>
+                    <li><a href="/ForLibraries">For Libraries</a></li>
+                    <li><a href="/ForPublication/Paper">For Publication</a></li>
+                    <li><a href="/open-access-partners">Open Access</a></li>
+                    <li><a href="/DocuCenter">Downloads</a></li>
+                    <li><a href="/Home/AboutUs">About Us</a></li>
+                    <li><a href="/Home/Contacts">Contact Us</a></li>
+            </ul>
+                                </div>
+                            </nav>
+                        </div>
+                        <div class="header-menu-top" role="navigation">
+                            <div class="header-menu-list">
+                                    <a href="/ForLibraries">For Libraries</a>
+                                    <a href="/ForPublication/Paper">For Publication</a>
+                                    <a href="/open-access-partners">Open Access</a>
+                                    <a href="/DocuCenter">Downloads</a>
+                                    <a href="/Home/AboutUs">About Us</a>
+                                    <a href="/Home/Contacts">Contact Us</a>
+                            </div>
+                        </div>
+
+                        <div class="search-block">
+                            <input class="search-control" type="search" placeholder="Search" data-url="/Search" aria-label="Search">
+                            <button class="button button-95 button-grey search-btn button-simple">
+                                <span class="hidden-xs">Search</span>
+                                <i class="inline-icon search-icon-grey visible-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+            
+    
+
+
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="banner-new"></div>
+                    </div>
+                </div>
+            <div role="main">
+                
+
+
+
+
+
+
+
+
+
+
+
+<div class="content">
+    <div class="container">
+        <div class="row content-container">
+            <div class="left-content col-md-4 col-sm-5">
+                <div class="left-content-first-line icon-container mobile-collapse-button">
+                    <div class="page-name-block underline-begin sibling-name-block">
+                        <div class="page-name-block-text">
+                            Paper Titles
+                            <a class="left-content-expand-button"><i class="inline-icon arrow-right-black no-hover-icon on-focus-arrow-down-black"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+
+<div class="row mobile-collapse-content">  
+        <a href="/MSF.968.176" class="normal-large-text icon-container">
+            <div class="element-list">
+                <div class="element-list-text">
+                    Influence of Physical Fields on Functional Properties of Polymeric Nanocomposites
+                        <br />
+                        <span class="paper-volume-number">p.176</span>
+                </div>
+                <div class="element-list-arrow">
+                    <i class="inline-icon arrow-right-black no-focus-icon on-hover-arrow-left-red"></i>
+                </div>
+            </div>
+        </a>
+        <a href="/MSF.968.185" class="normal-large-text icon-container">
+            <div class="element-list">
+                <div class="element-list-text">
+                    Bearing Capacity of Common and Damaged CFRP-Strengthened R. C. Beams Subject to High-Level Low-Cycle Loading
+                        <br />
+                        <span class="paper-volume-number">p.185</span>
+                </div>
+                <div class="element-list-arrow">
+                    <i class="inline-icon arrow-right-black no-focus-icon on-hover-arrow-left-red"></i>
+                </div>
+            </div>
+        </a>
+        <a href="/MSF.968.200" class="normal-large-text icon-container">
+            <div class="element-list">
+                <div class="element-list-text">
+                    Bearing Capacity of Structures Made of Materials with Different Tensile and Compression Strengths
+                        <br />
+                        <span class="paper-volume-number">p.200</span>
+                </div>
+                <div class="element-list-arrow">
+                    <i class="inline-icon arrow-right-black no-focus-icon on-hover-arrow-left-red"></i>
+                </div>
+            </div>
+        </a>
+        <a href="/MSF.968.209" class="normal-large-text icon-container">
+            <div class="element-list">
+                <div class="element-list-text">
+                    Calculation Models of the Bearing Capacity of Span Reinforced Concrete Structure Support Zones
+                        <br />
+                        <span class="paper-volume-number">p.209</span>
+                </div>
+                <div class="element-list-arrow">
+                    <i class="inline-icon arrow-right-black no-focus-icon on-hover-arrow-left-red"></i>
+                </div>
+            </div>
+        </a>
+        <a href="/MSF.968.227" class="normal-large-text icon-container active-element active">
+            <div class="element-list">
+                <div class="element-list-text">
+                    Experimental Studies of Reinforced Concrete and Fiber-Reinforced Concrete Beams with Short-Term and Long-Term Loads
+                        <br />
+                        <span class="paper-volume-number">p.227</span>
+                </div>
+                <div class="element-list-arrow">
+                    <i class="inline-icon arrow-right-black no-focus-icon on-hover-arrow-left-red"></i>
+                </div>
+            </div>
+        </a>
+        <a href="/MSF.968.234" class="normal-large-text icon-container">
+            <div class="element-list">
+                <div class="element-list-text">
+                    Strength and Deformation of Combined Beams with Side Reinforced Plates
+                        <br />
+                        <span class="paper-volume-number">p.234</span>
+                </div>
+                <div class="element-list-arrow">
+                    <i class="inline-icon arrow-right-black no-focus-icon on-hover-arrow-left-red"></i>
+                </div>
+            </div>
+        </a>
+        <a href="/MSF.968.240" class="normal-large-text icon-container">
+            <div class="element-list">
+                <div class="element-list-text">
+                    The Ability to Determine the Degree of Damage to Welds Depending on Damage to the Welding Elements
+                        <br />
+                        <span class="paper-volume-number">p.240</span>
+                </div>
+                <div class="element-list-arrow">
+                    <i class="inline-icon arrow-right-black no-focus-icon on-hover-arrow-left-red"></i>
+                </div>
+            </div>
+        </a>
+        <a href="/MSF.968.248" class="normal-large-text icon-container">
+            <div class="element-list">
+                <div class="element-list-text">
+                    Experimental Studies of the Crack Formation Moment of Reinforced Concrete Beams
+                        <br />
+                        <span class="paper-volume-number">p.248</span>
+                </div>
+                <div class="element-list-arrow">
+                    <i class="inline-icon arrow-right-black no-focus-icon on-hover-arrow-left-red"></i>
+                </div>
+            </div>
+        </a>
+        <a href="/MSF.968.258" class="normal-large-text icon-container">
+            <div class="element-list">
+                <div class="element-list-text">
+                    Study of Joint Work of Shell and Core of Tube Confined Concrete Elements with Strengthened Core
+                        <br />
+                        <span class="paper-volume-number">p.258</span>
+                </div>
+                <div class="element-list-arrow">
+                    <i class="inline-icon arrow-right-black no-focus-icon on-hover-arrow-left-red"></i>
+                </div>
+            </div>
+        </a>
+</div>
+
+            </div>
+            <div class="right-content col-md-8 col-sm-7 col-xs-12 paper-title-main-page">
+                
+
+<div class="bread-crumbs hidden-xs">
+<a class="bread-crumbs-first" href="/">Home</a><i class="inline-icon arrow-breadcrumbs"></i><a class="bread-crumbs-first" href="/MSF">Materials Science Forum</a><i class="inline-icon arrow-breadcrumbs"></i><a class="bread-crumbs-first" href="/MSF.968">Materials Science Forum Vol. 968</a><i class="inline-icon arrow-breadcrumbs"></i><span class="bread-crumbs-second">Experimental Studies of Reinforced Concrete and...</span></div>
+
+
+
+                
+<div class="page-name-block underline-begin">
+    <h1 class="page-name-block-text">Experimental Studies of Reinforced Concrete and Fiber-Reinforced Concrete Beams with Short-Term and Long-Term Loads</h1>
+</div>
+
+
+                    <div class="info-bar">
+                        <div class="loading">
+                            <i class="inline-icon download-and-visitor-statistics-icon"></i>
+                            <span class="normal-text" id="paperDownloadsAndVisitorsCount"></span>
+                        </div>
+                    </div>
+
+
+                <div class="clearfix"></div>
+                <div class="page-paper-title">
+
+                        <div class="preview-block">
+                            <img alt="Article Preview" width="128" height="180" src="/MSF.968.227/thumbnail.gif">
+                            <div id="preview-button" data-url-preview-log="/Paper/PreviewImageLog?paperId=547886">
+                                <i class="inline-icon preview-icon"></i>
+                            </div>
+
+                            <!--Modal window for article preview-->
+                            <div id="paper-preview-modal" class="modal fade">
+                                <div class="modal-dialog" role="document">
+                                    <div class="popup-page-name underline-begin">
+                                        <div class="page-name-block-text">Article Preview</div>
+                                    </div>
+                                    <img alt="Article Preview" class="preview-image lazyload" data-src="/MSF.968.227/preview.gif">
+                                    <a data-dismiss="modal" title="Close" class="inline-icon close-icon"></a>
+                                </div>
+                            </div>
+                            <!--End modal-->
+                        </div>
+
+                    <div class="abstract-block-description">
+                        <h3 class="page-paper-first-header">Abstract:</h3>
+                        <p class="normal-text">
+                            Experimental studies of the stress-strain state of reinforced concrete and fiber-reinforced concrete beams under short-term and long-term loads were carried out. The tests were carried out on three series of beams of different types - from ordinary concrete, steel fiber concrete and combined section, when the lower zone of the beam with a height of <i>0.5h</i> is made of steel fiber concrete, and the upper one is made of ordinary concrete. During short-term loading, the load was applied in steps with a 10-minute exposure at each step to failure or to a predetermined level of a continuously acting load. In the interval between the steps, the process of cracking was tracked. After reaching a given level of loading, the load was fixed and maintained unchanged with a spring cassette for 300 days. Deformations were measured using strain gauges and dial gauges. Deflections and relative deformations of the extreme upper and extreme lower fibers for three types of beams are determined. It has been established that stabilization of deflections in beams from steel fiber concrete occurs much earlier (100 days) than in beams made of ordinary concrete (175 days). Studies have shown that the beams of ordinary concrete in the process of long-acting load lowered the carrying capacity by 5.5%. The bearing capacity of steel concrete beams, in contrast, increased by 7.6%.
+                        </p>
+                    </div>
+
+                        <div class="paper-access-buttons col-xs-12">
+                            <div class="row">
+                                
+
+    <div class="sa-button-wrap">
+        <a id="sa-button" class="wayfinder-login d-flex sa-button" href="javascript:;">
+            <div class="sa-button-logo-wrap">
+                <i class="inline-icon sa-white"></i>
+            </div>
+            <div class="d-flex justify-content-center align-items-center sa-button-text text-truncate">
+                <div class="sa-button-text-primary text-truncate">Access through your institution</div>
+            </div>
+        </a>
+    </div>
+        
+    
+
+                                <div class="title-button-pdf">
+                                    <button id="readPaperButton" data-url-read-paper-log="/Paper/ReadThePaperLog?paperId=547886" class="button button-160">
+                                        <span class="inline-element">Read The Paper</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                
+
+
+                            </div>
+                        </div>
+
+                        
+
+
+                        
+
+    <div class="clearfix"></div>
+    <div class="connected-title-container">
+        <div class="connected-title-text semibold-middle-text">You might also be interested in these eBooks</div>
+        <div class="connected-title-list-container">
+                <div class="connected-title-list-item">
+
+                    <a href="/book/actual-problems-of-engineering-mechanics/978-3-0357-3581-9" title="Actual Problems of Engineering Mechanics">
+                        <img class="ls-is-cached lazyloaded" src="/Image/TitleCover/5945?width=190" alt="Actual Problems of Engineering Mechanics" />
+                    </a>
+
+                    <a id="downloadPdfButton" href="/book/actual-problems-of-engineering-mechanics/978-3-0357-3581-9/ebook" class="button">
+                        <span>View Preview</span>
+                        <i class="inline-icon book-icon-white small-icon button-icon-right"></i>
+                    </a>
+
+                </div>
+        </div>
+    </div>
+
+
+                    <div class="papers-block-info-title">
+                        <h2>Info:</h2>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <div class="papers-block-info-list">
+                        <div class="papers-block-info col-lg-12">
+                            <div class="row">
+                                <div class="info-row-name normal-text-gray col-md-2 col-sm-3 col-xs-4">
+                                    <div class="row">
+                                        <p>Periodical:</p>
+                                    </div>
+                                </div>
+
+                                <div class="info-row-content semibold-middle-text col-md-10 col-sm-9 col-xs-8">
+                                    <div class="row">
+                                        <a href="/MSF">Materials Science Forum</a> <span>(Volume 968)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                            <div class="papers-block-info col-lg-12">
+                                <div class="row">
+                                    <div class="info-row-name normal-text-gray col-md-2 col-sm-3 col-xs-4">
+                                        <div class="row">
+                                            <p>Pages:</p>
+                                        </div>
+                                    </div>
+                                    <div class="info-row-content semibold-middle-text col-md-10 col-sm-9 col-xs-8">
+                                        <div class="row">
+                                            <p>227-233</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="papers-block-info col-lg-12">
+                                <div class="row">
+                                    <div class="info-row-name normal-text-gray col-md-2 col-sm-3 col-xs-4">
+                                        <div class="row">
+                                            <p>DOI:</p>
+                                        </div>
+                                    </div>
+                                    <div class="info-row-content semibold-middle-text col-md-10 col-sm-9 col-xs-8">
+                                        <div class="row">
+                                            <p><a href="https://doi.org/10.4028/www.scientific.net/MSF.968.227">https://doi.org/10.4028/www.scientific.net/MSF.968.227</a></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                <div class="papers-block-info col-lg-12">
+                                    <div class="row">
+                                        <div class="info-row-name normal-text-gray col-md-2 col-sm-3 col-xs-4">
+                                            <div class="row">
+                                                <p>Citation:</p>
+                                            </div>
+                                        </div>
+                                        <div class="info-row-content semibold-middle-text col-md-10 col-sm-9 col-xs-8">
+                                            <div class="row">
+                                                <p><a id="paperCitationsButton" href="#">Cite this paper</a></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        <div class="papers-block-info col-lg-12">
+                            <div class="row">
+                                <div class="info-row-name normal-text-gray col-md-2 col-sm-3 col-xs-4">
+                                    <div class="row">
+                                        <p>Online since:</p>
+                                    </div>
+                                </div>
+                                <div class="info-row-content semibold-middle-text col-md-10 col-sm-9 col-xs-8">
+                                    <div class="row">
+                                        <p>August 2019</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                            <div class="papers-block-info col-lg-12">
+                                <div class="row">
+                                    <div class="info-row-name normal-text-gray col-md-2 col-sm-3 col-xs-4">
+                                        <div class="row">
+                                            <p>Authors:</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="info-row-content semibold-middle-text col-md-10 col-sm-9 col-xs-8">
+                                        <div class="row">
+                                                    <a class="inline-icon mail-icon-red author-send-message"
+                                                       href="#"
+                                                       data-url="/Paper/_Message?paperId=547886&amp;personId=1588841&amp;urlSent=https%3A%2F%2Fwww.scientific.net%2FMSF.968.227"
+                                                       title="Send message to Corresponding Author">
+                                                    </a>
+<a href="/author-papers/stepan-neutov">Stepan Neutov</a>*, <a href="/author-papers/maryna-sydorchuk">Maryna Sydorchuk</a>, <a href="/author-papers/mykola-surianinov">Mykola Surianinov</a>                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="papers-block-info col-lg-12">
+                                <div class="row">
+                                    <div class="info-row-name normal-text-gray col-md-2 col-sm-3 col-xs-4">
+                                        <div class="row">
+                                            <p>Keywords:</p>
+                                        </div>
+                                    </div>
+                                    <div class="info-row-content semibold-middle-text col-md-10 col-sm-9 col-xs-8">
+                                        <div class="row">
+<a href="/paper-keyword/beam">Beam</a>, <a href="/paper-keyword/bearing-capacity">Bearing Capacity</a>, <a href="/paper-keyword/deformations">Deformations</a>, <a href="/paper-keyword/experiment">Experiment</a>, <a href="/paper-keyword/fiber-reinforced-concrete">Fiber-Reinforced Concrete</a>, <a href="/paper-keyword/long-term-load">Long-Term Load</a>, <a href="/paper-keyword/stress">Stress</a>                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="papers-block-info col-lg-12">
+                                <div class="row">
+                                    <div class="info-row-name normal-text-gray col-md-2 col-sm-3 col-xs-4">
+                                        <div class="row">
+                                            <p>Export:</p>
+                                        </div>
+                                    </div>
+                                    <div class="info-row-content semibold-middle-text col-md-10 col-sm-9 col-xs-8">
+                                        <div class="row">
+                                            <a href="/MSF.968.227.ris">RIS</a>, <a href="/MSF.968.227.bib">BibTeX</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="papers-block-info col-lg-12">
+                                <div class="row">
+                                    <div class="info-row-name normal-text-gray col-md-2 col-sm-3 col-xs-4">
+                                        <div class="row">
+                                            <p>Price:</p>
+                                        </div>
+                                    </div>
+                                    <div class="info-row-content semibold-middle-text col-md-10 col-sm-9 col-xs-8">
+                                        <div class="row">
+                                            <p id="paper-price-info"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="papers-block-info col-lg-12">
+                                <div class="row">
+                                            <div class="info-row-name normal-text-gray col-md-2 col-sm-3 col-xs-4">
+                                                <div class="row">
+                                                    <p>Permissions CCC:</p>
+                                                </div>
+                                            </div>
+                                            <div class="info-row-content semibold-middle-text col-md-10 col-sm-9 col-xs-8">
+                                                <div class="row">
+                                                    <p>
+                                                        <i class="inline-icon icon-permission"></i>
+                                                        <a href="https://marketplace.copyright.com/rs-ui-web/mp/search/article/10.4028%2Fwww.scientific.net%2FMSF.968.227" target="_blank">
+                                                            Request Permissions
+                                                        </a>
+
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="info-row-name normal-text-gray col-md-2 col-sm-3 col-xs-4">
+                                                <div class="row">
+                                                    <p>Permissions PLS:</p>
+                                                </div>
+                                            </div>
+                                            <div class="info-row-content semibold-middle-text col-md-10 col-sm-9 col-xs-8">
+                                                <div class="row">
+                                                    <p>
+                                                        <i class=""></i>
+                                                        <a href="https://www.plsclear.com/Home/Index?q=10.4028/www.scientific.net/MSF.968.227&amp;t=doi" target="_blank">
+                                                            Request Permissions
+                                                        </a>
+
+                                                    </p>
+                                                </div>
+                                            </div>
+                                </div>
+                            </div>
+                            <div class="papers-block-info col-lg-12">
+                                <div class="row">
+                                    <div class="info-row-name normal-text-gray col-md-2 col-sm-3 col-xs-4">
+                                        <div class="row">
+                                            <p>&#x421;opyright:</p>
+                                        </div>
+                                    </div>
+                                    <div class="info-row-content semibold-middle-text col-md-10 col-sm-9 col-xs-8">
+                                        <div class="row">
+                                            <p>
+                                                © 2019 Trans Tech Publications Ltd. All Rights Reserved
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="papers-block-info col-lg-12">
+                                <div class="row">
+                                    <div class="info-row-name normal-text-gray col-md-2 col-sm-3 col-xs-4">
+                                        <div class="row">
+                                            <p>Share:</p>
+                                        </div>
+                                    </div>
+                                    <div class="info-row-content share-icons semibold-middle-text col-md-10 col-sm-9 col-xs-8">
+                                        <div class="row">
+                                            
+<!-- AddToAny BEGIN -->
+<div id="" class="a2a_kit a2a_kit_size_32 a2a_default_style">
+    <a class="a2a_button_linkedin"></a>
+        <a class="a2a_button_mendeley"></a>
+    <a class="a2a_button_email"></a>
+    <a class="a2a_button_x"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_whatsapp"></a>
+    <a class="a2a_button_microsoft_teams"></a>
+    <a class="a2a_button_skype"></a>
+    <a class="a2a_button_outlook_com"></a>
+    <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+</div>
+<script async src="https://static.addtoany.com/menu/page.js"></script>
+<!-- AddToAny END -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="papers-block-info col-lg-12">
+                                <div class="row">
+                                    <div class="info-row-name normal-text-gray col-md-2 col-sm-3 col-xs-4">
+                                        <div class="row">
+                                            <p>Citation:</p>
+                                        </div>
+                                    </div>
+                                    <div class="info-row-content semibold-middle-text col-md-10 col-sm-9 col-xs-8">
+                                        <div class="row">
+                                            <div class="scite-badge"
+                                                 data-doi="10.4028/www.scientific.net/MSF.968.227"
+                                                 data-layout="horizontal"
+                                                 data-show-zero="true"
+                                                 data-small="false"
+                                                 data-show-labels="false"
+                                                 data-tally-show="true">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+
+                    <div class="block-corresponding-buttons col-xs-12">
+                        <div class="row">
+                            <div class="block-corresponding normal-text-gray col-md-4 col-xs-12">
+                                <div class="row">
+                                        <p><span>*</span> - Corresponding Author</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                        <div class="related-article reference-collapse col-xs-12">
+                            <div class="row">
+                                <div class="view">
+                                    <div class="panel-group" id="references-panel">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <a class="panel-title bold-large-text icon-container" data-toggle="collapse" data-parent="#references-panel" href="#reference-panel-element">
+                                                    References
+                                                    <i class="inline-icon arrow-right-black"></i>
+                                                </a>
+                                            </div>
+                                            <div id="reference-panel-element" class="panel-collapse collapse">
+                                                <div class="panel-body">
+                                                    <div class="references-block">
+                                                                <div class="reference-text volume-info-text">
+                                                                    <p>
+                                                                            <span>[1]</span>
+                                                                        K.V. Talantova, Arch. i stroit. Tez. dokl. konf., Tomsk, 16-17 (2002).
+                                                                    </p>
+
+
+                                                                    <p><a href="https://scholar.google.com/scholar?q=K.V.%20Talantova%2C%20Arch.%20i%20stroit.%20Tez.%20dokl.%20konf.%2C%20Tomsk%2C%2016-17%20%282002%29.">Google Scholar</a></p>
+                                                                </div>
+                                                                <div class="reference-text volume-info-text">
+                                                                    <p>
+                                                                            <span>[2]</span>
+                                                                        S.H. Kwon, R.P. Ferron, Y. Akkaya, S.P. Shah, Int. Journ. Of Conc. Str. And Mat., 54, 205-221, (2007).
+                                                                    </p>
+
+
+                                                                    <p><a href="https://scholar.google.com/scholar?q=S.H.%20Kwon%2C%20R.P.%20Ferron%2C%20Y.%20Akkaya%2C%20S.P.%20Shah%2C%20Int.%20Journ.%20Of%20Conc.%20Str.%20And%20Mat.%2C%2054%2C%20205-221%2C%20%282007%29.">Google Scholar</a></p>
+                                                                </div>
+                                                                <div class="reference-text volume-info-text">
+                                                                    <p>
+                                                                            <span>[3]</span>
+                                                                        Korneeva, I., Neutov, S., Suriyaninov, M. Experimental studies of fiber concrete creep (2017) MATEC Web of Conferences, 116, &#x2116; 02021.
+                                                                    </p>
+
+                                                                        <p>
+                                                                            DOI: <a href="https://doi.org/10.1051/matecconf/201711602021">10.1051/matecconf/201711602021</a>
+                                                                        </p>
+
+                                                                    <p><a href="https://scholar.google.com/scholar_lookup?title=Experimental%20studies%20of%20fiber%20concrete%20creep&amp;author=Irina%20Korneeva&amp;author=Stepan%20Neutov&amp;author=Mykola%20Suriyaninov&amp;publication_year=2017&amp;journal=MATEC%20Web%20of%20Conferences&amp;volume=116&amp;pages=02021&amp;doi=10.1051%2Fmatecconf%2F201711602021">Google Scholar</a></p>
+                                                                </div>
+                                                                <div class="reference-text volume-info-text">
+                                                                    <p>
+                                                                            <span>[4]</span>
+                                                                        A.V. Mishina, Nauch.-tehn. Journ. Str. I rekonctr.,, 6(38), 70-74, (2011).
+                                                                    </p>
+
+
+                                                                    <p><a href="https://scholar.google.com/scholar?q=A.V.%20Mishina%2C%20Nauch.-tehn.%20Journ.%20Str.%20I%20rekonctr.%2C%2C%206%2838%29%2C%2070-74%2C%20%282011%29.">Google Scholar</a></p>
+                                                                </div>
+                                                                <div class="reference-text volume-info-text">
+                                                                    <p>
+                                                                            <span>[5]</span>
+                                                                        D.A. Smirnov, Vestn. Grazhdan. Inzhen., 3(28), 56-60, (2010).
+                                                                    </p>
+
+
+                                                                    <p><a href="https://scholar.google.com/scholar?q=D.A.%20Smirnov%2C%20Vestn.%20Grazhdan.%20Inzhen.%2C%203%2828%29%2C%2056-60%2C%20%282010%29.">Google Scholar</a></p>
+                                                                </div>
+                                                                <div class="reference-text volume-info-text">
+                                                                    <p>
+                                                                            <span>[6]</span>
+                                                                        A.A. Gvozdev, New in design of concrete and reinforced concrete structures, Stroyizdat, Moscow, (1978).
+                                                                    </p>
+
+
+                                                                    <p><a href="https://scholar.google.com/scholar?q=A.A.%20Gvozdev%2C%20New%20in%20design%20of%20concrete%20and%20reinforced%20concrete%20structures%2C%20Stroyizdat%2C%20Moscow%2C%20%281978%29.">Google Scholar</a></p>
+                                                                </div>
+                                                                <div class="reference-text volume-info-text">
+                                                                    <p>
+                                                                            <span>[7]</span>
+                                                                        N.I. Karpenko, General models of reinforced concrete mechanics, Stroyizdat, Moscow, (1996).
+                                                                    </p>
+
+
+                                                                    <p><a href="https://scholar.google.com/scholar?q=N.I.%20Karpenko%2C%20General%20models%20of%20reinforced%20concrete%20mechanics%2C%20Stroyizdat%2C%20Moscow%2C%20%281996%29.">Google Scholar</a></p>
+                                                                </div>
+                                                                <div class="reference-text volume-info-text">
+                                                                    <p>
+                                                                            <span>[8]</span>
+                                                                        Matija Ore&#x161;kovi&#x107;, Aleksej Aniskin, Yevgenii Klymenko, Goran Kozina / Analysis of Damaged Concrete Columns of Circular Cross-Section / Technical gazette, Vol.25 No.2 April 2018. Pages 337-343.
+                                                                    </p>
+
+
+                                                                    <p><a href="https://scholar.google.com/scholar?q=Matija%20Ore%C5%A1kovi%C4%87%2C%20Aleksej%20Aniskin%2C%20Yevgenii%20Klymenko%2C%20Goran%20Kozina%20%2F%20Analysis%20of%20Damaged%20Concrete%20Columns%20of%20Circular%20Cross-Section%20%2F%20Technical%20gazette%2C%20Vol.25%20No.2%20April%202018.%20Pages%20337-343.">Google Scholar</a></p>
+                                                                </div>
+                                                                <div class="reference-text volume-info-text">
+                                                                    <p>
+                                                                            <span>[9]</span>
+                                                                        G. Ryush, Investigation of the work of bending elements with regard to elastoplastic deformations, Gosstroyizdat, Mscow, (1961).
+                                                                    </p>
+
+
+                                                                    <p><a href="https://scholar.google.com/scholar?q=G.%20Ryush%2C%20Investigation%20of%20the%20work%20of%20bending%20elements%20with%20regard%20to%20elastoplastic%20deformations%2C%20Gosstroyizdat%2C%20Mscow%2C%20%281961%29.">Google Scholar</a></p>
+                                                                </div>
+                                                                <div class="reference-text volume-info-text">
+                                                                    <p>
+                                                                            <span>[10]</span>
+                                                                        Cruz J.S., Barros J. Modeling of bond between near-su&#x433;face mounted CFRP laminate strips and concrete // Computers and Structures. &#x2013; 2004. &#x2013; No. 82. &#x2013; &#x420;. 1513&#x2013;1521.
+                                                                    </p>
+
+                                                                        <p>
+                                                                            DOI: <a href="https://doi.org/10.1016/j.compstruc.2004.03.047">10.1016/j.compstruc.2004.03.047</a>
+                                                                        </p>
+
+                                                                    <p><a href="https://scholar.google.com/scholar_lookup?title=Modeling%20of%20bond%20between%20near-surface%20mounted%20CFRP%20laminate%20strips%20and%20concrete&amp;author=Jos%C3%A9%20Sena%20Cruz&amp;author=Joaquim%20Barros&amp;publication_year=2004&amp;journal=Computers%20%26amp%3B%20Structures&amp;volume=82&amp;issue=17-19&amp;pages=1513-1521&amp;doi=10.1016%2Fj.compstruc.2004.03.047">Google Scholar</a></p>
+                                                                </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="related-article cited-collapse col-xs-12">
+                            <div class="row">
+                                <div class="view">
+                                    <div class="panel-group" id="cited-panel">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <a id="citedby-link"
+                                                   class="panel-title bold-large-text icon-container"
+                                                   data-toggle="collapse"
+                                                   data-parent="#cited-panel-"
+                                                   data-paper-id="547886"
+                                                   href="#citedby-root">
+                                                    Cited by
+                                                    <i class="inline-icon arrow-right-black"></i>
+                                                </a>
+                                            </div>
+                                            <div id="citedby-root" class="panel-collapse collapse">
+                                                <span class="busy-icon"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    <div class="related-article related-collapse col-xs-12">
+                        <div class="row">
+                            <div class="view">
+                                <div class="panel-group" id="related-articles-panel">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <a id="related-articles-link"
+                                               class="panel-title bold-large-text icon-container"
+                                               data-toggle="collapse"
+                                               data-parent="#related-articles-panel"
+                                               href="#related-articles-root">
+                                                Related Articles
+                                                <i class="inline-icon arrow-right-black"></i>
+                                            </a>
+                                        </div>
+                                        <div id="related-articles-root" class="panel-collapse collapse">
+                                            <span class="busy-icon"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="author-message-modal" class="modal fade" tabindex="-1" role="dialog"></div>
+
+<div id="citations-modal" class="modal fade" role="dialog" aria-labelledby="citationLabel">
+    <div class="modal-dialog popup">
+        <div class="popup-page-name underline-begin">
+            <div id="citationLabel" class="page-name-block-text">Citation</div>
+        </div>
+        <a class="inline-icon close-icon" data-dismiss="modal" title="Close" href="#"></a>
+
+        <div class="modal-body">
+            <div id="citations-modal-content"></div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div id="addToCart" class="modal fade paper-add-to-cart" tabindex="-1" role="dialog" aria-labelledby="addToCartLabel">
+    <div class="modal-dialog" role="document">
+        <div class="popup-page-name underline-begin">
+            <div id="addToCartLabel" class="page-name-block-text">Add To Cart</div>
+        </div>
+
+
+        <div class="shopping-cart-block">
+            <div class="popup-cart-block-image">
+                <i class="inline-icon add-paper-icon"></i>
+            </div>
+            <div class="popup-cart-block-text">
+                <p>Paper price: <span id="popup-paper-price"></span></p>
+                <p>After payment, you will receive an email with instructions and a link to download the purchased paper.</p>
+                <p>You may also check the possible access via personal account by logging in or/and check access through your institution.</p>
+            </div>
+        </div>
+        
+        <div class="popup-block-buttons clearfix">
+            
+            <div class="two-buttons-block">
+                <button data-dismiss="modal" href="" class="button button-95 button-grey icon-container">
+                    <i class="inline-icon button-arrow-back-black button-icon-left"></i>
+                    <span class="inline-element">Back</span>
+                </button>
+
+                <input id="RequestVerificationToken" type="hidden" value="CfDJ8KZnWnHUFpVDsxY7Jg-PD5cRZwSQYavhEA-AxjyKA3ACpugJvtQmOUNNDCmizyVOz69_KcJUK3AC061_U5hDs_9zCpJdIMrnqBYXD8SeLLGY8HjS45ix6XrNK0R3bttaeT8LuXDC8liJ8coAsLwE-PM" />
+                <button data-url="/Cart/AddPaper" data-paperid="547886" id="addPaperButton" class="button button-160" disabled>
+                    <span class="inline-element">Add to Cart</span>
+                    <i class="inline-icon cart-icon-white button-icon-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <a data-dismiss="modal" title="Close" class="inline-icon close-icon"></a>
+    </div>
+</div>
+
+
+
+
+<div id="addedToCart" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="popupAddToCart">
+    <div class="modal-dialog" role="document">
+        <div class="popup-page-name underline-begin">
+            <div id="popupAddToCart" class="page-name-block-text">Add To Cart</div>
+        </div>
+            <div class="shopping-cart-block">
+                <div class="popup-cart-block-image">
+                    <i class="inline-icon add-paper-icon"></i>
+                </div>
+                <div class="popup-cart-block-text">
+                    <p>This paper has been added to your cart</p>
+                </div>
+            </div>
+
+        <div class="popup-block-buttons clearfix">
+            
+
+            <div class="two-buttons-block">
+                <button data-dismiss="modal" class="button button-95 button-grey icon-container">
+                    <i class="inline-icon button-arrow-back-black button-icon-left"></i>
+                    <span class="inline-element">Back</span>
+                </button>
+                <a href="https://main.scientific.net/Payment/Cart" class="button button-160">
+                    <span class="inline-element">To Cart</span>
+                    <i class="inline-icon cart-icon-white button-icon-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <a data-dismiss="modal" title="Close" class="inline-icon close-icon"></a>
+    </div>
+</div>
+
+
+
+
+
+            </div>
+        </div>
+        <div role="contentinfo" class="sc-footer">
+            
+<div class="footer-fluid">
+    <div class="container">
+        <div class="row">
+            <div class="footer-menu col-md-12 col-sm-12 col-xs-12">
+                <ul class="list-inline menu-font">
+                    <li><a href="/ForLibraries">For Libraries</a></li>
+<li><a href="/ForPublication/Paper">For Publication</a></li>
+<li><a href="/DocuCenter">Downloads</a></li>
+<li><a href="/Home/AboutUs">About Us</a></li>
+<li><a href="/PolicyAndEthics/PublishingPolicies">Policy &amp; Ethics</a></li>
+<li><a href="/Home/Contacts">Contact Us</a></li>
+<li><a href="/Home/Imprint">Imprint</a></li>
+<li><a href="/Home/PrivacyPolicy">Privacy Policy</a></li>
+<li><a href="/Home/Sitemap">Sitemap</a></li>
+<li><a href="/Conferences">All Conferences</a></li>
+<li><a href="/special-issues">All Special Issues</a></li>
+<li><a href="/news/all">All News</a></li>
+<li><a href="/open-access-partners">Open Access Partners</a></li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<a class="scrollTop inline-icon scroll-top-icon" href="#" style="display: none" aria-label="Scroll top"></a>
+<div class="line-footer"></div>
+<div class="footer-fluid">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 footer-copyright">
+                <p>
+                    &#169; 2025 Trans Tech Publications Ltd. All rights are reserved, including those for text and data mining, AI training, and similar technologies.
+For open access content, terms of the Creative Commons licensing CC-BY are applied.
+
+<br />Scientific.Net is a registered trademark of Trans Tech Publications Ltd.
+
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+        </div>
+
+
+    </div>
+
+    <script src="/Scripts/public.min.js?v=K0Ir7G_rb9LPTWbSIAIwngcyXrpWN4MdPvRzkkg6K9o"></script>
+    
+    
+    <script src="https://scholar.google.com/scholar_js/casa.js" async></script>
+    <script async type="application/javascript" src="https://cdn.scite.ai/badge/scite-badge-latest.min.js"></script>
+    <script>
+        $(function () {
+
+            var statisticsDownloadedHandler = function ($element) {
+                return function (count) {
+                    $element.text(count);
+                    $element.parent().removeClass("loading");
+                };
+            };
+
+            $.get("/Paper/GetDownloadsAndVisitorsCount?paperId=547886", statisticsDownloadedHandler($("#paperDownloadsAndVisitorsCount")));
+
+
+                $.ajax({method: "GET", url: "/Paper/GetPrice?paperId=547886" })
+                .retry({times: 3, timeout: 3000 })
+                .done(function (price) {
+                    $("#paper-price-info").html(price);
+                $("#popup-paper-price").html(price);
+                $("#addPaperButton").removeAttr("disabled");
+                                        });
+            
+                $("#paperCitationsButton").on("click", function (e) {
+                    e.preventDefault();
+
+                    Scinet.busy.lock();
+
+                    var $modal = $("#citations-modal"),
+                        $modalContent = $("#citations-modal-content");
+
+                    $.get("/Paper/Citations?doi=10.4028%2Fwww.scientific.net%2FMSF.968.227")
+                        .done(function (content) {
+                            Scinet.busy.unlock();
+
+                            $modalContent.html(content);
+                            $modal.modal();
+
+                             $modal.on('shown.bs.modal', function () {
+                                $('#citationLabel').attr('tabindex', '-1').focus();
+                            });
+                        })
+                        .fail(function () {
+                            Scinet.busy.unlock();
+
+                            Scinet.error("The DOI has not been activated yet. Please try again later.");
+                        });
+                });
+
+            $("#ask-by-email-button")
+                .on("click", function (e) {
+                    e.preventDefault();
+
+                    var url = $(this).data("url");
+
+                    $("#ask-by-email-modal")
+                        .load(url, function () {
+                            $("#ask-by-email-modal").modal();
+                        });
+                });
+
+            $("#downloadPdfButton").on("click", function () {
+                Scinet.busy.lock();
+
+                setTimeout(Scinet.busy.unlock, 8000);
+            });
+
+            var readThePaperLogged = false;
+            $("#readPaperButton").on(
+                "click",
+                function (e) {
+                    e.preventDefault();
+                    $("#addToCart").modal();
+
+                    if (!readThePaperLogged) {
+                        var url = $("#readPaperButton").data("urlReadPaperLog");
+                        $.ajax({ url: url });
+                        readThePaperLogged = true;
+                    }
+                });
+
+            $("#addPaperButton").on(
+                "click",
+                function (e) {
+                    e.preventDefault();
+
+                    var $button = $(this),
+                        url = $button.data("url"),
+                        paperId = $button.data("paperid");
+
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: { paperId: paperId },
+                        headers: {
+                            RequestVerificationToken: $("#RequestVerificationToken").val()
+                        },
+                        success: function () {
+                            Scinet.public.loadCartInfo();
+                            $('#addToCart').modal('hide');
+                            $("#addedToCart").modal();
+                        },
+                        error: function (xhr) {
+                            Scinet.error(xhr.responseText);
+                        }
+                    });
+                });
+
+            $(".paper-title-main-page a.panel-title").on("click",
+                function () {
+                    $(this).toggleClass("active");
+                });
+
+            $(".author-send-message").on("click", function (e) {
+                e.preventDefault();
+
+                var url = $(this).data("url"),
+                    $modal = $("#author-message-modal");
+
+                $modal.load(url, function () {
+                    $modal.modal();
+                });
+            });
+
+            var previewLogged = false;
+            $("#preview-button")
+                .on("click", function () {
+
+                    $("#paper-preview-modal").modal();
+
+                    if (!previewLogged) {
+                        var url = $(this).data("url-preview-log");
+                        $.ajax({ url: url });
+                        previewLogged = true;
+                    }
+                });
+
+            function getCitedByInfo(page) {
+                var $citedbyroot = $("#citedby-root");
+                var paperId = $("#citedby-link").data("paper-id");
+                if (paperId && page) {
+                    $.ajax(
+                        {
+                            method: "GET",
+                            url: "/Paper/CitedBy",
+                            data: {
+                                paperId: paperId,
+                                pageNumber: page
+                            }
+                        })
+                        .done(
+                            function (response) {
+                                $citedbyroot.html(response);
+                                $(".citedby-paginator").on("click", function () {
+                                    var pageNumber = $(this).attr("page");
+                                    getCitedByInfo(pageNumber);
+                                });
+                            })
+                        .fail(
+                            function (request, status, error) {
+                                $citedbyroot
+                                    .html('<div style="color: red; padding-top: 30px; padding-bottom: 30px;"><p>' + error + "</p></div>");
+                            });
+                }
+            }
+
+            $("#citedby-link")
+                .on("click", function () {
+                    var $citedbyroot = $("#citedby-root");
+                    if (!$citedbyroot.data("loaded")) {
+                        getCitedByInfo(1);
+                        $citedbyroot.data("loaded", true);
+                    }
+                });
+
+            $("#citations-modal-content")
+                .on("click", ".citations-list-item-value a", function (e) {
+                    e.preventDefault();
+                });
+
+            var clipboard = new ClipboardJS("#citations-modal-content .citations-list-item .inline-icon");
+            clipboard.on("success", function (e) {
+                var $icon = $(e.trigger);
+                var originalName = "data-original-title";
+                var prevTitle = $icon.attr(originalName);
+                $icon.addClass("icon-copied").removeClass("icon-copy");
+                $icon.attr(originalName, "Copied!").tooltip("show");
+                setTimeout(function () {
+                    $icon.attr(originalName, prevTitle).tooltip("hide");
+                    $icon.addClass("icon-copy").removeClass("icon-copied");
+                }, 3000);
+
+                e.clearSelection();
+            });
+
+            function getRelatedArticles() {
+                var $releatedArticlesRoot = $("#related-articles-root");
+                $.ajax(
+                    {
+                        method: "GET",
+                        url: "/Paper/RelatedArticles?paperId=547886"
+                    })
+                    .done(
+                        function (response) {
+                            $releatedArticlesRoot.html(response);
+                        })
+                    .fail(
+                        function (request, status, error) {
+                            $releatedArticlesRoot
+                                .html('<div style="color: red; padding-top: 30px; padding-bottom: 30px;"><p>Server Error. Sorry for the inconvenience. Our team is working to fix this internal error. Please check back shortly.</p></div>');
+                        });
+            }
+
+            $("#related-articles-link")
+                .on("click", function () {
+                    var $releatedArticlesRoot = $("#related-articles-root");
+                    if (!$releatedArticlesRoot.data("loaded")) {
+                        getRelatedArticles();
+                        $releatedArticlesRoot.data("loaded", true);
+                    }
+                })
+
+            $("body").tooltip({
+                selector: "[data-toggle=tooltip]"
+            });
+
+        });
+
+        $(document)
+            .ready(
+                function () {
+
+                    var isHidden = sessionStorage.getItem('isPublicMessagesHidden');
+
+                    if (isHidden === 'true') {
+                        $('.message-container').hide();
+                    }
+
+                    $('#hide-button')
+                        .click(
+                            function (event) {
+                                event.preventDefault();
+                                $('.message-container').hide();
+                                sessionStorage.setItem('isPublicMessagesHidden', 'true');
+                            });
+                });
+    </script>
+
+
+
+    <script asp-render-component-scripts>
+
+            (function (w, a, y, f) {
+                w._wayfinder = w._wayfinder || function () { (w._wayfinder.q = w._wayfinder.q || []).push(arguments) };
+                p = { oaDomain: 'scientific.net', oaAppId: '9a54dd64-0769-4f59-a7ec-b249515c9de7' };
+                w._wayfinder.settings = p;
+                w._wayfinder.options = { rememberCrossSite: false };
+                h = a.getElementsByTagName('head')[0]; s = a.createElement('script'); s.async = 1;
+                q = Object.keys(p).map(function (key) { return key + '=' + p[key] }).join('&');
+                s.src = y + 'v1' + f + "?" + q; h.appendChild(s);
+            }
+            )(window, document, 'https://wayfinder.openathens.net/embed/', '/loader.js');
+
+        
+
+        $(function () {
+            var wayfinderEnabled = true;
+
+            $("#sa-button").on("click", function (e) {
+
+                if (wayfinderEnabled) {
+                    setTargetPageCookie();
+                } else {
+                    e.preventDefault();
+                    setTargetPageCookie();
+                    window.location.href = this.href;
+                }
+
+            });
+
+            function setTargetPageCookie() {
+                var in5Minutes = 1 / 3600 * 5;
+                Cookies.set("Scinet.TargetPage", window.location.href, { domain: ".scientific.net", expires: in5Minutes, secure: true });
+            }
+        });
+
+    
+
+        Scinet.public = (function () {
+            function loadCartInfo(onLoad) {
+
+                var formatCartItemCount = function (count) {
+                        var format = (count > 1 || count === 0)
+                                         ? "{0} items"
+                                         : "{0} item";
+
+                        $("#cartInfoTotalItemsCount").html(Scinet.stringFormat(format, count));
+                    },
+                    cookieCartItemCount = Cookies.get("Scinet5.CartItemsCount");
+
+                if (onLoad && cookieCartItemCount != null) {
+                    formatCartItemCount(parseInt(cookieCartItemCount, 10));
+                } else {
+                    $.ajax({ url: "/Cart/GetItemsCount", cache: false })
+                        .done(
+                            function (count) {
+                                Cookies.set("Scinet5.CartItemsCount", count, { domain: ".scientific.net", secure: true });
+
+                                formatCartItemCount(count);
+                            });
+                }
+            }
+
+            return {
+                loadCartInfo: loadCartInfo
+            };
+        })();
+
+        $(function () {
+            Scinet.public.loadCartInfo(true);
+        });
+    </script>
+    
+    <!-- IE polyfills-->
+    <!--[if lt IE 10]>
+        <script src="/Scripts/lib/flexibility/flexibility.js"></script>
+        <script>
+            flexibility(document.documentElement);
+        </script>
+    <![endif]-->
+
+</body>
+</html>
