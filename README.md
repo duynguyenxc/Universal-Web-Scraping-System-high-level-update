@@ -1,7 +1,7 @@
 ## Overview
 
 **Universal Web Scraping System (UWSS)** is a **config‑driven pipeline** for collecting, scoring, and organizing academic documents, currently configured for the topic **“corrosion and long‑term durability of reinforced concrete”**.  
-It combines **official academic databases** (Crossref, OpenAlex, Semantic Scholar, PubMed, arXiv via libraries) with a **Scrapy web crawler** for research‑group websites, and stores everything in a **unified database + JSONL exports** that are easy to inspect or analyze in notebooks.
+It combines **official academic databases** (Crossref, OpenAlex, Semantic Scholar, PubMed, arXiv via libraries, plus OpenAIRE Graph) with a **Scrapy web crawler** for research‑group websites, and stores everything in a **unified database + JSONL exports** that are easy to inspect or analyze in notebooks.
 
 In practical terms, UWSS can:
 - **Discover** candidate papers and pages from multiple scholarly APIs and the open web.
@@ -51,6 +51,9 @@ python -m src.uwss.cli openalex-lib-discover   --config config/config.yaml --db 
 
 # Semantic Scholar
 python -m src.uwss.cli semantic-scholar-lib-discover --config config/config.yaml --db data/uwss.sqlite --max 100
+
+# OpenAIRE Graph (optional, requires OPENAIRE_TOKEN env var)
+python -m src.uwss.cli openaire-lib-discover   --config config/config.yaml --db data/uwss.sqlite --max 100
 
 # PubMed / arXiv via paperscraper
 python -m src.uwss.cli paperscraper-discover   --config config/config.yaml --db data/uwss.sqlite --source pubmed --max 100
@@ -112,6 +115,7 @@ After this, you will have:
     - `crossref_lib` (habanero) – `crossref-lib-discover`.
     - `openalex_lib` (pyalex) – `openalex-lib-discover`.
     - `semantic_scholar_lib` (semanticscholar) – `semantic-scholar-lib-discover`.
+    - `openaire_lib` (OpenAIRE Graph API) – `openaire-lib-discover` (requires `OPENAIRE_TOKEN` env var).
     - `paperscraper` (PubMed + arXiv) – `paperscraper-discover --source pubmed|arxiv`.
   - **Web crawler**:
     - `web_crawler_scrapy` (Scrapy spider + pipelines + adapter).

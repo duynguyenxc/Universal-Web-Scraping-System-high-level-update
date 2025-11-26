@@ -241,6 +241,17 @@ def build_parser() -> argparse.ArgumentParser:
 	except Exception as e:
 		console.print(f"[yellow]Warning: openalex_lib_discover command not available: {e}[/yellow]")
 
+	# openaire-lib-discover (using OpenAIRE Graph API)
+	try:
+		import sys
+		_src_path = str(Path(__file__).parent.parent.parent)
+		if _src_path not in sys.path:
+			sys.path.insert(0, _src_path)
+		from src.uwss.cli.commands.openaire_lib_discover import register as register_openaire_lib_discover
+		register_openaire_lib_discover(sub)
+	except Exception as e:
+		console.print(f"[yellow]Warning: openaire_lib_discover command not available: {e}[/yellow]")
+
 	# semantic-scholar-lib-discover (using semanticscholar library)
 	try:
 		import sys
