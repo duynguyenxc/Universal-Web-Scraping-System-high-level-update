@@ -60,13 +60,16 @@ def register(sub) -> None:
 			with config_path.open("r", encoding="utf-8") as f:
 				config_data = yaml.safe_load(f) or {}
 
-		# Get keywords from config
+		# Get keywords + optional OpenAIRE-related headers from config
 		keywords = config_data.get("domain_keywords", [])
 		if not keywords:
 			console.print(
 				"[red]No keywords found in config. Please set 'domain_keywords' in config.yaml[/red]"
 			)
 			return 1
+
+		user_agent = config_data.get("user_agent")
+		contact_email = config_data.get("contact_email")
 
 		year_filter = args.year or config_data.get("year_filter")
 
@@ -93,6 +96,8 @@ def register(sub) -> None:
 				keywords=keywords,
 				max_records=args.max,
 				year_filter=year_filter,
+				user_agent=user_agent,
+				contact_email=contact_email,
 			):
 				try:
 					# Check for duplicates (by DOI first, then source_url, then title)

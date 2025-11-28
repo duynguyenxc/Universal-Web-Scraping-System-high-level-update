@@ -28,6 +28,8 @@ def discover_openaire(
 	base_url: str = "https://api.openaire.eu/graph",
 	api_version: str = "v2",
 	page_size: int = 50,
+	user_agent: Optional[str] = None,
+	contact_email: Optional[str] = None,
 ) -> Iterator[Dict[str, Any]]:
 	"""Discover publications from OpenAIRE Graph API.
 
@@ -38,6 +40,10 @@ def discover_openaire(
 	- Reads a personal access token from the environment variable
 	  `OPENAIRE_TOKEN`. If not set, the function will still attempt unauthenticated
 	  requests (with lower rate limits), but this is not recommended for larger harvests.
+
+	Configuration:
+	- `OPENAIRE_BASE_URL` (optional): override the default base URL.
+	- `OPENAIRE_API_VERSION` (optional): override the API version (e.g. ``v1``).
 	"""
 	if not keywords:
 		logger.warning("discover_openaire: no keywords provided; returning without results")
@@ -47,16 +53,26 @@ def discover_openaire(
 	if not token:
 		logger.warning("OPENAIRE_TOKEN is not set; using unauthenticated OpenAIRE requests")
 
+	# Allow runtime overrides via environment variables for easier debugging
+	base_url = os.getenv("OPENAIRE_BASE_URL", base_url)
+	api_version = os.getenv("OPENAIRE_API_VERSION", api_version)
+
 	search_query = _build_search_query(keywords)
 	logger.info("Starting OpenAIRE discovery with query=%r", search_query)
 
 	headers = {
 		"accept": "application/json",
 	}
+	if user_agent:
+		headers["User-Agent"] = user_agent
+	if contact_email:
+		# Some APIs like having a contact email for support / abuse handling
+		headers["From"] = contact_email
 	if token:
 		headers["Authorization"] = f"Bearer {token}"
 
 	endpoint = f"{base_url.rstrip('/')}/{api_version}/researchProducts"
+	logger.info("OpenAIRE endpoint=%s", endpoint)
 
 	inserted = 0
 	page = 1
@@ -80,7 +96,22 @@ def discover_openaire(
 			break
 
 		if resp.status_code != 200:
-			logger.error("OpenAIRE API returned status %s on page %s", resp.status_code, page)
+			body_preview = (resp.text or "")[:500]
+			logger.error(
+				"OpenAIRE API returned status %s on page %s. Endpoint=%s params=%r body=%r",
+				resp.status_code,
+				page,
+				endpoint,
+				params,
+				body_preview,
+			)
+			if resp.status_code == 403:
+				logger.error(
+					"OpenAIRE 403 Forbidden: this usually indicates an invalid/expired "
+					"OPENAIRE_TOKEN, missing permissions for the Graph API, or a base "
+					"URL / API version mismatch. Check OPENAIRE_TOKEN, OPENAIRE_BASE_URL "
+					"and OPENAIRE_API_VERSION."
+				)
 			break
 
 		try:
