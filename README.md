@@ -60,6 +60,22 @@ python -m src.uwss.cli paperscraper-discover   --config config/config.yaml --db 
 python -m src.uwss.cli paperscraper-discover   --config config/config.yaml --db data/uwss.sqlite --source arxiv  --max 100
 ```
 
+For **OpenAIRE Graph**, you must set a personal access token in an environment variable before running `openaire-lib-discover`:
+
+- **Windows / PowerShell**
+
+  ```powershell
+  $env:OPENAIRE_TOKEN = 'your_personal_access_token_here'
+  ```
+
+- **Linux / macOS / WSL (bash/zsh)**
+
+  ```bash
+  export OPENAIRE_TOKEN='your_personal_access_token_here'
+  ```
+
+The token is managed on the OpenAIRE side and **must not be committed to Git or stored in config files**. If the token is missing or expired, OpenAIRE calls will either be heavily rate‑limited or rejected.
+
 5. **Score, export, and fetch PDFs**
 
 ```bash
