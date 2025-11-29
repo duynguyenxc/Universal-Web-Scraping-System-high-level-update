@@ -1,7 +1,7 @@
 {
   "source": "openaire",
-  "inserted": 1,
-  "duplicates": 0,
+  "inserted": 0,
+  "duplicates": 1,
   "failed": 0,
-  "elapsed_sec": 25.796334266662598
+  "elapsed_sec": 2.4554669857025146
 }
