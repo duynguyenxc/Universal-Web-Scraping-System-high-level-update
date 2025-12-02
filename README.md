@@ -288,6 +288,24 @@ python -m src.uwss.cli web-crawler-scrapy-discover \
 Details of the crawler design and experiments (including seed selection strategy and limitations) are documented in `web_crawler_scrapy_report.md`.
 
 
+## Stage 1c – Semantic web crawler (Scrapy + Sentence Transformers)
+
+For some research‑group sites, a **keyword‑only filter** is not enough. UWSS therefore includes an optional semantic layer that re‑ranks pages by meaning using `sentence-transformers` (`all-MiniLM-L6-v2`).
+
+```bash
+python -m src.uwss.cli web-crawler-semantic-discover \
+  --config config/web_crawler_scrapy.yaml \
+  --output data/web_crawler_semantic_results.jsonl \
+  --topic "corrosion and long-term durability of reinforced concrete" \
+  --semantic-threshold 0.45 \
+  --max-pages 20
+```
+
+- Internally, Scrapy still does the crawling and **keyword‑based pre‑filtering**.
+- The semantic layer then builds embeddings for each candidate page and for the topic text, computes cosine similarity, and keeps only pages whose `semantic_score` exceeds the threshold.
+- The output JSONL format is compatible with the rest of the UWSS pipeline; see `SEMANTIC_FILTERING.md` for a deeper, but still practical, explanation.
+
+
 ## Stage 2 – Score (keyword‑based relevance)
 
 Once you have documents in the DB from various sources:
@@ -377,22 +395,23 @@ This step:
 │   └── web_crawler_scrapy.yaml  # Scrapy research-group crawler configuration
 ├── data/                      # Collected data (JSONL, SQLite DB, downloaded files)
 ├── src/
-│   ├── uwss/                  # Main system code
-│   │   ├── cli.py             # CLI entrypoint and command registration
-│   │   ├── sources/           # Source adapters (Crossref, OpenAlex, S2, paperscraper, crawler)
-│   │   ├── store/             # DB engines, models, migrations
-│   │   ├── score/             # Keyword scoring
-│   │   ├── crawl/             # Fetching, Unpaywall, scraping utilities
-│   │   ├── parse/             # GROBID client and text extraction
-│   │   └── ...                # Helpers, quality checks, utilities
-│   └── data/                  # Sample/test outputs used during development
+│   └── uwss/                  # Main system code
+│       ├── cli.py             # CLI entrypoint and command registration
+│       ├── cli/               # Individual CLI command implementations
+│       ├── sources/           # Source adapters (Crossref, OpenAlex, S2, paperscraper, OpenAIRE, crawler)
+│       ├── store/             # DB engines, models, migrations
+│       ├── score/             # Keyword scoring
+│       ├── crawl/             # Fetching, Unpaywall, scraping utilities, Scrapy project
+│       ├── parse/             # GROBID client and text extraction
+│       ├── semantic/          # Sentence-transformer based semantic scoring for the crawler
+│       └── ...                # Helpers, quality checks, utilities
 ├── scripts/
 │   ├── analysis/              # Data analysis / reporting tools
 │   ├── testing/               # Legacy/manual testing scripts
 │   └── utilities/             # Miscellaneous helpers (e.g., split_by_source.py)
 ├── tests/                     # Unit, integration, and end-to-end tests
 ├── docs/                      # Documentation, reports, and project notes
-│   └── project/REPORT.md      # Project-level status / design report (optional)
+├── SEMANTIC_FILTERING.md      # In‑depth explanation of the semantic crawler layer
 └── web_crawler_scrapy_report.md  # Detailed report about the Scrapy web crawler adapter
 ```
 
@@ -409,7 +428,13 @@ This project has been successfully **deployed and run on AWS EC2**, with all out
   ```
 
 This follows a production‑style pattern where **EC2 provides compute** and **S3 acts as the durable storage layer**.  
-For a detailed step‑by‑step guide (launch EC2, set up the project, configure AWS CLI, and sync to S3), see `docs/project/EC2_S3_SETUP.md`.
+For recurring daily runs, the repository includes a helper script `run_uwss_batch.sh` that:
+
+- Runs all discovery commands (Crossref, OpenAlex, Semantic Scholar, PubMed, arXiv, OpenAIRE when `OPENAIRE_TOKEN` is set).
+- Scores, exports a **date‑stamped JSONL** under `data/runs/<YY-MM-DD>/`, fetches PDFs into `data/runs/<YY-MM-DD>/files/`, and syncs that folder to `s3://data-new-ec2/uwss-data/runs/<YY-MM-DD>/`.
+- Is designed to be called from `cron` or another scheduler on EC2 for unattended daily batches.
+
+For a step‑by‑step guide (launch EC2, set up the project, configure AWS CLI, and sync to S3), see `EC2_S3_SETUP.md` in the repository root.
 
 
 ## Summary for New Collaborators

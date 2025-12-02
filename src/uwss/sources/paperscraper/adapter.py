@@ -32,6 +32,10 @@ try:
     from paperscraper.arxiv import get_arxiv_papers_api
 
     PAPERSCRAPER_AVAILABLE = True
+
+    # Silence noisy warnings about missing optional dumps (biorxiv/chemrxiv/medrxiv)
+    # which are not used in the main UWSS pipeline. We still allow errors through.
+    logging.getLogger("paperscraper.load_dumps").setLevel(logging.ERROR)
 except ImportError:
     PAPERSCRAPER_AVAILABLE = False
     get_pubmed_papers = None
