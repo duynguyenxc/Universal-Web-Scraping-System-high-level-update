@@ -445,4 +445,4 @@ For a step‑by‑step guide (launch EC2, set up the project, configure AWS CLI,
 - Use `fetch` (and optionally `extract-full-text`) to obtain and analyze PDFs.
 - Use the **Scrapy crawler** when you need **page‑level data from specific research groups or centers**, not covered well by standard APIs.
 
-All experiments and test runs can be reproducibly described as sequences of CLI commands, making it easy for your teammates (or your professor) to understand **what you did, how to re‑run it, and how the data flows through the system**.
+
