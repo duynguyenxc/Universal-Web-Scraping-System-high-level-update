@@ -1,7 +1,7 @@
 ## Overview
 
 **Universal Web Scraping System (UWSS)** is a **config‑driven pipeline** for collecting, scoring, and organizing academic documents, currently configured for the topic **“corrosion and long‑term durability of reinforced concrete”**.  
-It combines **official academic databases** (Crossref, OpenAlex, Semantic Scholar, PubMed, arXiv via libraries, plus OpenAIRE Graph) with a **Scrapy web crawler** for research‑group websites, and stores everything in a **unified database + JSONL exports** that are easy to inspect or analyze in notebooks.
+It combines **official academic databases** (Crossref, OpenAlex, Semantic Scholar, PubMed, arXiv via libraries) with a **Scrapy web crawler** for research‑group websites, and stores everything in a **unified database + JSONL exports** that are easy to inspect or analyze in notebooks.
 
 In practical terms, UWSS can:
 - **Discover** candidate papers and pages from multiple scholarly APIs and the open web.
@@ -24,10 +24,7 @@ git clone https://github.com/duynguyenxc/Universal-Web-Scraping-System-high-leve
 cd Universal-Web-Scraping-System-high-level-update
 
 python -m venv uwss-env
-# Windows
-uwss-env\Scripts\activate
-# Linux / macOS
-# source uwss-env/bin/activate
+uwss-env\Scripts\activate    # Windows
 
 pip install -r requirements.txt
 ```
@@ -52,29 +49,10 @@ python -m src.uwss.cli openalex-lib-discover   --config config/config.yaml --db 
 # Semantic Scholar
 python -m src.uwss.cli semantic-scholar-lib-discover --config config/config.yaml --db data/uwss.sqlite --max 100
 
-# OpenAIRE Graph (optional, requires OPENAIRE_TOKEN env var)
-python -m src.uwss.cli openaire-lib-discover   --config config/config.yaml --db data/uwss.sqlite --max 100
-
 # PubMed / arXiv via paperscraper
 python -m src.uwss.cli paperscraper-discover   --config config/config.yaml --db data/uwss.sqlite --source pubmed --max 100
 python -m src.uwss.cli paperscraper-discover   --config config/config.yaml --db data/uwss.sqlite --source arxiv  --max 100
 ```
-
-For **OpenAIRE Graph**, you must set a personal access token in an environment variable before running `openaire-lib-discover`:
-
-- **Windows / PowerShell**
-
-  ```powershell
-  $env:OPENAIRE_TOKEN = 'your_personal_access_token_here'
-  ```
-
-- **Linux / macOS / WSL (bash/zsh)**
-
-  ```bash
-  export OPENAIRE_TOKEN='your_personal_access_token_here'
-  ```
-
-The token is managed on the OpenAIRE side and **must not be committed to Git or stored in config files**. If the token is missing or expired, OpenAIRE calls will either be heavily rate‑limited or rejected.
 
 5. **Score, export, and fetch PDFs**
 
@@ -131,7 +109,6 @@ After this, you will have:
     - `crossref_lib` (habanero) – `crossref-lib-discover`.
     - `openalex_lib` (pyalex) – `openalex-lib-discover`.
     - `semantic_scholar_lib` (semanticscholar) – `semantic-scholar-lib-discover`.
-    - `openaire_lib` (OpenAIRE Graph API) – `openaire-lib-discover` (requires `OPENAIRE_TOKEN` env var).
     - `paperscraper` (PubMed + arXiv) – `paperscraper-discover --source pubmed|arxiv`.
   - **Web crawler**:
     - `web_crawler_scrapy` (Scrapy spider + pipelines + adapter).
@@ -288,24 +265,6 @@ python -m src.uwss.cli web-crawler-scrapy-discover \
 Details of the crawler design and experiments (including seed selection strategy and limitations) are documented in `web_crawler_scrapy_report.md`.
 
 
-## Stage 1c – Semantic web crawler (Scrapy + Sentence Transformers)
-
-For some research‑group sites, a **keyword‑only filter** is not enough. UWSS therefore includes an optional semantic layer that re‑ranks pages by meaning using `sentence-transformers` (`all-MiniLM-L6-v2`).
-
-```bash
-python -m src.uwss.cli web-crawler-semantic-discover \
-  --config config/web_crawler_scrapy.yaml \
-  --output data/web_crawler_semantic_results.jsonl \
-  --topic "corrosion and long-term durability of reinforced concrete" \
-  --semantic-threshold 0.45 \
-  --max-pages 20
-```
-
-- Internally, Scrapy still does the crawling and **keyword‑based pre‑filtering**.
-- The semantic layer then builds embeddings for each candidate page and for the topic text, computes cosine similarity, and keeps only pages whose `semantic_score` exceeds the threshold.
-- The output JSONL format is compatible with the rest of the UWSS pipeline; see `SEMANTIC_FILTERING.md` for a deeper, but still practical, explanation.
-
-
 ## Stage 2 – Score (keyword‑based relevance)
 
 Once you have documents in the DB from various sources:
@@ -395,46 +354,24 @@ This step:
 │   └── web_crawler_scrapy.yaml  # Scrapy research-group crawler configuration
 ├── data/                      # Collected data (JSONL, SQLite DB, downloaded files)
 ├── src/
-│   └── uwss/                  # Main system code
-│       ├── cli.py             # CLI entrypoint and command registration
-│       ├── cli/               # Individual CLI command implementations
-│       ├── sources/           # Source adapters (Crossref, OpenAlex, S2, paperscraper, OpenAIRE, crawler)
-│       ├── store/             # DB engines, models, migrations
-│       ├── score/             # Keyword scoring
-│       ├── crawl/             # Fetching, Unpaywall, scraping utilities, Scrapy project
-│       ├── parse/             # GROBID client and text extraction
-│       ├── semantic/          # Sentence-transformer based semantic scoring for the crawler
-│       └── ...                # Helpers, quality checks, utilities
+│   ├── uwss/                  # Main system code
+│   │   ├── cli.py             # CLI entrypoint and command registration
+│   │   ├── sources/           # Source adapters (Crossref, OpenAlex, S2, paperscraper, crawler)
+│   │   ├── store/             # DB engines, models, migrations
+│   │   ├── score/             # Keyword scoring
+│   │   ├── crawl/             # Fetching, Unpaywall, scraping utilities
+│   │   ├── parse/             # GROBID client and text extraction
+│   │   └── ...                # Helpers, quality checks, utilities
+│   └── data/                  # Sample/test outputs used during development
 ├── scripts/
 │   ├── analysis/              # Data analysis / reporting tools
 │   ├── testing/               # Legacy/manual testing scripts
 │   └── utilities/             # Miscellaneous helpers (e.g., split_by_source.py)
 ├── tests/                     # Unit, integration, and end-to-end tests
 ├── docs/                      # Documentation, reports, and project notes
-├── SEMANTIC_FILTERING.md      # In‑depth explanation of the semantic crawler layer
+│   └── project/REPORT.md      # Project-level status / design report (optional)
 └── web_crawler_scrapy_report.md  # Detailed report about the Scrapy web crawler adapter
 ```
-
-
-## Running UWSS on AWS (EC2 + S3)
-
-This project has been successfully **deployed and run on AWS EC2**, with all outputs synchronized to **Amazon S3**:
-
-- On **EC2**, we run the standard UWSS pipeline (database init, discover, score, export, fetch) exactly as documented above.
-- All generated data under `data/` (SQLite DB, JSONL exports, downloaded PDFs, etc.) are uploaded to S3 via a single sync command:
-
-  ```bash
-  aws s3 sync /home/ubuntu/Universal-Web-Scraping-System-high-level-update/data s3://data-new-ec2/uwss-data/
-  ```
-
-This follows a production‑style pattern where **EC2 provides compute** and **S3 acts as the durable storage layer**.  
-For recurring daily runs, the repository includes a helper script `run_uwss_batch.sh` that:
-
-- Runs all discovery commands (Crossref, OpenAlex, Semantic Scholar, PubMed, arXiv, OpenAIRE when `OPENAIRE_TOKEN` is set).
-- Scores, exports a **date‑stamped JSONL** under `data/runs/<YY-MM-DD>/`, fetches PDFs into `data/runs/<YY-MM-DD>/files/`, and syncs that folder to `s3://data-new-ec2/uwss-data/runs/<YY-MM-DD>/`.
-- Is designed to be called from `cron` or another scheduler on EC2 for unattended daily batches.
-
-For a step‑by‑step guide (launch EC2, set up the project, configure AWS CLI, and sync to S3), see `EC2_S3_SETUP.md` in the repository root.
 
 
 ## Summary for New Collaborators

@@ -97,3 +97,4 @@ aws s3 sync "$RUN_DIR" "$BUCKET/runs/$RUN_DATE/"
 echo "[UWSS] ====== BATCH $RUN_DATE COMPLETED ======"
 
 
+

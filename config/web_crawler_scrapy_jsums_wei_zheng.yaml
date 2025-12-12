@@ -1,0 +1,49 @@
+## Scrapy web crawler config for targeted test: "Wei Zheng" on jsums.edu
+
+seed_urls:
+  - url: "https://www.jsums.edu/"
+    name: "Jackson State University – main site"
+    # Primary target: pages mentioning this person explicitly
+    keywords:
+      - "wei zheng"
+      - "dr. wei zheng"
+      - "zheng"
+    allowed_domains:
+      - "jsums.edu"
+      - "www.jsums.edu"
+    # Per‑seed safety limits (the CLI also enforces its own max_records)
+    max_depth: 3
+    max_pages: 150
+
+# Global keywords – used if CLI does not override with --keywords
+global_keywords:
+  - "wei zheng"
+  - "dr. wei zheng"
+  - "zheng"
+
+# For this focused person search we do not apply negative keywords
+negative_keywords: []
+
+# Crawl settings – conservative but enough to traverse faculty/people pages
+crawl_settings:
+  max_depth: 3          # Maximum link depth from seed URL
+  max_pages: 200        # Hard upper bound on pages to crawl
+  download_delay: 0.7   # Polite delay between requests (seconds)
+  concurrent_requests_per_domain: 2
+  respect_robots_txt: true
+  follow_external_links: false  # Stay strictly within jsums.edu
+
+# Metadata extraction settings (reuse the defaults)
+extraction:
+  min_content_length: 50
+  max_content_length: 50000
+  abstract_max_length: 2000
+  max_authors: 20
+  max_emails: 10
+
+output:
+  format: jsonl
+  save_to_file: true
+  save_to_database: false   # This test focuses on raw crawler output
+
+

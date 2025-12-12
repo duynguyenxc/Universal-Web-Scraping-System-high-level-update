@@ -257,28 +257,6 @@ def download_open_links(db_path: Path, out_dir: Path, limit: int = 10, contact_e
 			# Network call with robust error handling: we never want a single
 			# bad host (timeout, DNS error, SSL issue, etc.) to abort the
 			# entire fetch job.
-			#
-			# Additionally, some legacy URLs in our dataset point to hosts that
-			# are consistently unreachable from AWS (e.g. old CRCNetBase domains
-			# or regional journals that time out). We short‑circuit those here
-			# so they are simply counted as failed downloads instead of causing
-			# repeated timeouts.
-			try:
-				from urllib.parse import urlparse
-				parsed = urlparse(url)
-				bad_hosts = {
-					"www.crcnetbase.com",
-					"crcnetbase.com",
-					"www.bzhb.ru",
-					"bzhb.ru",
-				}
-				if parsed.netloc in bad_hosts:
-					metrics["downloads_fail"] += 1
-					continue
-			except Exception:
-				# If URL parsing itself fails, fall back to normal request logic.
-				pass
-
 			try:
 				r = s.get(url, headers=headers, timeout=30, allow_redirects=True)
 			except Exception:
