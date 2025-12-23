@@ -10,14 +10,27 @@ set -euo pipefail
 # Always run from the project root (directory containing this script)
 cd "$(dirname "$0")"
 
-# 1) Activate virtualenv if present
+# 1) Make sure common locations are on PATH (cron can have a minimal PATH).
+# - AWS CLI via snap is often installed in /snap/bin
+export PATH="$PATH:/snap/bin"
+
+# 2) Activate virtualenv if present.
+# Support both common names:
+# - .venv (recommended for Linux)
+# - uwss-env (older setups)
+VENV_DIR=""
 if [ -d ".venv" ]; then
-  echo "[UWSS] Activating virtualenv .venv"
+  VENV_DIR=".venv"
+elif [ -d "uwss-env" ]; then
+  VENV_DIR="uwss-env"
+fi
+if [ -n "${VENV_DIR}" ] && [ -f "${VENV_DIR}/bin/activate" ]; then
+  echo "[UWSS] Activating virtualenv ${VENV_DIR}"
   # shellcheck disable=SC1091
-  source .venv/bin/activate
+  source "${VENV_DIR}/bin/activate"
 fi
 
-# 2) Date-stamped run directories
+# 3) Date-stamped run directories
 RUN_DATE=$(date +%y-%m-%d)             # e.g. 25-11-29
 RUN_DIR="data/runs/$RUN_DATE"
 DB="data/uwss.sqlite"
