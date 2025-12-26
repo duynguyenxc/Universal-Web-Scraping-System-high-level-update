@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en-US" xml:lang="en-US">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	
+	<title>
+		Developing Hybrid Algorithms with Fire Hawk Optimization on Concrete&#039;s Chloride Diffusion
+							| Periodica Polytechnica Civil Engineering
+			</title>
+
+	
+<meta name="generator" content="Open Journal Systems 3.3.0.15">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/" />
+<meta name="DC.Creator.PersonalName" content="Chunyang Zhang"/>
+<meta name="DC.Date.created" scheme="ISO8601" content="2025-01-31"/>
+<meta name="DC.Date.dateSubmitted" scheme="ISO8601" content="2024-07-08"/>
+<meta name="DC.Date.issued" scheme="ISO8601" content="2025-04-15"/>
+<meta name="DC.Date.modified" scheme="ISO8601" content="2025-04-15"/>
+<meta name="DC.Description" xml:lang="en" content="Throughout their lifespan, reinforced concrete buildings may encounter many challenging circumstances, such as exposure to chloride ions. Exposure to the elements, particularly in coastal areas, may lead to a decrease in durability and degradation of concrete structures. Artificial intelligence (AI) may be utilized to create models that accurately predict the chloride diffusion coefficient (CD) of non-steady state concrete over a long duration by analyzing experimental field data. This approach has the potential to boost the evaluation of the durability of a certain building structure by highlighting the most significant factors. This work showcases the use of the support vector regression (SVR), multi-layered perceptron (MLP), and random forests (RF) for predicting the DC of concrete under different exposure conditions. The fire hawk optimization algorithm (FHOA) approach was employed to improve prediction models that were trained on a dataset consisting of 216 data points. The findings indicate that the RFFHOA, MLPFHOA and SVRFHOA models have significant promise in properly forecasting the CD of concrete under different exposure situations while maintaining acceptable R2 values. The results suggest that RFFHOA, MLPFHOA and SVRFHOA may reliably predict specific CD values in various exposure situations. The RFFHOA attained R2 values of 0.9951 throughout training and 0.9971 throughout testing. In detail, MLPFHOA had a R2 value of 0.9659 throughout training and 0.9756 throughout testing. The R2 value for SVRFHOA's test stage is 0.9835, whereas the training stage is 0.9659."/>
+<meta name="DC.Format" scheme="IMT" content="application/pdf"/>
+<meta name="DC.Identifier" content="37856"/>
+<meta name="DC.Identifier.pageNumber" content="490-504"/>
+<meta name="DC.Identifier.DOI" content="10.3311/PPci.37856"/>
+<meta name="DC.Identifier.URI" content="https://pp.bme.hu/ci/article/view/37856"/>
+<meta name="DC.Language" scheme="ISO639-1" content="en"/>
+<meta name="DC.Rights" content="Copyright (c) 2025 Periodica Polytechnica Civil Engineering"/>
+<meta name="DC.Rights" content=""/>
+<meta name="DC.Source" content="Periodica Polytechnica Civil Engineering"/>
+<meta name="DC.Source.ISSN" content="1587-3773"/>
+<meta name="DC.Source.Issue" content="2"/>
+<meta name="DC.Source.Volume" content="69"/>
+<meta name="DC.Source.URI" content="https://pp.bme.hu/ci"/>
+<meta name="DC.Subject" xml:lang="en" content="concrete"/>
+<meta name="DC.Subject" xml:lang="en" content="chloride diffusion"/>
+<meta name="DC.Subject" xml:lang="en" content="fire hawk optimization"/>
+<meta name="DC.Subject" xml:lang="en" content="random forests regression"/>
+<meta name="DC.Title" content="Developing Hybrid Algorithms with Fire Hawk Optimization on Concrete's Chloride Diffusion"/>
+<meta name="DC.Type" content="Text.Serial.Journal"/>
+<meta name="DC.Type.articleType" content="Research Article"/>
+<meta name="gs_meta_revision" content="1.1"/>
+<meta name="citation_journal_title" content="Periodica Polytechnica Civil Engineering"/>
+<meta name="citation_journal_abbrev" content="Period. Polytech. Civil Eng."/>
+<meta name="citation_issn" content="1587-3773"/> 
+<meta name="citation_author" content="Chunyang Zhang"/>
+<meta name="citation_author_institution" content="&lt;p&gt;College of Civil Engineering, Baicheng Normal University, 57 Zhongxing Main Road, 137000 Baicheng, Jilin, China&lt;/p&gt;"/>
+<meta name="citation_title" content="Developing Hybrid Algorithms with Fire Hawk Optimization on Concrete's Chloride Diffusion"/>
+<meta name="citation_language" content="en"/>
+<meta name="citation_date" content="2025/01/31"/>
+<meta name="citation_volume" content="69"/>
+<meta name="citation_issue" content="2"/>
+<meta name="citation_firstpage" content="490"/>
+<meta name="citation_lastpage" content="504"/>
+<meta name="citation_doi" content="10.3311/PPci.37856"/>
+<meta name="citation_abstract_html_url" content="https://pp.bme.hu/ci/article/view/37856"/>
+<meta name="citation_keywords" xml:lang="en" content="concrete"/>
+<meta name="citation_keywords" xml:lang="en" content="chloride diffusion"/>
+<meta name="citation_keywords" xml:lang="en" content="fire hawk optimization"/>
+<meta name="citation_keywords" xml:lang="en" content="random forests regression"/>
+<meta name="citation_pdf_url" content="https://pp.bme.hu/ci/article/download/37856/23764"/>
+<script type="text/javascript" id="cookieinfo"
+	src="https://pp.bme.hu/js/cookies.js"
+	data-bg="#3a3737"
+	data-fg="#FFFFFF"
+        data-divlink="ffffff"
+        data-divlinkbg="#4e7a45"
+	data-link="#F1D600"
+	data-cookie="CookieInfoScript"
+       	data-moreinfo="https://pp.bme.hu/ci/about/policies"
+	data-text-align="left"
+       	data-close-text="Allow!">
+</script>
+	<link rel="stylesheet" href="https://pp.bme.hu/ci/$$$call$$$/page/page/css?name=stylesheet" type="text/css" /><link rel="stylesheet" href="https://pp.bme.hu/lib/pkp/styles/fontawesome/fontawesome.css?v=3.3.0.15" type="text/css" /><link rel="stylesheet" href="https://pp.bme.hu/plugins/generic/citations/css/citations.css?v=3.3.0.15" type="text/css" /><link rel="stylesheet" href="https://pp.bme.hu/plugins/generic/orcidProfile/css/orcidProfile.css?v=3.3.0.15" type="text/css" /><link rel="stylesheet" href="https://pp.bme.hu/public/journals/2/styleSheet.css?d=" type="text/css" /><link rel="stylesheet" href="https://pp.bme.hu/public/site/styleSheet.css?v=3.3.0.15" type="text/css" />
+</head>
+<body class="pkp_page_article pkp_op_view has_site_logo" dir="ltr">
+
+	<div class="pkp_structure_page">
+
+				<header class="pkp_structure_head" id="headerNavigationContainer" role="banner">
+						
+ <nav class="cmp_skip_to_content" aria-label="Jump to content links">
+	<a href="#pkp_content_main">Skip to main content</a>
+	<a href="#siteNav">Skip to main navigation menu</a>
+		<a href="#pkp_content_footer">Skip to site footer</a>
+</nav>
+
+			<div class="pkp_head_wrapper">
+
+				<div class="pkp_site_name_wrapper">
+					<button class="pkp_site_nav_toggle">
+						<span>Open Menu</span>
+					</button>
+										<div class="pkp_site_name">
+					
+
+
+												<a href="						https://pp.bme.hu/ci/index
+					" class="is_img">								
+							<img src="https://pp.bme.hu/public/journals/2/pageHeaderLogoImage_en_US.png" width="100" height="26" alt="##common.pageHeaderLogo.altText##" />
+							</a>
+														<a href="						https://pp.bme.hu/ci/index
+					" class="is_text">Periodica Polytechnica Civil Engineering</a>
+														
+																																																	
+
+
+
+					
+
+
+					</div>
+				</div>
+
+				
+				<nav class="pkp_site_nav_menu" aria-label="Site Navigation">
+					<a id="siteNav"></a>
+					<div class="pkp_navigation_primary_row">
+						<div class="pkp_navigation_primary_wrapper">
+																				<ul id="navigationPrimary" class="pkp_navigation_primary pkp_nav_list">
+								<li class="">
+				<a href="https://pp.bme.hu">
+					PP HOME
+				</a>
+							</li>
+								<li class="">
+				<a href="https://pp.bme.hu/ci/issue/onlinefirst">
+					Onlinefirst
+				</a>
+							</li>
+								<li class="">
+				<a href="https://pp.bme.hu/ci/issue/current">
+					Current
+				</a>
+							</li>
+								<li class="">
+				<a href="https://pp.bme.hu/ci/issue/archive">
+					Archives
+				</a>
+							</li>
+								<li class="">
+				<a href="https://pp.bme.hu/ci/about">
+					About
+				</a>
+									<ul>
+																					<li class="">
+									<a href="https://pp.bme.hu/ci/about">
+										Focus and Scope
+									</a>
+								</li>
+																												<li class="">
+									<a href="https://pp.bme.hu/ci/about/submissions">
+										Submissions
+									</a>
+								</li>
+																												<li class="">
+									<a href="https://pp.bme.hu/ci/about/policies">
+										Policies
+									</a>
+								</li>
+																												<li class="">
+									<a href="https://pp.bme.hu/ci/about/editorialTeam">
+										Editorial Board
+									</a>
+								</li>
+																												<li class="">
+									<a href="https://pp.bme.hu/ci/about/sc">
+										Societies and Conferences
+									</a>
+								</li>
+																												<li class="">
+									<a href="https://pp.bme.hu/ci/about/contact">
+										Contact
+									</a>
+								</li>
+																		</ul>
+							</li>
+			</ul>
+
+				
+
+																						<div class="pkp_navigation_search_wrapper">
+									<a href="https://pp.bme.hu/ci/search" class="pkp_search pkp_search_desktop">
+										<span class="fa fa-search" aria-hidden="true"></span>
+										Search
+									</a>
+								</div>
+													</div>
+					</div>
+					<div class="pkp_navigation_user_wrapper" id="navigationUserWrapper">
+							<ul id="navigationUser" class="pkp_navigation_user pkp_nav_list">
+								<li class="profile">
+				<a href="https://pp.bme.hu/ci/user/register">
+					Register
+				</a>
+							</li>
+								<li class="profile">
+				<a href="https://pp.bme.hu/ci/login">
+					Login
+				</a>
+							</li>
+										</ul>
+
+					</div>
+				</nav>
+			</div><!-- .pkp_head_wrapper -->
+		</header><!-- .pkp_structure_head -->
+
+						<div class="pkp_structure_content has_sidebar">
+			<div class="pkp_structure_main" role="main">
+				<a id="pkp_content_main"></a>
+
+<div class="page page_article">
+			<nav class="cmp_breadcrumbs" role="navigation" aria-label="You are here:">
+	<ol>
+		<li>
+			<a href="https://pp.bme.hu/ci/index">
+				Home
+			</a>
+			<span class="separator">/</span>
+		</li>
+		<li>
+			<a href="https://pp.bme.hu/ci/issue/archive">
+				Archives
+			</a>
+			<span class="separator">/</span>
+		</li>
+					<li>
+				<a href="https://pp.bme.hu/ci/issue/view/1982">
+					Vol. 69 No. 2 (2025)
+				</a>
+				<span class="separator">/</span>
+			</li>
+				<li class="current" aria-current="page">
+			<span aria-current="page">
+									Research Article
+							</span>
+		</li>
+	</ol>
+</nav>
+	
+		  	 <article class="obj_article_details">
+
+		
+	<h1 class="page_title">
+		Developing Hybrid Algorithms with Fire Hawk Optimization on Concrete&#039;s Chloride Diffusion
+	</h1>
+
+	
+	<div class="row">
+		<div class="main_entry">
+
+							<section class="item authors">
+					<h2 class="pkp_screen_reader">Authors</h2>
+                                     <div class="accordion">
+					<ul class="authors">
+											<li>
+							<span class="name">
+								Chunyang Zhang
+                                                                 							</span>
+							<div class="accordion__item">
+        				<div class="accordion__title">
+						Affiliation
+					</div>
+
+             					<div class="accordion__content">
+
+									College of Civil Engineering, Baicheng Normal University, 57 Zhongxing Main Road, 137000 Baicheng, Jilin, China
+
+
+							
+						</div>
+       				</div>	
+									</li>
+										</ul>
+                                    </div>
+				</section>
+			
+		<script>
+	let accordion = document.querySelector('.accordion');
+	let items = accordion.querySelectorAll('.accordion__item');
+	let title = accordion.querySelectorAll('.accordion__title');
+
+	function toggleAccordion() {
+ 	 let thisItem = this.parentNode;
+  
+  	items.forEach(item => {
+   	 if (thisItem == item ) {
+    	  // if this item is equal to the clicked item, open it.
+    	  thisItem.classList.toggle('active');
+     	 return;
+    	} 
+   	 // otherwise, remove the open class
+   	 item.classList.remove('active');
+  	 });
+	}
+	title.forEach(question => question.addEventListener('click', toggleAccordion));
+	</script>
+
+
+																												<section class="item doi">
+													<span class="value">
+														<a href="https://doi.org/10.3311/PPci.37856">
+								https://doi.org/10.3311/PPci.37856
+							</a>
+													        </span>
+						
+					</section>
+							
+										<section class="item abstract">
+					<h2 class="label">Abstract</h2>
+					<p><p>Throughout their lifespan, reinforced concrete buildings may encounter many challenging circumstances, such as exposure to chloride ions. Exposure to the elements, particularly in coastal areas, may lead to a decrease in durability and degradation of concrete structures. Artificial intelligence (AI) may be utilized to create models that accurately predict the chloride diffusion coefficient (CD) of non-steady state concrete over a long duration by analyzing experimental field data. This approach has the potential to boost the evaluation of the durability of a certain building structure by highlighting the most significant factors. This work showcases the use of the support vector regression (SVR), multi-layered perceptron (MLP), and random forests (RF) for predicting the DC of concrete under different exposure conditions. The fire hawk optimization algorithm (FHOA) approach was employed to improve prediction models that were trained on a dataset consisting of 216 data points. The findings indicate that the RF<sub>FHOA</sub>, MLP<sub>FHOA</sub> and SVR<sub>FHOA</sub> models have significant promise in properly forecasting the CD of concrete under different exposure situations while maintaining acceptable <em>R</em><sup>2</sup> values. The results suggest that RF<sub>FHOA</sub>, MLP<sub>FHOA</sub> and SVR<sub>FHOA</sub> may reliably predict specific CD values in various exposure situations. The RF<sub>FHOA</sub> attained <em>R</em><sup>2</sup> values of 0.9951 throughout training and 0.9971 throughout testing. In detail, MLP<sub>FHOA</sub> had a <em>R</em><sup>2</sup> value of 0.9659 throughout training and 0.9756 throughout testing. The <em>R</em><sup>2</sup> value for SVR<sub>FHOA</sub>'s test stage is 0.9835, whereas the training stage is 0.9659.</p></p>
+				</section>
+			
+			
+
+
+									<section class="item keywords">
+				<h2 class="label">
+										Keywords:
+				</h2>
+				<span class="value">
+											concrete, 											chloride diffusion, 											fire hawk optimization, 											random forests regression									</span>
+			</section>
+			
+		
+
+			
+
+
+
+<div class="item citations-container" data-image-path="https://pp.bme.hu/plugins/generic/citations/images/" data-citations-url="https://pp.bme.hu/ci/citations/get?citationsId=10.3311%2FPPci.37856&amp;citationsShowList=1&amp;citationsProvider=all"
+
+
+     data-citations-provider="all" data-citations-total="1" data-citations-list="1"
+     data-show-google="1" data-show-pmc="0">
+        <h2 class="label">Citation data from Crossref and Scopus</h2>
+	<div id="citations-loader"></div>
+	<div class="citations-count" style="margin-top:20px;">
+		<div class="citations-count-crossref">
+			<img class="img-fluid" src="https://pp.bme.hu/plugins/generic/citations/images/crossref.png" alt="Crossref"/>
+			<div class="badge_total"></div>
+		</div>
+		<div class="citations-count-scopus">
+			<img src="https://pp.bme.hu/plugins/generic/citations/images/scopus.png" alt="Scopus"/>
+			<br/>
+			<span class="badge_total"></span>
+		</div>
+		<div class="citations-count-google">
+			<a href="https://scholar.google.com/scholar?q=10.3311/PPci.37856" target="_blank" rel="noreferrer">
+				<img src="https://pp.bme.hu/plugins/generic/citations/images/scholar.png" alt="Google Scholar"/>
+			</a>
+		</div>
+		<div class="citations-count-pmc">
+			<a href="http://europepmc.org/search?scope=fulltext&query=(REF:10.3311/PPci.37856)" target="_blank" rel="noreferrer">
+				<img src="https://pp.bme.hu/plugins/generic/citations/images/pmc.png" alt="Europe PMC"/>
+				<br/>
+				<span class="badge_total"></span>
+			</a>
+		</div>
+	</div>
+	<div class="citations-list"></div>
+    </div>
+
+
+						
+		</div><!-- .main_entry -->
+
+		<div class="entry_details">
+
+			
+													<div class="item galleys">
+					<ul class="value galleys_links">
+													<li>
+								
+	
+							
+
+
+<li>
+<a target="_blank" class="obj_galley_link pdf" href="https://pp.bme.hu/ci/article/view/37856/23764">
+
+
+		
+	PDF
+
+	</a>
+</li>
+							</li>
+											</ul>
+				</div>
+						
+
+
+				
+						<div class="item published">
+				<section class="sub_item">
+					<h2 class="label">
+						Published Online
+					</h2>
+					<div class="value">
+																			<span>2025-01-31</span>
+																	</div>
+				</section>
+                                			</div>
+                     
+										<div class="item citation">
+					<section class="sub_item citation_display">
+						<h2 class="label">
+							How to Cite
+						</h2>
+						<div class="value">
+							<div id="citationOutput" role="region" aria-live="polite">
+								<div class="csl-bib-body">
+  <div class="csl-entry">Zhang, C. “Developing Hybrid Algorithms with Fire Hawk Optimization on Concrete’s Chloride Diffusion”, Periodica Polytechnica Civil Engineering, 69(2), pp. 490–504, 2025. https://doi.org/10.3311/PPci.37856</div>
+</div>
+							</div>
+							<div class="citation_formats">
+								<button class="cmp_button citation_formats_button" aria-controls="cslCitationFormats" aria-expanded="false" data-csl-dropdown="true">
+									More Citation Formats
+								</button>
+								<div id="cslCitationFormats" class="citation_formats_list" aria-hidden="true">
+									<ul class="citation_formats_styles">
+																					<li>
+												<a
+													aria-controls="citationOutput"
+													href="https://pp.bme.hu/ci/citationstylelanguage/get/periodica-polytechnica-numbered?submissionId=37856&amp;publicationId=35269"
+													data-load-citation
+													data-json-href="https://pp.bme.hu/ci/citationstylelanguage/get/periodica-polytechnica-numbered?submissionId=37856&amp;publicationId=35269&amp;return=json"
+												>
+													Periodica Polytechnica Numbered
+												</a>
+											</li>
+																					<li>
+												<a
+													aria-controls="citationOutput"
+													href="https://pp.bme.hu/ci/citationstylelanguage/get/acm-sig-proceedings?submissionId=37856&amp;publicationId=35269"
+													data-load-citation
+													data-json-href="https://pp.bme.hu/ci/citationstylelanguage/get/acm-sig-proceedings?submissionId=37856&amp;publicationId=35269&amp;return=json"
+												>
+													ACM
+												</a>
+											</li>
+																					<li>
+												<a
+													aria-controls="citationOutput"
+													href="https://pp.bme.hu/ci/citationstylelanguage/get/associacao-brasileira-de-normas-tecnicas?submissionId=37856&amp;publicationId=35269"
+													data-load-citation
+													data-json-href="https://pp.bme.hu/ci/citationstylelanguage/get/associacao-brasileira-de-normas-tecnicas?submissionId=37856&amp;publicationId=35269&amp;return=json"
+												>
+													ABNT
+												</a>
+											</li>
+																					<li>
+												<a
+													aria-controls="citationOutput"
+													href="https://pp.bme.hu/ci/citationstylelanguage/get/chicago-author-date?submissionId=37856&amp;publicationId=35269"
+													data-load-citation
+													data-json-href="https://pp.bme.hu/ci/citationstylelanguage/get/chicago-author-date?submissionId=37856&amp;publicationId=35269&amp;return=json"
+												>
+													Chicago
+												</a>
+											</li>
+																					<li>
+												<a
+													aria-controls="citationOutput"
+													href="https://pp.bme.hu/ci/citationstylelanguage/get/harvard-cite-them-right?submissionId=37856&amp;publicationId=35269"
+													data-load-citation
+													data-json-href="https://pp.bme.hu/ci/citationstylelanguage/get/harvard-cite-them-right?submissionId=37856&amp;publicationId=35269&amp;return=json"
+												>
+													Harvard
+												</a>
+											</li>
+																					<li>
+												<a
+													aria-controls="citationOutput"
+													href="https://pp.bme.hu/ci/citationstylelanguage/get/ieee?submissionId=37856&amp;publicationId=35269"
+													data-load-citation
+													data-json-href="https://pp.bme.hu/ci/citationstylelanguage/get/ieee?submissionId=37856&amp;publicationId=35269&amp;return=json"
+												>
+													IEEE
+												</a>
+											</li>
+																					<li>
+												<a
+													aria-controls="citationOutput"
+													href="https://pp.bme.hu/ci/citationstylelanguage/get/vancouver?submissionId=37856&amp;publicationId=35269"
+													data-load-citation
+													data-json-href="https://pp.bme.hu/ci/citationstylelanguage/get/vancouver?submissionId=37856&amp;publicationId=35269&amp;return=json"
+												>
+													Vancouver
+												</a>
+											</li>
+																			</ul>
+																			<div class="label">
+											Download Citation
+										</div>
+										<ul class="citation_formats_styles">
+																							<li>
+													<a href="https://pp.bme.hu/ci/citationstylelanguage/download/ris?submissionId=37856&amp;publicationId=35269">
+														<span class="fa fa-download"></span>
+														Endnote/Zotero/Mendeley (RIS)
+													</a>
+												</li>
+																							<li>
+													<a href="https://pp.bme.hu/ci/citationstylelanguage/download/bibtex?submissionId=37856&amp;publicationId=35269">
+														<span class="fa fa-download"></span>
+														BibTeX
+													</a>
+												</li>
+																					</ul>
+																	</div>
+							</div>
+						</div>
+					</section>
+				</div>
+			
+										<div class="item issue">
+
+											<section class="sub_item">
+							<h2 class="label">
+								Issue
+							</h2>
+							<div class="value">
+								<a class="title" href="https://pp.bme.hu/ci/issue/view/1982">
+									Vol. 69 No. 2 (2025)
+								</a>
+							</div>
+						</section>
+					
+											<section class="sub_item">
+							<h2 class="label">
+								Section
+							</h2>
+							<div class="value">
+								Research Article
+							</div>
+						</section>
+					
+									</div>
+			
+															
+			
+			
+
+		</div><!-- .entry_details -->
+	</div><!-- .row -->
+
+</article>
+
+	
+
+</div><!-- .page -->
+
+	</div><!-- pkp_structure_main -->
+
+									<div class="pkp_structure_sidebar left" role="complementary" aria-label="Sidebar">
+				<div class="pkp_block block_make_submission">
+	<h2 class="pkp_screen_reader">
+		Make a Submission
+	</h2>
+
+	<div class="content">
+		<a class="block_make_submission_link" href="https://pp.bme.hu/ci/about/submissions">
+			Make a Submission
+		</a>
+	</div>
+</div>
+
+			</div><!-- pkp_sidebar.left -->
+			</div><!-- pkp_structure_content -->
+
+<div class="pkp_structure_footer_wrapper" role="contentinfo">
+	<a id="pkp_content_footer"></a>
+
+	<div class="pkp_structure_footer">
+
+					<div class="pkp_footer_content">
+				<p><img style="height: 56px;" src="https://pp.bme.hu/public/site/images/ojsadmin/clarivate-analytics.png" alt="Clarivate logo" width="250" height="98" /> <img style="height: 45px !important;" src="https://pp.bme.hu/public/site/images/ojsadmin/Scopus_logo.png" alt="Scopus logo" width="200" height="98" /> <img style="height: 60px !important;" src="https://pp.bme.hu/public/site/images/ojsadmin/crossreflogo.png" alt="Crossref Similarity Check logo" width="200" height="98" /><img style="height: 45px !important;" src="https://pp.bme.hu/public/site/images/ojsadmin/prq.png" /></p>
+			</div>
+		
+		<div class="pkp_brand_footer" role="complementary">
+			<a href="https://pp.bme.hu/ci/about/aboutThisPublishingSystem">
+				<img alt="More information about the publishing system, Platform and Workflow by OJS/PKP." src="https://pp.bme.hu/templates/images/ojs_brand.png">
+			</a>
+		</div>
+	</div>
+</div><!-- pkp_structure_footer_wrapper -->
+
+</div><!-- pkp_structure_page -->
+
+<script src="https://pp.bme.hu/lib/pkp/lib/vendor/components/jquery/jquery.min.js?v=3.3.0.15" type="text/javascript"></script><script src="https://pp.bme.hu/lib/pkp/lib/vendor/components/jqueryui/jquery-ui.min.js?v=3.3.0.15" type="text/javascript"></script><script src="https://pp.bme.hu/plugins/themes/default/js/lib/popper/popper.js?v=3.3.0.15" type="text/javascript"></script><script src="https://pp.bme.hu/plugins/themes/default/js/lib/bootstrap/util.js?v=3.3.0.15" type="text/javascript"></script><script src="https://pp.bme.hu/plugins/themes/default/js/lib/bootstrap/dropdown.js?v=3.3.0.15" type="text/javascript"></script><script src="https://pp.bme.hu/plugins/themes/default/js/main.js?v=3.3.0.15" type="text/javascript"></script><script src="https://pp.bme.hu/plugins/generic/citationStyleLanguage/js/articleCitation.js?v=3.3.0.15" type="text/javascript"></script><script src="https://pp.bme.hu/plugins/generic/citations/js/citations.js?v=3.3.0.15" type="text/javascript"></script>
+
+
+</body>
+</html>

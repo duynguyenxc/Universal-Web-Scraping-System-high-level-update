@@ -1,0 +1,25 @@
+# LLM-KG configuration (placeholder)
+project:
+  name: concrete-deterioration
+
+inputs:
+  # Point this to UWSS outputs. Examples:
+  # - ../data/runs/25-12-11/corrosion_papers_25-12-11.jsonl
+  # - ../data/uwss.sqlite
+  uwss_jsonl: null
+  uwss_db: null
+
+ontology:
+  # Initial entity/relation types will be defined here.
+  entity_types:
+    - Material
+    - ExposureCondition
+    - TestMethod
+    - Mechanism
+    - Outcome
+  relation_types:
+    - CAUSES
+    - MEASURED_BY
+    - OCCURS_UNDER
+
+
