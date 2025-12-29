@@ -104,7 +104,7 @@ graphrag prompt-tune --root graphrag-project --config graphrag-project/settings.
 ### Windows one-command smoke test
 
 ```powershell
-.\scripts\graphrag_smoketest.ps1 -Day 25-12-06 -MaxDocs 30 -Query "Summarize main corrosion mechanisms and mitigation strategies."
+.\scripts\graphrag_smoketest.ps1 -Day 25-12-06 -MaxDocs 30 -OutDir "graphrag-project/output_meeting_std" -Query "Summarize main corrosion mechanisms and mitigation strategies."
 ```
 
 Dry-run (validate config without any LLM calls):
