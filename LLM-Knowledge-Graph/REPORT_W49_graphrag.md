@@ -1,7 +1,7 @@
 
-## (EN) REPORT W49 — Microsoft GraphRAG local run + LLM-Knowledge-Graph integration (week wrap-up)
+## REPORT — Microsoft GraphRAG local run + LLM-Knowledge-Graph integration
 
-### 1) What we accomplished this week (short summary)
+### 1) What I accomplished this week 
 - **Installed and ran Microsoft GraphRAG locally** (end-to-end indexing).
 - **Integrated our harvested data (daily JSONL exports)** into GraphRAG by converting them into a `*.txt` text corpus.
 - **Completed a successful test run and produced demo outputs**, especially **Community Reports** (cluster/community summaries) — the key GraphRAG artifact.
