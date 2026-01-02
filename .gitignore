@@ -20,6 +20,7 @@ data/runs/**
 data/runs_clean/**
 data/export/**
 data/export_clean/**
+data/data-autorun-S3/**
 
 # Allow keeping empty dirs if needed
 !data/.gitkeep

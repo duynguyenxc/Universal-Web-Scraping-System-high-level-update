@@ -11,3 +11,14 @@ outputs/
 
 
 data-from-S3-bucket/
+
+# GraphRAG local artifacts (generated during indexing/query)
+graphrag-project/cache/
+graphrag-project/input/
+graphrag-project/output/
+graphrag-project/output_meeting/
+graphrag-project/output_meeting_std/
+
+# Local documents (papers, notes) - keep out of git history
+documents/
+
