@@ -21,11 +21,17 @@ Given a text document and a list of entity types (CMO-oriented), identify the en
 2) Prefer domain-relevant, CMO-useful entities:
    - Mechanism: a WHY/HOW process (e.g., cognitive load regulation, reflection, hypothesis testing, pattern recognition)
    - Outcome: an endpoint/change that is measured OR clearly reported/observed (e.g., diagnostic accuracy, confidence, engagement)
-   - Context: moderators/constraints (population, setting, prior knowledge, time pressure, case complexity)
+   - Context: moderators/constraints, especially **learner-level contexts** when present:
+     - prior knowledge / expertise / familiarity
+     - self-efficacy / confidence / anxiety / motivation
+     - cognitive state (cognitive load, fatigue, time pressure)
+     - coping strategies / biases / uncertainty tolerance
+     Also capture setting/task constraints (clinical setting, simulation, case complexity) when relevant.
    - Intervention/comparator: what was done / compared
 
 3) Be specific but not overly granular:
    - Avoid generic entities like "students", "education", "intervention" unless tied to a specific CMO claim.
+   - Avoid institutions/organizations unless they are truly part of the **context** (e.g., "clinical clerkship", "simulation center") and not bibliographic noise.
 
 -Steps-
 1. Identify all entities in the text that match the provided entity types: [{entity_types}]

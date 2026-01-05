@@ -110,13 +110,42 @@ def main() -> int:
         md.append(f"- claims with `[PAGE N]` marker in source_text: **{has_page} / {len(src_text) or 1}**")
         md.append("")
 
+        # Completeness (verification-grade traceability expects subject+object+evidence span)
+        subj = _safe_col(claims, "subject_id") or _safe_col(claims, "subject")
+        obj = _safe_col(claims, "object_id") or _safe_col(claims, "object")
+        missing_subj = sum(1 for s in subj if not s.strip())
+        missing_obj = sum(1 for s in obj if not s.strip())
+        missing_src = sum(1 for s in src_text if not s.strip())
+        md.append("**Claim completeness (heuristic)**\n")
+        md.append(f"- missing subject: **{missing_subj} / {len(subj) or 1}**")
+        md.append(f"- missing object: **{missing_obj} / {len(obj) or 1}**")
+        md.append(f"- missing evidence span (source_text/text): **{missing_src} / {len(src_text) or 1}**")
+        md.append("")
+
         type_col = "type" if "type" in claims.columns else ("covariate_type" if "covariate_type" in claims.columns else None)
         if type_col:
             md.append("**Claim types (counts)**\n")
             md.append(claims[type_col].value_counts().to_frame("count").head(30).to_markdown())
             md.append("")
 
-        cols = [c for c in ["subject", "object", "type", "covariate_type", "status", "covariate_status", "description", "source_text", "text"] if c in claims.columns]
+        cols = [
+            c
+            for c in [
+                "subject_id",
+                "object_id",
+                "subject",
+                "object",
+                "type",
+                "covariate_type",
+                "status",
+                "covariate_status",
+                "description",
+                "source_text",
+                "text",
+                "text_unit_id",
+            ]
+            if c in claims.columns
+        ]
         if cols:
             md.append("**Sample claims (spot-check)**\n")
             md.append(claims[cols].head(12).to_markdown(index=False))

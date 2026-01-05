@@ -92,6 +92,9 @@ extract_graph:
   entity_types:
     - intervention
     - learner_population
+    - learner_context
+    - cognitive_state
+    - motivation_affect
     - setting_context
     - task_case
     - mechanism

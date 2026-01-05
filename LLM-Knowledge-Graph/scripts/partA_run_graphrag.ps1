@@ -62,5 +62,8 @@ python "scripts/graphrag_export_readable.py" --out-dir "$OutAbs" --export-dir "$
 # 6) Verification audit report (quality gates + spot-check tables)
 python "scripts/partA_audit_outputs.py" --out-dir "$OutAbs" --out-md "artifacts/partA/verification_audit.md"
 
+# 7) Verification-grade exports: enriched claims + draft CMO configurations
+python "scripts/partA_export_cmo_configurations.py" --out-dir "$OutAbs" --out-claims-md "artifacts/partA/claims_enriched.md" --out-md "artifacts/partA/cmo_configurations.md"
+
 Write-Host "Done. Output dir: $OutDir" -ForegroundColor Green
 

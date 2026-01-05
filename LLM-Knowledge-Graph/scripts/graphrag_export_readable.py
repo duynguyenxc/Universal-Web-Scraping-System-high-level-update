@@ -123,12 +123,16 @@ def main() -> int:
         md += f"- rows: {len(df)}\n- cols: {df.columns.tolist()}\n\n"
         # Column names vary by version; pick the best available set.
         preferred_cols = [
+            # Prefer GraphRAG's covariates schema (subject_id/object_id); fallback to claims schema (subject/object)
+            "subject_id",
+            "object_id",
             "subject",
             "object",
             "type",
             "status",
             "description",
             "source_text",
+            "text_unit_id",
             "text",
             "covariate_type",
             "covariate_status",
