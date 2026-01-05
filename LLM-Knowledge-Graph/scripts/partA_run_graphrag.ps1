@@ -65,9 +65,8 @@ python "scripts/partA_audit_outputs.py" --out-dir "$OutAbs" --out-md "artifacts/
 # 7) Verification-grade exports: enriched claims + draft CMO configurations
 python "scripts/partA_export_cmo_configurations.py" --out-dir "$OutAbs" --out-claims-md "artifacts/partA/claims_enriched.md" --out-md "artifacts/partA/cmo_configurations.md"
 
-# 8) Create a single lightweight run bundle (one folder to share/review)
-$RunName = (Get-Date -Format "yyyyMMdd_HHmmss")
-python "scripts/partA_create_run_bundle.py" --out-dir "$OutAbs" --artifacts-dir "artifacts/partA" --run-name "$RunName"
+# 8) Update the stable share page (one link page to open, no duplication)
+python "scripts/partA_create_run_bundle.py" --out-dir "$OutAbs" --artifacts-dir "artifacts/partA" --mode "share"
 
 Write-Host "Done. Output dir: $OutDir" -ForegroundColor Green
 

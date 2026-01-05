@@ -2,6 +2,14 @@
 
 If you feel lost because there are many folders/files, this page is the single “front door”.
 
+### One place to open (for supervisors/reviewers)
+
+Open:
+
+- `artifacts/partA/share/index.md`
+
+It is a single page with links to everything important (no hunting across folders).
+
 ### What you should read (recommended order)
 
 1) **Verification note (short narrative)**  
@@ -31,14 +39,6 @@ Key files:
 - `claims.md` (sample view; not verification-grade)
 - `entities.md`, `relationships.md`, `communities.md`, `documents.md`
 - `stats.json`
-
-### Where “one run” should live (so you can share with others)
-
-After running `scripts/partA_run_graphrag.ps1`, the pipeline will also create a **single bundle folder**:
-
-- `artifacts/partA/runs/<timestamp>/`
-
-This folder contains a self-contained, lightweight “meeting pack” (only `.md`/`.json`, no parquet/lancedb).
 
 ### Notes (why outputs are split)
 

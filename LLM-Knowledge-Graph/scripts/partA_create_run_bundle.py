@@ -20,16 +20,55 @@ def _copy_if_exists(src: Path, dst: Path) -> None:
 
 def main() -> int:
     ap = argparse.ArgumentParser(
-        description="Part A: create a single lightweight run bundle (markdown/json) for sharing/review."
+        description="Part A: create a lightweight, review-friendly entrypoint (no parquet/lancedb)."
     )
     ap.add_argument("--out-dir", type=Path, default=Path("graphrag-project/output_partA"))
     ap.add_argument("--artifacts-dir", type=Path, default=Path("artifacts/partA"))
-    ap.add_argument("--run-name", type=str, default="")
+    ap.add_argument(
+        "--mode",
+        type=str,
+        default="share",
+        choices=["share", "runs"],
+        help="share: write a single stable link-page under artifacts/partA/share/ (recommended). "
+        "runs: create a timestamped bundle folder under artifacts/partA/runs/ (local-only).",
+    )
+    ap.add_argument("--run-name", type=str, default="", help="Used only for mode=runs (default: timestamp).")
     args = ap.parse_args()
 
     out_dir = args.out_dir
     artifacts_dir = args.artifacts_dir
 
+    if args.mode == "share":
+        share_dir = artifacts_dir / "share"
+        share_dir.mkdir(parents=True, exist_ok=True)
+
+        # Single page that links to canonical files (no duplication, no clutter).
+        lines: list[str] = []
+        lines.append("## Part A (Education) — Share page (START HERE)\n")
+        lines.append(f"- updated_at: {datetime.now().isoformat(timespec='seconds')}\n")
+        lines.append("### Recommended reading order\n")
+        lines.append("1. `../verification_note.md`")
+        lines.append("2. `../verification_selected_examples.md`")
+        lines.append("3. `../verification_audit.md`")
+        lines.append("4. `../claims_enriched.md`")
+        lines.append("5. `../cmo_configurations.md`")
+        lines.append("6. `../../graphrag-project/output_partA/human_readable/community_reports.md`")
+        lines.append("")
+        lines.append("### Raw GraphRAG human_readable exports\n")
+        lines.append("- `../../graphrag-project/output_partA/human_readable/claims.md`")
+        lines.append("- `../../graphrag-project/output_partA/human_readable/entities.md`")
+        lines.append("- `../../graphrag-project/output_partA/human_readable/relationships.md`")
+        lines.append("- `../../graphrag-project/output_partA/human_readable/communities.md`")
+        lines.append("- `../../graphrag-project/output_partA/human_readable/documents.md`")
+        lines.append("- `../../graphrag-project/output_partA/human_readable/stats.json`")
+        lines.append("")
+        lines.append("### Notes\n")
+        lines.append("- Heavy GraphRAG outputs (`*.parquet`, `lancedb/`) are intentionally not included/committed.")
+        _write_text(share_dir / "index.md", "\n".join(lines).strip() + "\n")
+        print(f"Wrote: {share_dir.resolve() / 'index.md'}")
+        return 0
+
+    # mode=runs (local-only bundle)
     run_name = args.run_name.strip() or datetime.now().strftime("%Y%m%d_%H%M%S")
     bundle_dir = artifacts_dir / "runs" / run_name
     bundle_dir.mkdir(parents=True, exist_ok=True)

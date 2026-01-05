@@ -31,3 +31,6 @@ data-28-studies/
 # Part A run bundles are for local sharing; do not commit by default (they can be large over time)
 artifacts/partA/runs/
 
+# Prevent accidental nested project folder creation (happens when running scripts from the wrong working directory)
+LLM-Knowledge-Graph/
+
