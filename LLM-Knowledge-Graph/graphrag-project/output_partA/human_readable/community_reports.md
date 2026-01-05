@@ -1,4 +1,4 @@
-# GraphRAG Community Reports (THIS is what to show in the meeting)
+# GraphRAG Community Reports 
 
 - rows: 165
 - cols: ['id', 'human_readable_id', 'community', 'level', 'parent', 'children', 'title', 'summary', 'full_content', 'rank', 'rating_explanation', 'findings', 'full_content_json', 'period', 'size']
