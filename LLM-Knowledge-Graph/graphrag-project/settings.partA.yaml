@@ -18,6 +18,8 @@ models:
     api_key: ${OPENAI_API_KEY}
     model: gpt-4o
     model_supports_json: true
+    # GraphRAG extract steps can produce long requests; 180s is often too low on Windows/network variance.
+    request_timeout: 900
     concurrent_requests: 1
     async_mode: threaded
     retry_strategy: exponential_backoff
@@ -32,6 +34,7 @@ models:
     api_key: ${OPENAI_API_KEY}
     model: gpt-4o-mini
     model_supports_json: true
+    request_timeout: 900
     concurrent_requests: 1
     async_mode: threaded
     retry_strategy: exponential_backoff
@@ -44,6 +47,7 @@ models:
     auth_type: api_key
     api_key: ${OPENAI_API_KEY}
     model: text-embedding-3-small
+    request_timeout: 300
     concurrent_requests: 1
     async_mode: threaded
     retry_strategy: exponential_backoff
