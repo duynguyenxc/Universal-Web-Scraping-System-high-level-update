@@ -32,6 +32,14 @@ $SettingsAbs = (Resolve-Path $Settings).Path
 $env:PARTA_OUTPUT_DIR = $OutAbs
 $env:PARTA_INPUT_DIR = $InAbs
 
+# Create expected cache/log folders up-front (GraphRAG sometimes assumes they exist on Windows)
+New-Item -ItemType Directory -Force -Path (Join-Path $OutAbs "cache") | Out-Null
+New-Item -ItemType Directory -Force -Path (Join-Path $OutAbs "cache\\extract_graph") | Out-Null
+New-Item -ItemType Directory -Force -Path (Join-Path $OutAbs "cache\\extract_covariates") | Out-Null
+New-Item -ItemType Directory -Force -Path (Join-Path $OutAbs "cache\\community_reports") | Out-Null
+New-Item -ItemType Directory -Force -Path (Join-Path $OutAbs "cache\\embed_text") | Out-Null
+New-Item -ItemType Directory -Force -Path (Join-Path $OutAbs "logs") | Out-Null
+
 # 1) Build metadata (PDF + embedded PubMed links)
 python "scripts/partA_extract_study_metadata.py" `
   --pdf-dir "$PdfDir" `
