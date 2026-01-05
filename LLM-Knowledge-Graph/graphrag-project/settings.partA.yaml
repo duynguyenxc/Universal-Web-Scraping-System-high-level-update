@@ -1,0 +1,163 @@
+### Part A (Education verification) config.
+### - Uses env vars so outputs are self-contained per run.
+### - Enables claim extraction and uses CMO-focused entity types/prompts.
+###
+### Required env vars (set by scripts/partA_run_graphrag.ps1):
+###   PARTA_INPUT_DIR
+###   PARTA_OUTPUT_DIR
+###
+### Use with:
+###   graphrag index --root graphrag-project --config graphrag-project/settings.partA.yaml --method standard --no-cache
+###   graphrag query --root graphrag-project --config graphrag-project/settings.partA.yaml --data <output_dir> --method global --query "..."
+
+models:
+  default_chat_model:
+    type: chat
+    model_provider: openai
+    auth_type: api_key
+    api_key: ${OPENAI_API_KEY}
+    model: gpt-4o
+    model_supports_json: true
+    concurrent_requests: 1
+    async_mode: threaded
+    retry_strategy: exponential_backoff
+    max_retries: 10
+    tokens_per_minute: null
+    requests_per_minute: null
+  cheap_chat_model:
+    # Use a cheaper model for high-volume indexing steps (extract_graph/claims/community reports).
+    type: chat
+    model_provider: openai
+    auth_type: api_key
+    api_key: ${OPENAI_API_KEY}
+    model: gpt-4o-mini
+    model_supports_json: true
+    concurrent_requests: 1
+    async_mode: threaded
+    retry_strategy: exponential_backoff
+    max_retries: 10
+    tokens_per_minute: null
+    requests_per_minute: null
+  default_embedding_model:
+    type: embedding
+    model_provider: openai
+    auth_type: api_key
+    api_key: ${OPENAI_API_KEY}
+    model: text-embedding-3-small
+    concurrent_requests: 1
+    async_mode: threaded
+    retry_strategy: exponential_backoff
+    max_retries: 10
+    tokens_per_minute: null
+    requests_per_minute: null
+
+input:
+  storage:
+    type: file
+    base_dir: ${PARTA_INPUT_DIR}
+  file_type: text
+
+chunks:
+  # Reduce number of chunks/calls (lower overhead + faster indexing).
+  size: 2200
+  overlap: 60
+  group_by_columns: [id]
+
+output:
+  type: file
+  base_dir: ${PARTA_OUTPUT_DIR}
+
+cache:
+  type: file
+  base_dir: ${PARTA_OUTPUT_DIR}\\cache
+
+reporting:
+  type: file
+  base_dir: ${PARTA_OUTPUT_DIR}\\logs
+
+vector_store:
+  default_vector_store:
+    type: lancedb
+    db_uri: ${PARTA_OUTPUT_DIR}\\lancedb
+    container_name: default
+
+embed_text:
+  model_id: default_embedding_model
+  vector_store_id: default_vector_store
+
+extract_graph:
+  model_id: cheap_chat_model
+  prompt: "prompts_partA/extract_graph.txt"
+  # Education / realist-synthesis oriented types (CMO-ready).
+  entity_types:
+    - intervention
+    - learner_population
+    - setting_context
+    - task_case
+    - mechanism
+    - outcome
+    - assessment_measure
+    - clinical_domain
+    - study_design
+    - comparator
+  max_gleanings: 1
+
+summarize_descriptions:
+  model_id: cheap_chat_model
+  prompt: "prompts/summarize_descriptions.txt"
+  max_length: 500
+
+extract_graph_nlp:
+  text_analyzer:
+    extractor_type: regex_english
+  async_mode: threaded
+
+cluster_graph:
+  # Increase to encourage principle-/mechanism-level communities across 28 studies (avoid over-fragmentation).
+  max_cluster_size: 25
+
+extract_claims:
+  enabled: true
+  model_id: cheap_chat_model
+  prompt: "prompts_partA/extract_claims.txt"
+  description: "CMO-relevant evidence claims: context, intervention, mechanism, outcome, and how/why links."
+  max_gleanings: 1
+
+community_reports:
+  model_id: cheap_chat_model
+  graph_prompt: "prompts/community_report_graph.txt"
+  text_prompt: "prompts/community_report_text.txt"
+  max_length: 2000
+  max_input_length: 8000
+
+embed_graph:
+  enabled: false
+
+umap:
+  enabled: false
+
+snapshots:
+  graphml: false
+  embeddings: false
+
+local_search:
+  chat_model_id: default_chat_model
+  embedding_model_id: default_embedding_model
+  prompt: "prompts/local_search_system_prompt.txt"
+
+global_search:
+  chat_model_id: default_chat_model
+  map_prompt: "prompts/global_search_map_system_prompt.txt"
+  reduce_prompt: "prompts/global_search_reduce_system_prompt.txt"
+  knowledge_prompt: "prompts/global_search_knowledge_system_prompt.txt"
+
+drift_search:
+  chat_model_id: default_chat_model
+  embedding_model_id: default_embedding_model
+  prompt: "prompts/drift_search_system_prompt.txt"
+  reduce_prompt: "prompts/drift_reduce_prompt.txt"
+
+basic_search:
+  chat_model_id: default_chat_model
+  embedding_model_id: default_embedding_model
+  prompt: "prompts/basic_search_system_prompt.txt"

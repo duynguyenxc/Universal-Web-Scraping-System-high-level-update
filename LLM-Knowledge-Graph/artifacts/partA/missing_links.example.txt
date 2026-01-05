@@ -1,0 +1,14 @@
+# One URL per line for studies where you could not obtain the PDF.
+# Lines starting with # are ignored.
+#
+#
+# https://pubmed.ncbi.nlm.nih.gov/11302031/
+# https://pubmed.ncbi.nlm.nih.gov/16565197/
+# https://pubmed.ncbi.nlm.nih.gov/21710417/
+# https://pubmed.ncbi.nlm.nih.gov/12634216/
+# https://pubmed.ncbi.nlm.nih.gov/21240775/
+# https://pubmed.ncbi.nlm.nih.gov/20936581/
+# https://pubmed.ncbi.nlm.nih.gov/20592507/
+# https://pubmed.ncbi.nlm.nih.gov/22587313/
+
+

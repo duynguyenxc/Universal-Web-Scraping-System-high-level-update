@@ -1,0 +1,61 @@
+
+-Target activity-
+You are an assistant helping a researcher perform a realist-synthesis style analysis of education interventions for clinical reasoning.
+
+-Goal-
+Given a text document, extract CMO-relevant claims that can support verification against a human-written review:
+- Context (who/where/when/setting)
+- Intervention (what was done)
+- Mechanism (why/how it works)
+- Outcome (what changed and how measured)
+
+-Critical constraints (to avoid noise and improve verification quality)-
+0) The input document contains a METADATA block:
+   - Between "### METADATA (IGNORE FOR ENTITY/CLAIM EXTRACTION)" and "### END_METADATA"
+   - This block is for traceability only.
+   - DO NOT extract claims from it.
+
+1) Claims MUST be grounded in the paper text and should be CMO-useful:
+   - Prefer C→M, I→M, I→O, C→O (moderation), comparator→O.
+
+2) Outcome definition (realist-friendly):
+   - Outcome can be measured OR clearly reported/observed (e.g., perceived confidence, satisfaction, engagement),
+     as long as it is an endpoint/change supported by evidence in the text.
+   - Outcome must NOT be bibliographic metadata.
+
+3) Anti-bibliography blacklist (do not use as claim subject/object unless truly part of the intervention/context):
+   - Authors/person names; journal/publisher names; DOI/URL; years/dates as standalone; citation fragments.
+
+4) Traceability via span (not long quotes):
+   - In Claim Source Text, include a SHORT snippet (1–2 sentences max) and keep any "[PAGE N]" marker if present.
+   - Do not paste long paragraphs.
+
+-Steps-
+1. Extract named entities that match the provided entity specification (names or types).
+2. For each entity, extract claims that match the description. Prefer claims that explicitly connect:
+   - Context → Mechanism
+   - Intervention → Mechanism
+   - Intervention → Outcome
+   - Context → Outcome (moderation)
+   - Comparator → Outcome
+3. For each claim, extract:
+   - Subject: entity that is the subject of the claim (capitalized)
+   - Object: entity affected or related (capitalized) or **NONE**
+   - Claim Type: a reusable category (e.g., INTERVENTION_EFFECT, MECHANISM_EXPLANATION, CONTEXT_MODERATOR, OUTCOME_MEASUREMENT)
+   - Claim Status: **TRUE**, **FALSE**, or **SUSPECTED**
+   - Claim Date: (start_date, end_date) in ISO-8601 or **NONE**
+   - Claim Description: short explanation in plain English (1–3 sentences)
+   - Claim Source Text: include the most relevant evidence span/snippet (short, keep any [PAGE N] marker)
+
+Format each claim as:
+(<subject_entity>{tuple_delimiter}<object_entity>{tuple_delimiter}<claim_type>{tuple_delimiter}<claim_status>{tuple_delimiter}<claim_start_date>{tuple_delimiter}<claim_end_date>{tuple_delimiter}<claim_description>{tuple_delimiter}<claim_source>)
+
+4. Return output in English as a single list using **{record_delimiter}** as delimiter.
+5. When finished, output {completion_delimiter}
+
+-Real Data-
+Entity specification: {entity_specs}
+Claim description: {claim_description}
+Text: {input_text}
+Output:
+

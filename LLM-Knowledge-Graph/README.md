@@ -58,6 +58,66 @@ python -m llm_kg --help
 
 This repo already contains a ready-to-run GraphRAG project at `LLM-Knowledge-Graph/graphrag-project/`.
 
+## Part A (Education verification) – this week’s deliverable
+
+Goal: run a **benchmarkable** pipeline over the Richmond et al. (2020) “included studies” corpus (28 studies), producing:
+- a **clean metadata manifest** (DOI/title/year/journal/abstract when available) with traceability,
+- GraphRAG indexing artifacts (graph, communities, community reports),
+- and a query demo grounded in the corpus.
+
+### 0) Put your benchmark files in the expected locations
+
+- **PDFs you downloaded**: `LLM-Knowledge-Graph/data-28-studies/` *(gitignored)*
+- **PDF containing the missing-study links** (PubMed links are OK): `LLM-Knowledge-Graph/documents/in4-about-28-studies-paper.pdf`
+
+### 1) Build metadata (PDF + missing-study links)
+
+```bash
+python LLM-Knowledge-Graph/scripts/partA_extract_study_metadata.py ^
+  --pdf-dir "LLM-Knowledge-Graph/data-28-studies" ^
+  --links-pdf "LLM-Knowledge-Graph/documents/in4-about-28-studies-paper.pdf" ^
+  --out-dir "LLM-Knowledge-Graph/artifacts/partA" ^
+  --max-pages 3 ^
+  --user-agent "llm-kg/0.1 (mailto:YOUR_EMAIL_HERE)"
+```
+
+Outputs:
+- `LLM-Knowledge-Graph/artifacts/partA/studies_metadata.csv`
+- `LLM-Knowledge-Graph/artifacts/partA/studies_metadata.jsonl`
+
+### 2) Build GraphRAG input texts (28 docs)
+
+```bash
+python LLM-Knowledge-Graph/scripts/partA_prepare_graphrag_input.py ^
+  --metadata-jsonl "LLM-Knowledge-Graph/artifacts/partA/studies_metadata.jsonl" ^
+  --pdf-dir "LLM-Knowledge-Graph/data-28-studies" ^
+  --out-input-dir "LLM-Knowledge-Graph/graphrag-project/input_partA"
+```
+
+### 3) Run GraphRAG (index + query)
+
+Set your key (Windows PowerShell):
+
+```powershell
+$env:OPENAI_API_KEY="YOUR_KEY"
+```
+
+Then run the end-to-end script:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File LLM-Knowledge-Graph/scripts/partA_run_graphrag.ps1
+```
+
+Or skip indexing (if you already indexed once):
+
+```powershell
+powershell -ExecutionPolicy Bypass -File LLM-Knowledge-Graph/scripts/partA_run_graphrag.ps1 -SkipIndex
+```
+
+Notes:
+- This Part A runner uses `graphrag-project/settings.partA.yaml` (CMO-oriented entity types + claim extraction).
+- Outputs are written to `graphrag-project/output_partA/` and also exported to `output_partA/human_readable/` for easy review.
+
 ### 1) Install GraphRAG (separate from `llm-kg`)
 
 From `LLM-Knowledge-Graph/`:

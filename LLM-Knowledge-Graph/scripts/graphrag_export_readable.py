@@ -112,6 +112,31 @@ def main() -> int:
 
         _write_text(export_dir / "community_reports.md", md)
 
+    # Claims / covariates (GraphRAG versions differ: some output "claims.parquet", others "covariates.parquet")
+    claims_p = out_dir / "claims.parquet"
+    cov_p = out_dir / "covariates.parquet"
+    src_p = claims_p if claims_p.exists() else (cov_p if cov_p.exists() else None)
+    if src_p is not None:
+        df = pd.read_parquet(src_p)
+        md = "# GraphRAG Claims (sample)\n\n"
+        md += f"- source: {src_p.name}\n"
+        md += f"- rows: {len(df)}\n- cols: {df.columns.tolist()}\n\n"
+        # Column names vary by version; pick the best available set.
+        preferred_cols = [
+            "subject",
+            "object",
+            "type",
+            "status",
+            "description",
+            "source_text",
+            "text",
+            "covariate_type",
+            "covariate_status",
+        ]
+        md += _df_head_md(df, preferred_cols, args.n)
+        md += "\n"
+        _write_text(export_dir / "claims.md", md)
+
     print(f"Exported readable files to: {export_dir.resolve()}")
     return 0
 

@@ -1,0 +1,62 @@
+
+-Goal-
+Given a text document and a list of entity types (CMO-oriented), identify the entities and the relationships among them with emphasis on realist-synthesis structure:
+- Context (C): who/where/when/setting constraints
+- Mechanism (M): why/how the intervention works (cognitive processes, reasoning strategies)
+- Outcome (O): what changed (performance, accuracy, confidence, transfer, retention)
+
+-Critical constraints (to avoid noise and improve verification quality)-
+0) The input document contains a METADATA block:
+   - Between "### METADATA (IGNORE FOR ENTITY/CLAIM EXTRACTION)" and "### END_METADATA"
+   - This block is for traceability only.
+   - DO NOT extract entities or relationships from it.
+
+1) DO NOT create entities for bibliographic / administrative items, even if present in text:
+   - Authors / person names
+   - Journals / publishers / organizations (e.g., "Wiley", "Elsevier", "Medical Education", "Academic Medicine")
+   - Years/dates as standalone entities
+   - DOI/URL/ISSN/ISBN/email
+   - "et al." and citation fragments
+
+2) Prefer domain-relevant, CMO-useful entities:
+   - Mechanism: a WHY/HOW process (e.g., cognitive load regulation, reflection, hypothesis testing, pattern recognition)
+   - Outcome: an endpoint/change that is measured OR clearly reported/observed (e.g., diagnostic accuracy, confidence, engagement)
+   - Context: moderators/constraints (population, setting, prior knowledge, time pressure, case complexity)
+   - Intervention/comparator: what was done / compared
+
+3) Be specific but not overly granular:
+   - Avoid generic entities like "students", "education", "intervention" unless tied to a specific CMO claim.
+
+-Steps-
+1. Identify all entities in the text that match the provided entity types: [{entity_types}]
+For each entity, extract:
+- entity_name: Name of the entity, capitalized
+- entity_type: One of [{entity_types}]
+- entity_description: 1–3 sentences, specific to this paper (include population/setting/task if applicable)
+Format: ("entity"{tuple_delimiter}<entity_name>{tuple_delimiter}<entity_type>{tuple_delimiter}<entity_description>)
+
+2. Identify relationships that are evidence-grounded and useful for CMO reasoning. Prefer these relationship patterns when present:
+- intervention -> mechanism (how/why)
+- intervention -> outcome (effect)
+- context -> mechanism/outcome (moderators, conditions)
+- study_design/assessment_measure -> outcome (how measured)
+- comparator -> outcome (relative effect)
+For each relationship, extract:
+- source_entity (from step 1)
+- target_entity (from step 1)
+- relationship_description (short, evidence-grounded)
+- relationship_strength (1–10, higher = clearer/stronger in the text)
+Format: ("relationship"{tuple_delimiter}<source_entity>{tuple_delimiter}<target_entity>{tuple_delimiter}<relationship_description>{tuple_delimiter}<relationship_strength>)
+
+3. Return output in English as a single list of all entities and relationships. Use **{record_delimiter}** as the list delimiter.
+
+4. When finished, output {completion_delimiter}
+
+######################
+-Real Data-
+######################
+Entity_types: {entity_types}
+Text: {input_text}
+######################
+Output:
+
