@@ -28,3 +28,6 @@ documents/
 # Part A benchmark corpus (PDFs) - keep out of git history
 data-28-studies/
 
+# Part A run bundles are for local sharing; do not commit by default (they can be large over time)
+artifacts/partA/runs/
+
