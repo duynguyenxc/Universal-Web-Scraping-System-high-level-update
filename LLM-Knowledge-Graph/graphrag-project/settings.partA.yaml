@@ -73,16 +73,17 @@ output:
 
 cache:
   type: file
-  base_dir: ${PARTA_OUTPUT_DIR}\\cache
+  # IMPORTANT (Windows): cache filenames can be long; use a short cache dir to avoid MAX_PATH issues.
+  base_dir: ${PARTA_CACHE_DIR}
 
 reporting:
   type: file
-  base_dir: ${PARTA_OUTPUT_DIR}\\logs
+  base_dir: ${PARTA_LOG_DIR}
 
 vector_store:
   default_vector_store:
     type: lancedb
-    db_uri: ${PARTA_OUTPUT_DIR}\\lancedb
+    db_uri: ${PARTA_LANCEDB_DIR}
     container_name: default
 
 embed_text:

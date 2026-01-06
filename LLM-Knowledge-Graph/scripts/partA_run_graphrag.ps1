@@ -31,14 +31,18 @@ $SettingsAbs = (Resolve-Path $Settings).Path
 
 $env:PARTA_OUTPUT_DIR = $OutAbs
 $env:PARTA_INPUT_DIR = $InAbs
+$env:PARTA_CACHE_DIR = (Join-Path $env:TEMP "graphrag_cache_partA")
+$env:PARTA_LOG_DIR = (Join-Path $OutAbs "logs")
+$env:PARTA_LANCEDB_DIR = (Join-Path $OutAbs "lancedb")
 
 # Create expected cache/log folders up-front (GraphRAG sometimes assumes they exist on Windows)
-New-Item -ItemType Directory -Force -Path (Join-Path $OutAbs "cache") | Out-Null
-New-Item -ItemType Directory -Force -Path (Join-Path $OutAbs "cache\\extract_graph") | Out-Null
-New-Item -ItemType Directory -Force -Path (Join-Path $OutAbs "cache\\extract_covariates") | Out-Null
-New-Item -ItemType Directory -Force -Path (Join-Path $OutAbs "cache\\community_reports") | Out-Null
-New-Item -ItemType Directory -Force -Path (Join-Path $OutAbs "cache\\embed_text") | Out-Null
-New-Item -ItemType Directory -Force -Path (Join-Path $OutAbs "logs") | Out-Null
+New-Item -ItemType Directory -Force -Path $env:PARTA_CACHE_DIR | Out-Null
+New-Item -ItemType Directory -Force -Path (Join-Path $env:PARTA_CACHE_DIR "extract_graph") | Out-Null
+New-Item -ItemType Directory -Force -Path (Join-Path $env:PARTA_CACHE_DIR "extract_covariates") | Out-Null
+New-Item -ItemType Directory -Force -Path (Join-Path $env:PARTA_CACHE_DIR "community_reports") | Out-Null
+New-Item -ItemType Directory -Force -Path (Join-Path $env:PARTA_CACHE_DIR "embed_text") | Out-Null
+New-Item -ItemType Directory -Force -Path $env:PARTA_LOG_DIR | Out-Null
+New-Item -ItemType Directory -Force -Path $env:PARTA_LANCEDB_DIR | Out-Null
 
 # 1) Build metadata (PDF + embedded PubMed links)
 python "scripts/partA_extract_study_metadata.py" `
@@ -47,22 +51,30 @@ python "scripts/partA_extract_study_metadata.py" `
   --out-dir "artifacts/partA" `
   --max-pages 3 `
   --user-agent "$UserAgent"
+if ($LASTEXITCODE -ne 0) { throw "Metadata extraction failed (exit=$LASTEXITCODE)." }
 
 # 2) Build GraphRAG input .txt
 python "scripts/partA_prepare_graphrag_input.py" `
   --metadata-jsonl "artifacts/partA/studies_metadata.jsonl" `
   --pdf-dir "$PdfDir" `
   --out-input-dir "$InputDir"
+if ($LASTEXITCODE -ne 0) { throw "GraphRAG input preparation failed (exit=$LASTEXITCODE)." }
 
 if (-not $SkipIndex) {
   # 3) GraphRAG index (authoritative knowledge layer)
   # Note: requires OPENAI_API_KEY in environment.
   # IMPORTANT: do NOT use --no-cache by default; caching prevents re-paying for the same LLM calls when iterating prompts/settings.
   graphrag index --root "$RootAbs" --config "$SettingsAbs" --method standard --output "$OutAbs"
+  if ($LASTEXITCODE -ne 0) { throw "GraphRAG index failed (exit=$LASTEXITCODE). Check $OutAbs\\indexing-engine.log" }
+  if (-not (Test-Path (Join-Path $OutAbs "entities.parquet"))) {
+    throw "GraphRAG index did not produce entities.parquet. Likely Windows path/cache issue. Check $OutAbs\\indexing-engine.log"
+  }
 }
 
 # 4) GraphRAG query (demo question)
-graphrag query --root "$RootAbs" --config "$SettingsAbs" --data "$OutAbs" --method "$QueryMethod" --query "$Query" --response-type "Bullet list of 8-12 items"
+if (Test-Path (Join-Path $OutAbs "entities.parquet")) {
+  graphrag query --root "$RootAbs" --config "$SettingsAbs" --data "$OutAbs" --method "$QueryMethod" --query "$Query" --response-type "Bullet list of 8-12 items"
+}
 
 # 5) Export human-readable files for meeting (avoid reading parquet)
 python "scripts/graphrag_export_readable.py" --out-dir "$OutAbs" --export-dir "$OutAbs/human_readable" --n 15
@@ -71,7 +83,9 @@ python "scripts/graphrag_export_readable.py" --out-dir "$OutAbs" --export-dir "$
 python "scripts/partA_audit_outputs.py" --out-dir "$OutAbs" --out-md "artifacts/partA/verification_audit.md"
 
 # 7) Verification-grade exports: enriched claims + draft CMO configurations
-python "scripts/partA_export_cmo_configurations.py" --out-dir "$OutAbs" --out-claims-md "artifacts/partA/claims_enriched.md" --out-md "artifacts/partA/cmo_configurations.md"
+if (Test-Path (Join-Path $OutAbs "entities.parquet")) {
+  python "scripts/partA_export_cmo_configurations.py" --out-dir "$OutAbs" --out-claims-md "artifacts/partA/claims_enriched.md" --out-md "artifacts/partA/cmo_configurations.md"
+}
 
 # 8) Update the stable share page (one link page to open, no duplication)
 python "scripts/partA_create_run_bundle.py" --out-dir "$OutAbs" --artifacts-dir "artifacts/partA" --mode "share"
