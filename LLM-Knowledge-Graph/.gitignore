@@ -16,11 +16,13 @@ data-from-S3-bucket/
 graphrag-project/cache/
 graphrag-project/input/
 graphrag-project/input_partA/
+graphrag-project/input_partA_v2/
 graphrag-project/output/
 graphrag-project/output_meeting/
 graphrag-project/output_meeting_std/
 # Part A run outputs can be large (parquet + lancedb). We commit only lightweight snapshots under artifacts/.
 graphrag-project/output_partA/
+graphrag-project/output_partA_v2/
 
 # Local documents (papers, notes) - keep out of git history
 documents/
