@@ -22,7 +22,9 @@ graphrag-project/output_meeting/
 graphrag-project/output_meeting_std/
 # Part A run outputs can be large (parquet + lancedb). We commit only lightweight snapshots under artifacts/.
 graphrag-project/output_partA/
-graphrag-project/output_partA_v2/
+# Part A v2 outputs: keep parquets + human_readable in git; ignore local vector stores/caches
+graphrag-project/output_partA_v2/lancedb/
+graphrag-project/output_partA_v2/cache/
 
 # Local documents (papers, notes) - keep out of git history
 documents/
