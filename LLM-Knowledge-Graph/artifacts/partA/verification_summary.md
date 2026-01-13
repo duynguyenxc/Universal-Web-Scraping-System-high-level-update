@@ -10,7 +10,7 @@
 
 ### GraphRAG indexing artifacts
 
-- output dir: `graphrag-project/output_partA`
+- output dir: `LLM-Knowledge-Graph/graphrag-project/output_partA_v2`
 - documents.parquet: YES
 - text_units.parquet: YES
 - entities.parquet: YES
@@ -24,40 +24,40 @@
 
 ```json
 {
-  "total_runtime": 5761.824764728546,
+  "total_runtime": 75499.63916039467,
   "num_documents": 28,
   "update_documents": 0,
   "input_load_time": 0,
   "workflows": {
     "load_input_documents": {
-      "overall": 0.3582332134246826
+      "overall": 0.09464025497436523
     },
     "create_base_text_units": {
-      "overall": 0.4307527542114258
+      "overall": 0.3613717555999756
     },
     "create_final_documents": {
-      "overall": 0.051291704177856445
+      "overall": 0.04265427589416504
     },
     "extract_graph": {
-      "overall": 2446.320554494858
+      "overall": 70811.71358704567
     },
     "finalize_graph": {
-      "overall": 0.14610767364501953
+      "overall": 0.17974400520324707
     },
     "extract_covariates": {
-      "overall": 1889.661578655243
+      "overall": 3594.673085451126
     },
     "create_communities": {
-      "overall": 0.18398761749267578
+      "overall": 0.2330927848815918
     },
     "create_final_text_units": {
-      "overall": 0.1439054012298584
+      "overall": 0.09177827835083008
     },
     "create_community_reports": {
-      "overall": 1355.1443281173706
+      "overall": 968.6127045154572
     },
     "generate_text_embeddings": {
-      "overall": 69.38402509689331
+      "overall": 123.63417887687683
     }
   }
 }

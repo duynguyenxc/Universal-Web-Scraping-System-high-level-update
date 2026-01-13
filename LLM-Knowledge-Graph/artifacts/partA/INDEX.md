@@ -33,10 +33,11 @@ What it is: claims joined to paper metadata via `text_unit_id` so each row is au
 What it is: per-paper CMO candidates derived from claims + entity typing; intended for Richmond-style mapping + human refinement.
 
 6) **GraphRAG “human_readable” exports (raw GraphRAG artifacts)**  
-`graphrag-project/output_partA/human_readable/`  
+`graphrag-project/output_partA_v2/human_readable/`  
 Key files:
 - `community_reports.md` (largest, most important GraphRAG artifact)
 - `claims.md` (sample view; not verification-grade)
+- `claims_fixed.md` (repaired claims view; verification helper when covariates parsing fails)
 - `entities.md`, `relationships.md`, `communities.md`, `documents.md`
 - `stats.json`
 

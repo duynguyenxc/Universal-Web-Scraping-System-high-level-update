@@ -96,9 +96,14 @@ def main() -> int:
         md.append("")
 
     # --- Claims / covariates ---
+    fixed_path = out_dir / "claims_fixed.parquet"
     claims_path = out_dir / "claims.parquet"
     cov_path = out_dir / "covariates.parquet"
-    src_path = claims_path if claims_path.exists() else (cov_path if cov_path.exists() else None)
+    src_path = (
+        fixed_path
+        if fixed_path.exists()
+        else (claims_path if claims_path.exists() else (cov_path if cov_path.exists() else None))
+    )
     if src_path is not None:
         claims = pd.read_parquet(src_path)
         md.append("### Claim quality (traceability + CMO)\n")

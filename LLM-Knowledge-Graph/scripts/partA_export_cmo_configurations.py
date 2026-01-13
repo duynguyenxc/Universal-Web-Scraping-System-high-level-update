@@ -113,7 +113,12 @@ def main() -> int:
     docs = pd.read_parquet(out_dir / "documents.parquet")
     tus = pd.read_parquet(out_dir / "text_units.parquet")
     ent = pd.read_parquet(out_dir / "entities.parquet")
-    cov_path = out_dir / ("claims.parquet" if (out_dir / "claims.parquet").exists() else "covariates.parquet")
+    fixed = out_dir / "claims_fixed.parquet"
+    cov_path = out_dir / (
+        "claims_fixed.parquet"
+        if fixed.exists()
+        else ("claims.parquet" if (out_dir / "claims.parquet").exists() else "covariates.parquet")
+    )
     claims = pd.read_parquet(cov_path)
 
     # Build doc_id -> meta

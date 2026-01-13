@@ -1,6 +1,6 @@
 ## Part A (Education) — Share page (START HERE)
 
-- updated_at: 2026-01-06T18:34:27
+- updated_at: 2026-01-12T11:42:54
 
 ### Recommended reading order
 
@@ -9,16 +9,17 @@
 3. `../verification_audit.md`
 4. `../claims_enriched.md`
 5. `../cmo_configurations.md`
-6. `../../graphrag-project/output_partA/human_readable/community_reports.md`
+6. `../../../graphrag-project/output_partA_v2/human_readable/community_reports.md`
 
 ### Raw GraphRAG human_readable exports
 
-- `../../graphrag-project/output_partA/human_readable/claims.md`
-- `../../graphrag-project/output_partA/human_readable/entities.md`
-- `../../graphrag-project/output_partA/human_readable/relationships.md`
-- `../../graphrag-project/output_partA/human_readable/communities.md`
-- `../../graphrag-project/output_partA/human_readable/documents.md`
-- `../../graphrag-project/output_partA/human_readable/stats.json`
+- `../../../graphrag-project/output_partA_v2/human_readable/claims.md`
+- `../../../graphrag-project/output_partA_v2/human_readable/claims_fixed.md` (if present)
+- `../../../graphrag-project/output_partA_v2/human_readable/entities.md`
+- `../../../graphrag-project/output_partA_v2/human_readable/relationships.md`
+- `../../../graphrag-project/output_partA_v2/human_readable/communities.md`
+- `../../../graphrag-project/output_partA_v2/human_readable/documents.md`
+- `../../../graphrag-project/output_partA_v2/human_readable/stats.json`
 
 ### Notes
 

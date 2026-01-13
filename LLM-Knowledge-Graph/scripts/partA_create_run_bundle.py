@@ -18,6 +18,20 @@ def _copy_if_exists(src: Path, dst: Path) -> None:
     shutil.copy2(src, dst)
 
 
+def _rel_from_share_to_outdir(out_dir: Path) -> str:
+    """
+    share page lives at: artifacts/partA/share/index.md
+    so the repo-root for relative links is 3 levels up.
+    """
+    # We want a clean, portable markdown path.
+    # Typical out_dir: LLM-Knowledge-Graph/graphrag-project/output_partA_v2
+    try:
+        rel = out_dir.relative_to(Path("LLM-Knowledge-Graph"))
+    except Exception:
+        rel = out_dir
+    return (Path("../../../") / rel).as_posix()
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(
         description="Part A: create a lightweight, review-friendly entrypoint (no parquet/lancedb)."
@@ -42,6 +56,8 @@ def main() -> int:
         share_dir = artifacts_dir / "share"
         share_dir.mkdir(parents=True, exist_ok=True)
 
+        out_rel = _rel_from_share_to_outdir(out_dir)
+
         # Single page that links to canonical files (no duplication, no clutter).
         lines: list[str] = []
         lines.append("## Part A (Education) — Share page (START HERE)\n")
@@ -52,15 +68,16 @@ def main() -> int:
         lines.append("3. `../verification_audit.md`")
         lines.append("4. `../claims_enriched.md`")
         lines.append("5. `../cmo_configurations.md`")
-        lines.append("6. `../../graphrag-project/output_partA/human_readable/community_reports.md`")
+        lines.append(f"6. `{out_rel}/human_readable/community_reports.md`")
         lines.append("")
         lines.append("### Raw GraphRAG human_readable exports\n")
-        lines.append("- `../../graphrag-project/output_partA/human_readable/claims.md`")
-        lines.append("- `../../graphrag-project/output_partA/human_readable/entities.md`")
-        lines.append("- `../../graphrag-project/output_partA/human_readable/relationships.md`")
-        lines.append("- `../../graphrag-project/output_partA/human_readable/communities.md`")
-        lines.append("- `../../graphrag-project/output_partA/human_readable/documents.md`")
-        lines.append("- `../../graphrag-project/output_partA/human_readable/stats.json`")
+        lines.append(f"- `{out_rel}/human_readable/claims.md`")
+        lines.append(f"- `{out_rel}/human_readable/claims_fixed.md` (if present)")
+        lines.append(f"- `{out_rel}/human_readable/entities.md`")
+        lines.append(f"- `{out_rel}/human_readable/relationships.md`")
+        lines.append(f"- `{out_rel}/human_readable/communities.md`")
+        lines.append(f"- `{out_rel}/human_readable/documents.md`")
+        lines.append(f"- `{out_rel}/human_readable/stats.json`")
         lines.append("")
         lines.append("### Notes\n")
         lines.append("- Heavy GraphRAG outputs (`*.parquet`, `lancedb/`) are intentionally not included/committed.")
@@ -95,6 +112,7 @@ def main() -> int:
     for name in [
         "community_reports.md",
         "claims.md",
+        "claims_fixed.md",
         "entities.md",
         "relationships.md",
         "communities.md",
