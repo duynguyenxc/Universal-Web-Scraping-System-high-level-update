@@ -15,6 +15,12 @@ Given a text document, extract CMO-relevant claims that can support verification
    - This block is for traceability only.
    - DO NOT extract claims from it.
 
+0.1) Formatting robustness (important for GraphRAG parsing):
+   - Output MUST be a single list, with records separated ONLY by {record_delimiter}.
+   - Each record MUST be exactly ONE parenthesized tuple with 8 fields (subject, object, type, status, start, end, description, source_text).
+   - NEVER output special tokens like "<|DIFF_MARKER|>" or fragments like "(\"ENTITY\"".
+   - NEVER include "{tuple_delimiter}" or "{record_delimiter}" inside Subject/Object/Description/Source Text (use them only as delimiters).
+
 1) Claims MUST be grounded in the paper text and should be CMO-useful:
    - Prefer C→M, I→M, I→O, C→O (moderation), comparator→O.
 
@@ -35,6 +41,10 @@ Given a text document, extract CMO-relevant claims that can support verification
    - Subject/Object must be clean entity names only (NO numbering like "1.", NO bullets, NO parentheses wrappers).
    - Do NOT include ":" or ";" inside Subject/Object.
    - Keep Subject/Object short (<= 10 words) but specific.
+
+5.1) Avoid unhelpful subjects/objects:
+   - Do NOT use generic placeholders like "THE RESULTS", "THE STUDY", "INTERVENTION", "LEARNING" as subject/object.
+   - Prefer concrete C/M/O entities (e.g., LOW KNOWLEDGE, SELF-EFFICACY, COGNITIVE LOAD, DIAGNOSTIC ACCURACY).
 
 -Steps-
 1. Extract named entities that match the provided entity specification (names or types).

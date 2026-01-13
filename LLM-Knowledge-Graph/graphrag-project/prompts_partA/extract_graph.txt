@@ -11,6 +11,11 @@ Given a text document and a list of entity types (CMO-oriented), identify the en
    - This block is for traceability only.
    - DO NOT extract entities or relationships from it.
 
+0.1) Formatting robustness (important for GraphRAG parsing):
+   - NEVER output any special tokens like "<|DIFF_MARKER|>" or fragments like "(\"ENTITY\"".
+   - NEVER include "{tuple_delimiter}" or "{record_delimiter}" inside entity names/descriptions (use them only as delimiters).
+   - If you cannot follow the exact output format, output nothing except {completion_delimiter}.
+
 1) DO NOT create entities for bibliographic / administrative items, even if present in text:
    - Authors / person names
    - Journals / publishers / organizations (e.g., "Wiley", "Elsevier", "Medical Education", "Academic Medicine")
@@ -32,6 +37,19 @@ Given a text document and a list of entity types (CMO-oriented), identify the en
 3) Be specific but not overly granular:
    - Avoid generic entities like "students", "education", "intervention" unless tied to a specific CMO claim.
    - Avoid institutions/organizations unless they are truly part of the **context** (e.g., "clinical clerkship", "simulation center") and not bibliographic noise.
+
+3.1) Avoid category-label entities:
+   - Do NOT create entities that are just the category name itself, e.g., "MECHANISM", "INTERVENTION", "ASSESSMENT MEASURE", "SETTING", "TASK CASE".
+
+3.2) Soft constraints to reduce measurement-skew (avoid overfitting, but reduce noise):
+   - Only create ASSESSMENT_MEASURE entities when they are central to interpreting the outcome (e.g., "diagnostic accuracy test", "delayed test", "OSCE score").
+   - Do NOT create separate ASSESSMENT_MEASURE entities for every timepoint/item unless the paper explicitly treats them as distinct outcomes.
+   - Prefer OUTCOME entities (e.g., DIAGNOSTIC ACCURACY, CONFIDENCE) over measurement artifacts (e.g., "immediate test") unless needed for verification.
+
+3.3) Typing guidance (common confusion in this domain):
+   - MECHANISM = learner cognitive/affective process (e.g., pattern recognition, illness script activation, cognitive load regulation, reflection, bias mitigation).
+   - INTERVENTION = what educators/designers DO (e.g., schema-based instruction, worked examples, self-explanation prompts, simulation sessions).
+   - If a term is a reasoning mode (analytic / non-analytic / dual-process), treat it as MECHANISM unless the paper describes it as a taught training intervention.
 
 -Steps-
 1. Identify all entities in the text that match the provided entity types: [{entity_types}]

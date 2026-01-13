@@ -86,15 +86,18 @@ if (Test-Path (Join-Path $OutAbs "covariates.parquet")) {
   python "scripts/partA_repair_claims_parquet.py" --out-dir "$OutAbs" --in-parquet "covariates.parquet" --out-parquet "claims_fixed.parquet" --out-md "human_readable/claims_fixed.md"
 }
 
-# 7) Verification audit report (quality gates + spot-check tables)
+# 7) KG quality gates (detect regressions early)
+python "scripts/partA_quality_gates.py" --out-dir "$OutAbs"
+
+# 8) Verification audit report (quality gates + spot-check tables)
 python "scripts/partA_audit_outputs.py" --out-dir "$OutAbs" --out-md "artifacts/partA/verification_audit.md"
 
-# 8) Verification-grade exports: enriched claims + draft CMO configurations
+# 9) Verification-grade exports: enriched claims + draft CMO configurations
 if (Test-Path (Join-Path $OutAbs "entities.parquet")) {
   python "scripts/partA_export_cmo_configurations.py" --out-dir "$OutAbs" --out-claims-md "artifacts/partA/claims_enriched.md" --out-md "artifacts/partA/cmo_configurations.md"
 }
 
-# 9) Update the stable share page (one link page to open, no duplication)
+# 10) Update the stable share page (one link page to open, no duplication)
 python "scripts/partA_create_run_bundle.py" --out-dir "$OutAbs" --artifacts-dir "artifacts/partA" --mode "share"
 
 Write-Host "Done. Output dir: $OutDir" -ForegroundColor Green
