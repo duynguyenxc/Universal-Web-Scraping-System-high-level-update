@@ -38,8 +38,10 @@ Given a text document and a list of entity types (CMO-oriented), identify the en
    - Avoid generic entities like "students", "education", "intervention" unless tied to a specific CMO claim.
    - Avoid institutions/organizations unless they are truly part of the **context** (e.g., "clinical clerkship", "simulation center") and not bibliographic noise.
 
-3.1) Avoid category-label entities:
-   - Do NOT create entities that are just the category name itself, e.g., "MECHANISM", "INTERVENTION", "ASSESSMENT MEASURE", "SETTING", "TASK CASE".
+3.1) Avoid category-label entities (CRITICAL):
+   - Do NOT create entities that are just the category name itself, e.g., "MECHANISM", "INTERVENTION", "ASSESSMENT MEASURE", "SETTING", "TASK CASE", "OUTCOME", "CONTEXT".
+   - If you see a generic term like "mechanism" or "outcome" in the text, extract the SPECIFIC mechanism/outcome (e.g., "COGNITIVE LOAD REGULATION", "DIAGNOSTIC ACCURACY"), not the category label.
+   - **REQUIRED**: Every entity MUST have a non-empty entity_type. If you cannot assign a type, do NOT create the entity.
 
 3.2) Soft constraints to reduce measurement-skew (avoid overfitting, but reduce noise):
    - Only create ASSESSMENT_MEASURE entities when they are central to interpreting the outcome (e.g., "diagnostic accuracy test", "delayed test", "OSCE score").
@@ -59,12 +61,15 @@ For each entity, extract:
 - entity_description: 1–3 sentences, specific to this paper (include population/setting/task if applicable)
 Format: ("entity"{tuple_delimiter}<entity_name>{tuple_delimiter}<entity_type>{tuple_delimiter}<entity_description>)
 
-2. Identify relationships that are evidence-grounded and useful for CMO reasoning. Prefer these relationship patterns when present:
-- intervention -> mechanism (how/why)
-- intervention -> outcome (effect)
-- context -> mechanism/outcome (moderators, conditions)
+2. Identify relationships that are evidence-grounded and useful for CMO reasoning. **PREFER these directional patterns** (causal/logical flow):
+- intervention -> mechanism (how/why the intervention activates a process)
+- mechanism -> outcome (how the process leads to a result)
+- intervention -> outcome (direct effect, when mechanism is implicit)
+- context -> mechanism (context enables/triggers mechanism)
+- context -> outcome (context moderates outcome directly)
 - study_design/assessment_measure -> outcome (how measured)
 - comparator -> outcome (relative effect)
+**AVOID reverse patterns** unless explicitly stated in the text (e.g., avoid "outcome -> mechanism" unless the paper explicitly says the outcome caused the mechanism).
 For each relationship, extract:
 - source_entity (from step 1)
 - target_entity (from step 1)

@@ -7,7 +7,9 @@ Param(
   [Parameter(Mandatory=$false)][string]$UserAgent = "llm-kg/0.1 (mailto:YOUR_EMAIL_HERE)",
   [Parameter(Mandatory=$false)][string]$Query = "What educational interventions improve clinical reasoning, for whom, in what contexts, and why? Summarize mechanisms and outcomes with citations.",
   [Parameter(Mandatory=$false)][ValidateSet("global","local","basic","drift")][string]$QueryMethod = "global",
-  [Parameter(Mandatory=$false)][switch]$SkipIndex
+  [Parameter(Mandatory=$false)][switch]$SkipIndex,
+  [Parameter(Mandatory=$false)][int]$Limit = 0,
+  [Parameter(Mandatory=$false)][switch]$OnlyPdf
 )
 
 $ErrorActionPreference = "Stop"
@@ -54,10 +56,15 @@ python "scripts/partA_extract_study_metadata.py" `
 if ($LASTEXITCODE -ne 0) { throw "Metadata extraction failed (exit=$LASTEXITCODE)." }
 
 # 2) Build GraphRAG input .txt
-python "scripts/partA_prepare_graphrag_input.py" `
-  --metadata-jsonl "artifacts/partA/studies_metadata.jsonl" `
-  --pdf-dir "$PdfDir" `
-  --out-input-dir "$InputDir"
+$PrepareArgs = @(
+  "scripts/partA_prepare_graphrag_input.py",
+  "--metadata-jsonl", "artifacts/partA/studies_metadata.jsonl",
+  "--pdf-dir", "$PdfDir",
+  "--out-input-dir", "$InputDir"
+)
+if ($OnlyPdf) { $PrepareArgs += "--only-pdf" }
+if ($Limit -gt 0) { $PrepareArgs += @("--limit", "$Limit") }
+python @PrepareArgs
 if ($LASTEXITCODE -ne 0) { throw "GraphRAG input preparation failed (exit=$LASTEXITCODE)." }
 
 if (-not $SkipIndex) {

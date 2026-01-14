@@ -22,7 +22,12 @@ Given a text document, extract CMO-relevant claims that can support verification
    - NEVER include "{tuple_delimiter}" or "{record_delimiter}" inside Subject/Object/Description/Source Text (use them only as delimiters).
 
 1) Claims MUST be grounded in the paper text and should be CMO-useful:
-   - Prefer C→M, I→M, I→O, C→O (moderation), comparator→O.
+   - **PREFER these patterns** (in order of priority):
+     * MECHANISM_EXPLANATION: I→M, C→M (how/why interventions work, what contexts enable mechanisms)
+     * CONTEXT_MODERATOR: C→O, C→M (who/where/when conditions affect outcomes/mechanisms)
+     * INTERVENTION_EFFECT: I→O (direct effects when mechanism is implicit)
+     * OUTCOME_MEASUREMENT: (any entity) → O (how outcomes were measured; use sparingly, only when measurement method is central)
+   - **BALANCE**: Aim for roughly 30-40% MECHANISM_EXPLANATION, 20-30% CONTEXT_MODERATOR, 20-30% INTERVENTION_EFFECT, 10-20% OUTCOME_MEASUREMENT.
 
 2) Outcome definition (realist-friendly):
    - Outcome can be measured OR clearly reported/observed (e.g., perceived confidence, satisfaction, engagement),

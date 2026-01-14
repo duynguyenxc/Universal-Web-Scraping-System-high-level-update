@@ -8,9 +8,11 @@ import pandas as pd
 
 
 CORRUPT_PATTERNS = [
-    re.compile(r"<\\|DIFF_MARKER\\|>"),
-    re.compile(r"\\(\\\"ENTITY\\\""),
-    re.compile(r"\\(\"ENTITY\"\\)"),
+    # GraphRAG / LLM "diff marker" artifact
+    re.compile(r"<\|DIFF_MARKER\|>"),
+    # Common "ENTITY" echo artifacts (sometimes with escaped quotes)
+    re.compile(r'\("ENTITY"'),
+    re.compile(r'\(\\\"ENTITY\\\"'),
 ]
 
 

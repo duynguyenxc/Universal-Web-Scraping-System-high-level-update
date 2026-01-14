@@ -1,6 +1,6 @@
 ## Part A (Education) — Verification Audit (quality gates)
 
-- output dir: `LLM-Knowledge-Graph/graphrag-project/output_partA_v2`
+- output dir: `D:/Universal-Web-Scraping-System-high-level-update/Universal-Web-Scraping-System-high-level-update-main/LLM-Knowledge-Graph/graphrag-project/output_partA_subset5`
 
 ### Artifact presence
 
@@ -15,130 +15,123 @@
 
 ### Entity quality (anti-noise)
 
-- entities rows: **2602**
+- entities rows: **370**
 
 **Entity types (counts)**
 
 | type               |   count |
 |:-------------------|--------:|
-| ASSESSMENT_MEASURE |     998 |
-| OUTCOME            |     389 |
-| MECHANISM          |     311 |
-| INTERVENTION       |     188 |
-| SETTING_CONTEXT    |     174 |
-| TASK_CASE          |     103 |
-| LEARNER_CONTEXT    |      81 |
-| STUDY_DESIGN       |      79 |
-| COGNITIVE_STATE    |      74 |
-|                    |      57 |
-| LEARNER_POPULATION |      51 |
-| MOTIVATION_AFFECT  |      38 |
-| CONTEXT            |      25 |
-| CLINICAL_DOMAIN    |      22 |
-| COMPARATOR         |      12 |
+| OUTCOME            |      79 |
+| INTERVENTION       |      48 |
+| SETTING_CONTEXT    |      46 |
+| MECHANISM          |      45 |
+| ASSESSMENT_MEASURE |      38 |
+| STUDY_DESIGN       |      24 |
+| TASK_CASE          |      21 |
+| LEARNER_CONTEXT    |      21 |
+| COGNITIVE_STATE    |      14 |
+| LEARNER_POPULATION |      11 |
+|                    |       8 |
+| CLINICAL_DOMAIN    |       7 |
+| MOTIVATION_AFFECT  |       6 |
+| CONTEXT            |       1 |
+| COMPARATOR         |       1 |
 
-- blacklisted-looking entity titles (heuristic): **13 / 2602**
+- blacklisted-looking entity titles (heuristic): **0 / 370**
 
 **Top entities by frequency (spot-check for bibliographic noise)**
 
-| title                        | type               |   frequency |   degree |
-|:-----------------------------|:-------------------|------------:|---------:|
-| DIAGNOSTIC ACCURACY          | OUTCOME            |          24 |      125 |
-| COGNITIVE LOAD               | COGNITIVE_STATE    |          23 |       63 |
-| LEARNING OUTCOMES            | OUTCOME            |          22 |        6 |
-| LEARNING ENVIRONMENT         | SETTING_CONTEXT    |          18 |        5 |
-| CLINICAL SETTING             | SETTING_CONTEXT    |          16 |       22 |
-| MEDICAL STUDENTS             | LEARNER_POPULATION |          15 |       68 |
-| COGNITIVE STRATEGIES         | MECHANISM          |          13 |        0 |
-| CLINICAL CASES               | TASK_CASE          |          11 |       14 |
-| MOTIVATION                   | MOTIVATION_AFFECT  |          10 |       23 |
-| COGNITIVE LOAD MANAGEMENT    | MECHANISM          |          10 |        0 |
-| CASE COMPLEXITY              | TASK_CASE          |          10 |        3 |
-| DIAGNOSTIC PERFORMANCE       | OUTCOME            |           9 |       51 |
-| LEARNING OUTCOMES ASSESSMENT | ASSESSMENT_MEASURE |           9 |        0 |
-| CLINICAL REASONING SKILLS    | OUTCOME            |           9 |        0 |
-| COGNITIVE REFLECTION         | MECHANISM          |           8 |        0 |
-| COGNITIVE PROCESSES          | MECHANISM          |           8 |        6 |
-| KNOWLEDGE RETENTION          | OUTCOME            |           8 |        0 |
-| SELF-EXPLANATION             | INTERVENTION       |           7 |       46 |
-| COGNITIVE LOAD REGULATION    | MECHANISM          |           7 |       14 |
-| CLINICAL REASONING           | MECHANISM          |           7 |       22 |
-| ANXIETY                      | MOTIVATION_AFFECT  |           6 |       12 |
-| UNCERTAINTY TOLERANCE        | COGNITIVE_STATE    |           6 |       11 |
-| CONTROL GROUP                | COMPARATOR         |           6 |       19 |
-| COGNITIVE PERFORMANCE        | OUTCOME            |           6 |        0 |
-| DIAGNOSTIC STRATEGIES        | MECHANISM          |           5 |        3 |
+| title                             | type               |   frequency |   degree |
+|:----------------------------------|:-------------------|------------:|---------:|
+| DIAGNOSTIC ACCURACY               | OUTCOME            |           9 |       61 |
+| LEARNING ENVIRONMENT              | SETTING_CONTEXT    |           4 |        0 |
+| LEARNING OUTCOMES                 | OUTCOME            |           4 |        5 |
+| COGNITIVE LOAD                    | COGNITIVE_STATE    |           4 |        2 |
+| DIAGNOSTIC KNOWLEDGE              | OUTCOME            |           3 |       16 |
+| CONTRASTIVE LEARNING              | INTERVENTION       |           3 |       10 |
+| ANALYTIC REASONING                | MECHANISM          |           3 |        6 |
+| UNDERGRADUATE PSYCHOLOGY STUDENTS | LEARNER_POPULATION |           3 |       10 |
+| MEDICAL STUDENTS                  | LEARNER_POPULATION |           3 |        7 |
+| ERRONEOUS EXAMPLES                | INTERVENTION       |           3 |        8 |
+| ELABORATED FEEDBACK               | INTERVENTION       |           3 |        9 |
+| ECG DIAGNOSIS                     | TASK_CASE          |           3 |        0 |
+| FEEDBACK                          | ASSESSMENT_MEASURE |           3 |        2 |
+| LEARNING CONTEXT                  | SETTING_CONTEXT    |           2 |        0 |
+| LEARNING EFFECTIVENESS            | OUTCOME            |           2 |        0 |
+| LEARNING                          | OUTCOME            |           2 |        3 |
+| LEARNING ENVIRONMENT EVALUATION   | ASSESSMENT_MEASURE |           2 |        0 |
+| EFFECTIVENESS                     | OUTCOME            |           2 |        0 |
+| EXPLICIT INSTRUCTIONS             | INTERVENTION       |           2 |        2 |
+| LEARNING OUTCOMES ASSESSMENT      | ASSESSMENT_MEASURE |           2 |        0 |
+| REASONING STRATEGY                | MECHANISM          |           2 |        2 |
+| LEARNING OUTCOMES MEASUREMENT     | ASSESSMENT_MEASURE |           2 |        0 |
+| LEARNING EFFECTS                  | OUTCOME            |           2 |        0 |
+| STUDENTS                          | LEARNER_POPULATION |           2 |        1 |
+| NOVICE DIAGNOSTICIANS             | LEARNER_POPULATION |           2 |        3 |
 
 ### Claim quality (traceability + CMO)
 
 - source: **claims_fixed.parquet**
-- claims rows: **1592**
-- claims with `[PAGE N]` marker in source_text: **972 / 1592**
+- claims rows: **325**
+- claims with `[PAGE N]` marker in source_text: **311 / 325**
 
 **Claim completeness (heuristic)**
 
-- missing subject: **0 / 1592**
-- missing object: **0 / 1592**
-- missing evidence span (source_text/text): **534 / 1592**
+- missing subject: **0 / 325**
+- missing object: **0 / 325**
+- missing evidence span (source_text/text): **0 / 325**
 
 **Claim types (counts)**
 
 | type                  |   count |
 |:----------------------|--------:|
-| OUTCOME_MEASUREMENT   |     731 |
-| SUSPECTED             |     381 |
-| MECHANISM_EXPLANATION |     249 |
-| INTERVENTION_EFFECT   |     175 |
-| CONTEXT_MODERATOR     |      44 |
-| COMPARATOR            |       8 |
+| OUTCOME_MEASUREMENT   |     262 |
+| MECHANISM_EXPLANATION |      24 |
+| INTERVENTION_EFFECT   |      23 |
+| CONTEXT_MODERATOR     |       8 |
+| OUTCOME               |       4 |
 | INTERVENTION          |       2 |
-| TRUE                  |       2 |
+| COMPARATOR            |       2 |
 
 **Sample claims (spot-check)**
 
-| subject_id                            | object_id                        | type                  | covariate_type   | status   | description                                                                                                                                                               | source_text                                                                                                                                                                                                                         | text_unit_id                                                                                                                     |
-|:--------------------------------------|:---------------------------------|:----------------------|:-----------------|:---------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------|
-| CASE-BASED CLINICAL REASONING SEMINAR | DIAGNOSTIC COMPETENCE            | INTERVENTION_EFFECT   | claim            | TRUE     | This seminar intervention improved aspects of diagnostic competence among students. CMO[C=NONE; I=CASE-BASED CLINICAL REASONING SEMINAR; M=NONE; O=DIAGNOSTIC COMPETENCE] | This seminar intervention improved aspects of diagnostic competence among students.                                                                                                                                                 | 391c7b5d79db439034c81f94da0d2622bec728fe85667ae24b0ed5ba165674948a771b0a8a814762ee78de03eb32037438c79e2fc43dff4a1bc70c6afb58f1cf |
-| CYTOPATHOLOGY                         | ANALYTIC REASONING               | INTERVENTION_EFFECT   | claim            | TRUE     | Analytic reasoning is a traditional approach in cytopathology training.                                                                                                   | CMO[C=CYTOPATHOLOGY; I=ANALYTIC REASONING; M=NONE; O=NONE] [PAGE 1]                                                                                                                                                                 | b5279164dec1d5a9fd245d68cdca556cbf7f0f9e6fa236c9f98d53cec965ebbb423bb772b2477c1d2230117dd969589a3ca7418a631da6320f8d9530c3cfc251 |
-| NOVICE PARTICIPANTS                   | DIAGNOSTIC ACCURACY              | OUTCOME_MEASUREMENT   | claim            | TRUE     | Diagnostic accuracy improved significantly between tests 1 and 2.                                                                                                         | CMO[C=NONE; I=NONE; M=NONE; O=DIAGNOSTIC ACCURACY] [PAGE 1]                                                                                                                                                                         | b5279164dec1d5a9fd245d68cdca556cbf7f0f9e6fa236c9f98d53cec965ebbb423bb772b2477c1d2230117dd969589a3ca7418a631da6320f8d9530c3cfc251 |
-| NOVICE PARTICIPANTS                   | RESPONSE TIME                    | OUTCOME_MEASUREMENT   | claim            | TRUE     | Response times were generally faster under nonanalytic conditions than analytic conditions.                                                                               | CMO[C=NONE; I=NONE; M=NONE; O=RESPONSE TIME] [PAGE 1]                                                                                                                                                                               | b5279164dec1d5a9fd245d68cdca556cbf7f0f9e6fa236c9f98d53cec965ebbb423bb772b2477c1d2230117dd969589a3ca7418a631da6320f8d9530c3cfc251 |
-| NOVICE PARTICIPANTS                   | DIAGNOSTIC ACCURACY              | OUTCOME_MEASUREMENT   | claim            | TRUE     | Diagnostic accuracy decreased between tests 2 and 3.                                                                                                                      | CMO[C=NONE; I=NONE; M=NONE; O=DIAGNOSTIC ACCURACY] [PAGE 1]                                                                                                                                                                         | b5279164dec1d5a9fd245d68cdca556cbf7f0f9e6fa236c9f98d53cec965ebbb423bb772b2477c1d2230117dd969589a3ca7418a631da6320f8d9530c3cfc251 |
-| CYTOPATHOLOGY                         | TRAINING STRATEGY                | MECHANISM_EXPLANATION | claim            | TRUE     | Encouraging nonanalytic strategies may expedite visual interpretation skill acquisition.                                                                                  | CMO[C=CYTOPATHOLOGY; I=TRAINING STRATEGY; M=NONANALYTIC STRATEGY; O=VISUAL INTERPRETATION SKILLS] [PAGE 1]                                                                                                                          | b5279164dec1d5a9fd245d68cdca556cbf7f0f9e6fa236c9f98d53cec965ebbb423bb772b2477c1d2230117dd969589a3ca7418a631da6320f8d9530c3cfc251 |
-| CYTOPATHOLOGY                         | ANALYTIC/NONANALYTIC COMBINATION | OUTCOME_MEASUREMENT   | claim            | FALSE    | Combining analytic and nonanalytic reasoning does not appear to be effective.                                                                                             | CMO[C=CYTOPATHOLOGY; I=ANALYTIC/NONANALYTIC COMBINATION; M=NONE; O=EFFECTIVENESS] [PAGE 1]                                                                                                                                          | b5279164dec1d5a9fd245d68cdca556cbf7f0f9e6fa236c9f98d53cec965ebbb423bb772b2477c1d2230117dd969589a3ca7418a631da6320f8d9530c3cfc251 |
-| CYTOPATHOLOGY                         | COST-EFFECTIVENESS               | OUTCOME_MEASUREMENT   | claim            | TRUE     | Evidence-based strategies may improve cost-effectiveness of cytopathology services.                                                                                       | CMO[C=CYTOPATHOLOGY; I=NONE; M=NONE; O=COST-EFFECTIVENESS] [PAGE 1]                                                                                                                                                                 | b5279164dec1d5a9fd245d68cdca556cbf7f0f9e6fa236c9f98d53cec965ebbb423bb772b2477c1d2230117dd969589a3ca7418a631da6320f8d9530c3cfc251 |
-| NOVICE PARTICIPANTS                   | VISUAL LEARNING                  | OUTCOME_MEASUREMENT   | claim            | TRUE     | Training strategies that include nonanalytic reasoning enhance diagnostic performance of novices.                                                                         | CMO[C=NONE; I=NONE; M=NONE; O=DIAGNOSTIC PERFORMANCE] [PAGE 2]                                                                                                                                                                      | b5279164dec1d5a9fd245d68cdca556cbf7f0f9e6fa236c9f98d53cec965ebbb423bb772b2477c1d2230117dd969589a3ca7418a631da6320f8d9530c3cfc251 |
-| CYTOPATHOLOGY                         | VISUAL INTERPRETATION SKILLS     | OUTCOME_MEASUREMENT   | claim            | TRUE     | The study aims to expedite the acquisition of visual interpretation skills in cytopathology.                                                                              | CMO[C=CYTOPATHOLOGY; I=NONE; M=NONE; O=VISUAL INTERPRETATION SKILLS] [PAGE 2]                                                                                                                                                       | b5279164dec1d5a9fd245d68cdca556cbf7f0f9e6fa236c9f98d53cec965ebbb423bb772b2477c1d2230117dd969589a3ca7418a631da6320f8d9530c3cfc251 |
-| ANALYTIC TRAINING                     | DIAGNOSTIC PERFORMANCE           | INTERVENTION_EFFECT   | claim            | TRUE     | Analytic training improved diagnostic performance by teaching morphological features of normal and abnormal cells.                                                        | Following the baseline test, 24 participants were randomly allocated to receive “analytic training,” in which they were taught the morphological features of normal and abnormal cells by an experienced cytology trainer. [PAGE 5] | 52612ce70fd1aa19875a5a8b636ddbf691b09a4ec28f33cbadbd17aeb698092657e4c00dd2d3fc1d3809def709e281e1282d48d13626d3c8cdd0fe987ed9686a |
-| NONANALYTIC TRAINING                  | DIAGNOSTIC PERFORMANCE           | INTERVENTION_EFFECT   | claim            | TRUE     | Nonanalytic training improved diagnostic performance by allowing participants to develop pattern recognition skills.                                                      | This group of 25 participants was subjected to the same format of training, practice, and testing as was the “analytic training” group, and the same images were used. [PAGE 5]                                                     | 52612ce70fd1aa19875a5a8b636ddbf691b09a4ec28f33cbadbd17aeb698092657e4c00dd2d3fc1d3809def709e281e1282d48d13626d3c8cdd0fe987ed9686a |
+| subject_id                        | object_id                         | type                  | covariate_type   | status   | description                                                                                                                                                                                                      | source_text                                                                                                                                                                                                                            | text_unit_id                                                                                                                     |
+|:----------------------------------|:----------------------------------|:----------------------|:-----------------|:---------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------|
+| NAÏVE STUDENTS                    | DIAGNOSTIC ACCURACY               | OUTCOME_MEASUREMENT   | claim            | TRUE     | Greater diagnostic accuracy was achieved following both contrastive learning and instructions to use a combined reasoning strategy.                                                                              | "Greater diagnostic accuracy was achieved following both contrastive learning and instructions to use a combined reasoning strategy relative to the control conditions." [PAGE 1]                                                      | 34d7c29642ce28a193973eeb16a1b98b1e92531821320de634dc6fb26b208f577b596c5265bc192af8451c523e9dbe4688bd68cd86dbddc5ca49f55289d20a82 |
+| COMBINED REASONING STRATEGY       | DIAGNOSTIC ACCURACY               | INTERVENTION_EFFECT   | claim            | TRUE     | Instructions to use a combined reasoning strategy improved diagnostic accuracy compared to control conditions.                                                                                                   | "The effects were observed immediately after learning and following a 1-week delay." [PAGE 1]                                                                                                                                          | 34d7c29642ce28a193973eeb16a1b98b1e92531821320de634dc6fb26b208f577b596c5265bc192af8451c523e9dbe4688bd68cd86dbddc5ca49f55289d20a82 |
+| CONTRASTIVE LEARNING              | DIAGNOSTIC ACCURACY               | INTERVENTION_EFFECT   | claim            | TRUE     | Contrastive learning improved diagnostic accuracy compared to standard learning methods.                                                                                                                         | "Greater diagnostic accuracy was achieved following both contrastive learning and instructions to use a combined reasoning strategy relative to the control conditions." [PAGE 1]                                                      | 34d7c29642ce28a193973eeb16a1b98b1e92531821320de634dc6fb26b208f577b596c5265bc192af8451c523e9dbe4688bd68cd86dbddc5ca49f55289d20a82 |
+| INSTRUCTIONS                      | MULTIFACETED DIAGNOSTIC REASONING | INTERVENTION          | claim            | TRUE     | Explicit instructions to adopt multifaceted diagnostic reasoning strategies were provided to students.                                                                                                           | "This study assesses the extent to which students spontaneously adopt a combined approach and compares its benefits with those experienced with a contrastive learning strategy." [PAGE 1]                                             | 34d7c29642ce28a193973eeb16a1b98b1e92531821320de634dc6fb26b208f577b596c5265bc192af8451c523e9dbe4688bd68cd86dbddc5ca49f55289d20a82 |
+| MULTIFACETED DIAGNOSTIC REASONING | DIAGNOSTIC ACCURACY               | MECHANISM_EXPLANATION | claim            | TRUE     | Utilizing multifaceted diagnostic reasoning strategies enhances diagnostic accuracy in medical education.                                                                                                        | "The results emphasise the importance of explicitly empowering students to utilise multiple diagnostic strategies." [PAGE 1]                                                                                                           | 34d7c29642ce28a193973eeb16a1b98b1e92531821320de634dc6fb26b208f577b596c5265bc192af8451c523e9dbe4688bd68cd86dbddc5ca49f55289d20a82 |
+| CONTEXT SPECIFICITY               | DIAGNOSTIC ACCURACY               | CONTEXT_MODERATOR     | claim            | TRUE     | Context specificity influences the effectiveness of diagnostic reasoning strategies in medical education.                                                                                                        | "Multiple studies have supported this contention, as does the overwhelmingly robust phenomenon of context specificity." [PAGE 2]                                                                                                       | 34d7c29642ce28a193973eeb16a1b98b1e92531821320de634dc6fb26b208f577b596c5265bc192af8451c523e9dbe4688bd68cd86dbddc5ca49f55289d20a82 |
+| ANALOGICAL TRANSFER               | DIAGNOSTIC ACCURACY               | OUTCOME_MEASUREMENT   | claim            | TRUE     | The study compares the benefits of a combined reasoning strategy with those of analogical transfer in enhancing diagnostic accuracy.                                                                             | "The second objective was to compare the magnitude of benefit of an instruction to use a combined reasoning strategy with that of another strategy that has proven successful in increasing the rate of analogical transfer." [PAGE 2] | 34d7c29642ce28a193973eeb16a1b98b1e92531821320de634dc6fb26b208f577b596c5265bc192af8451c523e9dbe4688bd68cd86dbddc5ca49f55289d20a82 |
+| INSTRUCTION                       | SPONTANEOUS DIAGNOSTIC STRATEGY   | MECHANISM_EXPLANATION | claim            | TRUE     | Explicit instruction to utilize a combined strategy is necessary to improve diagnostic performance compared to spontaneous strategies.                                                                           | "To truly determine whether or not an explicit instruction to utilise a combined strategy is beneﬁcial requires an additional control group." [PAGE 2]                                                                                 | 34d7c29642ce28a193973eeb16a1b98b1e92531821320de634dc6fb26b208f577b596c5265bc192af8451c523e9dbe4688bd68cd86dbddc5ca49f55289d20a82 |
+| COMBINED STRATEGY                 | DIAGNOSTIC PERFORMANCE            | OUTCOME_MEASUREMENT   | claim            | TRUE     | Promoting a combined strategy improves diagnostic performance compared to isolated strategies.                                                                                                                   | "The need to assess such a comparison provided the first objective of this study." [PAGE 2]                                                                                                                                            | 34d7c29642ce28a193973eeb16a1b98b1e92531821320de634dc6fb26b208f577b596c5265bc192af8451c523e9dbe4688bd68cd86dbddc5ca49f55289d20a82 |
+| UNDERGRADUATE PSYCHOLOGY STUDENTS | CONTRASTIVE LEARNING              | CONTEXT_MODERATOR     | claim            | TRUE     | Participants' prior experience with ECGs was nonexistent, providing a baseline for evaluating the intervention's effectiveness. CMO[C=UNDERGRADUATE PSYCHOLOGY STUDENTS; I=CONTRASTIVE LEARNING; M=NONE; O=NONE] | Participants in the contrastive learning condition performed significantly better than those in the non-contrastive learning condition [PAGE 5].                                                                                       | bbe2bdbff40fff445931fe3b697bd72e7d026890c6ba1619dbcf9af3a44c81a5bcc4a56fd4de2cd360db77df557653771aa3b70de5d042ca9ab51d37d8dca8db |
+| CONTRASTIVE LEARNING              | DIAGNOSTIC ACCURACY               | INTERVENTION_EFFECT   | claim            | TRUE     | The contrastive learning approach significantly improved diagnostic accuracy compared to non-contrastive learning. CMO[C=NONE; I=CONTRASTIVE LEARNING; M=NONE; O=DIAGNOSTIC ACCURACY]                            | Participants in the contrastive learning condition performed significantly better than those in the non-contrastive learning condition [PAGE 5].                                                                                       | bbe2bdbff40fff445931fe3b697bd72e7d026890c6ba1619dbcf9af3a44c81a5bcc4a56fd4de2cd360db77df557653771aa3b70de5d042ca9ab51d37d8dca8db |
+| COMBINED REASONING                | DIAGNOSTIC ACCURACY               | INTERVENTION_EFFECT   | claim            | TRUE     | The combined reasoning condition led to significantly higher diagnostic accuracy compared to the spontaneous reasoning condition. CMO[C=NONE; I=COMBINED REASONING; M=NONE; O=DIAGNOSTIC ACCURACY]               | Those in the combined reasoning condition significantly outperformed those in the spontaneous reasoning condition [PAGE 5].                                                                                                            | bbe2bdbff40fff445931fe3b697bd72e7d026890c6ba1619dbcf9af3a44c81a5bcc4a56fd4de2cd360db77df557653771aa3b70de5d042ca9ab51d37d8dca8db |
 
 ### Community structure
 
-- communities rows: **57**
+- communities rows: **9**
 
 ### Community report quality (principle-level heuristics)
 
-- community_reports rows: **57**
-- generic/too-short titles (heuristic): **0 / 57**
+- community_reports rows: **9**
+- generic/too-short titles (heuristic): **0 / 9**
 
 **Community report headers (sample)**
 
-|   community |   level | title                                                                     |   rank |   size |
-|------------:|--------:|:--------------------------------------------------------------------------|-------:|-------:|
-|          51 |       2 | Diagnostic Accuracy and Clinical Training Community                       |    8   |     22 |
-|          52 |       2 | Test-Enhanced Learning Paradigm and Clinical Reasoning                    |    7.5 |      4 |
-|          53 |       2 | SERIOUS GAME Community for Surgical Training                              |    8   |     14 |
-|          54 |       2 | Serious Game for Clinical Decision-Making Training                        |    8   |     17 |
-|          55 |       2 | Serious Game Performance Assessment Community                             |    7.5 |      4 |
-|          56 |       2 | Learning Outcomes and Extra Time-on-Task                                  |    3   |      2 |
-|          15 |       1 | Self-Explanation in Medical Education                                     |    7.5 |     12 |
-|          16 |       1 | Active Learning Strategies in Medical Education                           |    8   |      4 |
-|          17 |       1 | Clinical Reasoning and Self-Explanation in Medical Education              |    7.5 |     13 |
-|          18 |       1 | Impact of Self-Explanation on Diagnostic Performance in Medical Education |    7.5 |      9 |
-|          19 |       1 | Self-Explanation and Learning Outcomes Community                          |    7.5 |      4 |
-|          20 |       1 | Diagnostic Accuracy and Clinical Training Community                       |    7.5 |     26 |
-|          21 |       1 | Analytic Reasoning Group at Seoul National University College of Medicine |    7.5 |      3 |
-|          22 |       1 | Analytic Tendencies and Diagnostic Accuracy in ECG Analysis               |    7.5 |      2 |
-|          23 |       1 | Diagnostic Accuracy and Bias in Undergraduate Psychology Students         |    7.5 |     13 |
+|   community |   level | title                                                            |   rank |   size |
+|------------:|--------:|:-----------------------------------------------------------------|-------:|-------:|
+|           0 |       0 | Diagnostic Learning Strategies Community                         |    8   |     45 |
+|           1 |       0 | Novice Diagnosticians and Clinical Reasoning                     |    6.5 |      5 |
+|           2 |       0 | Combined Reasoning in Diagnostic Accuracy                        |    7.5 |      2 |
+|           3 |       0 | Combined Reasoning Strategy in ECG Diagnosis                     |    7.5 |      3 |
+|           4 |       0 | Diagnostic Education Community                                   |    8   |      6 |
+|           5 |       0 | Diagnostic Improvement Community: Reasoning Strategy and Novices |    7.5 |      3 |
+|           6 |       0 | ECG Diagnostic Study Community                                   |    7.5 |      5 |
+|           7 |       0 | Diagnostic Accuracy in ECG Assessment                            |    7.5 |      3 |
+|           8 |       0 | ECG Diagnostic Instruction Community                             |    7.5 |      4 |
 
 ### What to verify against Richmond (next)
 
