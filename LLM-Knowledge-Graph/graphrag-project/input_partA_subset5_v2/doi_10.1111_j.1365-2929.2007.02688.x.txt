@@ -1,0 +1,691 @@
+### METADATA (IGNORE FOR ENTITY/CLAIM EXTRACTION)
+Title: The benefits of flexibility: the pedagogical value of instructions to adopt multifaceted diagnostic reasoning strategies
+DOI: 10.1111/j.1365-2929.2007.02688.x
+Year: 2007
+Journal: Medical Education
+URL: https://doi.org/10.1111/j.1365-2929.2007.02688.x
+Authors: Tavinder K Ark, Lee R Brooks, Kevin W Eva
+RecordID: doi:10.1111/j.1365-2929.2007.02688.x
+Source: pdf EBSCO-FullText-01_02_2026 (2).pdf
+### END_METADATA
+
+### PAPER_TEXT (USE FOR ENTITY/CLAIM EXTRACTION)
+[PAGE 1]
+The beneﬁts of ﬂexibility: the pedagogical value of
+instructions to adopt multifaceted diagnostic
+reasoning strategies
+Tavinder K Ark, Lee R Brooks & Kevin W Eva
+OBJECTIVES Building on the advice of previous
+research to avoid parsing diagnostic strategies too
+ﬁnely, recent studies have shown that teaching
+novices to utilise analytic and non-analytic reasoning
+strategies yields higher diagnostic accuracy than
+teaching either in isolation. This study assesses the
+extent to which students spontaneously adopt a
+combined approach and compares its beneﬁts with
+those experienced with a contrastive learning strategy
+known to enhance analogical transfer.
+METHODS A sample of 48 naı¨ve students were
+trained to identify features on electrocardiograms
+(ECGs) and assign diagnoses. Half the participants
+learned in a standard manner, encountering diag-
+noses (and their associated features) in sequence.
+The remaining participants were explicitly instructed
+to draw comparisons between the diagnostic category
+being learned and another confusable diagnostic
+category (contrastive learning). Half the participants
+in both groups were further instructed to carefully
+identify all features while trusting guidance provided
+by feelings of familiarity (a combined reasoning
+strategy). The remaining participants were given
+no instructions on how to approach the diagnostic
+task.
+RESULTS Greater diagnostic accuracy was achieved
+following both contrastive learning and instructions
+to use a combined reasoning strategy relative to the
+control conditions. These variables did not interact
+with each other, nor did they interact with novelty of
+the test case. The effects were observed immediately
+after learning and following a 1-week delay.
+DISCUSSION The results emphasise the importance
+of explicitly empowering students to utilise multiple
+diagnostic strategies, including non-analytic approa-
+ches. In addition, this study reveals the beneﬁt that
+can be gained from contrastive learning in a medical
+domain.
+KEYWORDS education, medical, undergraduate⁄
+*methods; teaching⁄ *methods; *diagnosis;
+psychology⁄ *education; cardiology⁄ *education;
+decision making; clinical competence⁄ *standards;
+electrocardiography.
+Medical Education 2007; 41: 281–287
+doi:10.1111/j.1365-2929.2007.02688.x
+INTRODUCTION
+One of the ongoing debates in medical education
+focuses upon the extent to which various models of
+diagnostic decision-making best characterise the
+diagnostic expertise of doctors.1 The goal is to
+capture the essence of expertise in a manner that can
+be taught to novices, thus increasing the efﬁciency
+with which they become experts. This work began in
+the 1970s with Elstein et al.’s presentation of the
+hypothetico-deductive model of reasoning2 and
+quickly evolved into a plethora of competing theories.
+Reviews of clinical reasoning began to be published
+as early as 1996.3 The conclusion of Custers et al.’s
+review was that many forms of knowledge are avail-
+able to clinicians and, as a result, attempts to
+determine how various forms of knowledge are
+co-ordinated during diagnosis are more likely to
+yield dividends than attempts to prove any single
+framework correct.3
+clinical reasoning
+Department of Clinical Epidemiology and Biostatistics, McMaster
+University, Hamilton, Ontario L8N 3Z5, Canada
+Correspondence: Kevin W Eva, MDCL 3522, McMaster University, 1200
+Main Street West, Hamilton, Ontario L8N 3Z5, Canada.
+Tel: 00 1 905 525 9140 ext. 27241; Fax: 00 1 905 572 7099;
+E-mail: evakw@mcmaster.ca
+ Blackwell Publishing Ltd 2007. MEDICAL EDUCATION 2007; 41: 281–287
+281
+[PAGE 2]
+Multiple studies have supported this contention, as
+does the overwhelmingly robust phenomenon of
+context speciﬁcity, but only recently has anyone
+begun to experimentally test the practical implica-
+tions of a combined, ﬂexible or multifaceted
+model of clinical reasoning.4 Building on the work of
+Norman et al.,5 Ark et al.6 tested the efﬁcacy of
+a variety of instructions provided to novice readers of
+electrocardiograms (ECGs). An analytic (i.e. feature
+ﬁrst) strategy was promoted by stressing the import-
+ance of carefully considering the features present on
+an ECG before considering potential diagnoses. That
+is, participants were instructed to approach the task
+of ECG diagnosis in a systematic and controlled
+manner. By contrast, other participants were
+encouraged to use a non-analytic (i.e. ﬁrst impres-
+sion) strategy in that they were instructed simply to
+trust feelings of familiarity given that a presenting
+ECG might appear similar to other ECGs that had
+been seen during training. Another group of partic-
+ipants was given both sets of instructions (i.e. to
+adopt a combined strategy of trusting familiarity
+while double checking ﬁrst impressions by carefully
+considering the features). When tested, participants
+given either set of non-combined instructions
+demonstrated equal diagnostic accuracy, but their
+performance was poor compared with that of
+participants who had been given a combined
+instruction. This was true for each of the 3 distinct
+ways the combined reasoning strategy was
+operationalised (i.e. regardless of whether the
+instruction to systematically consider the features
+presented in a case was given simultaneously or
+sequentially with the instruction to use familiarity, or
+whether the instruction to utilise familiarity was given
+explicitly or implicitly).
+Still at issue, however, is whether or not promoting
+a co-ordinated approach (i.e. a combined strategy)
+to diagnostic decision making actually improves
+performance. One could justiﬁably argue that
+trainees would naturally and spontaneously adopt a
+combined approach to diagnostic reasoning and that
+the differences observed by Ark et al.6 were due to
+the detrimental impact of prompting participants to
+use one or the other strategy in isolation. To truly
+determine whether or not an explicit instruction to
+utilise a combined strategy is beneﬁcial requires an
+additional control group of participants who are left
+to their own devices – a group of participants who are
+instructed to adopt freely whatever diagnostic strategy
+seems most reasonable given the categorisation
+scheme they are trying to learn. The need to assess
+such a comparison provided the ﬁrst objective of this
+study.
+The second objective was to compare the magnitude
+of beneﬁt of an instruction to use a combined
+reasoning strategy with that of another strategy that
+has proven successful in increasing the rate of
+analogical transfer in non-medical domains. Analo-
+gical transfer is deﬁned by psychologists as successful
+problem solving through the use of solution
+principles that were learned in response to problems
+encountered previously.7 That is, solutions are
+transferred from one problem to another by way of
+analogy. For example, learning the role that acid-base
+balance plays in a particular clinical context can
+provide a useful analogy to help one understand the
+physiological mechanism associated with another
+clinical presentation dependent on homeostasis.
+That being said, the rate at which transfer occurs
+tends to be counter-intuitively low, a phenomenon
+that has been argued to be a root cause of context
+speciﬁcity.8 Moreover, studies have shown that simply
+stating the solution principles and providing exam-
+ples is insufﬁcient to help learners apply the princi-
+ples when trying to solve new cases.9,10 Many learning
+clinical reasoning
+Overview
+What is already known on this subject
+Various models of diagnostic reasoning have
+found support in the literature as hallmarks of
+expertise, but these models need not be
+considered mutually exclusive.
+What this study adds
+Evidence that an explicit instruction to utilise
+both analytic and non-analytic forms of diag-
+nostic reasoning can improve novice clini-
+cians’ diagnostic accuracy beyond that
+achieved by the spontaneous approaches they
+adopt without such an explicit instruction.
+Suggestions for further research
+Future research might determine which sti-
+mulus-based and diagnostician-based factors
+lead clinicians to adopt a less than optimally
+balanced approach to clinical reasoning, when
+such factors increase the rate of diagnostic
+errors, and whether or not particular actions
+might help diagnosticians maintain a balanced
+approach.
+282
+ Blackwell Publishing Ltd 2007. MEDICAL EDUCATION 2007; 41: 281–287
+[PAGE 3]
+strategies have been identiﬁed that can improve rates
+of transfer, but the generalisability of many of these
+ﬁndings to the ﬁeld of medicine has yet to be tested.
+In other domains contrastive learning has arguably
+been shown to be the most successful strategy for
+enhancing transfer rates in problem solvers and it is
+certainly among the most extensively studied
+strategies.11–13 Contrastive learning involves
+prompting the learner to explicitly search for
+similarities and differences between problems. Doing
+so, it is thought, enables students to better avoid
+being distracted by the superﬁcial surface elements of
+problems (e.g. the speciﬁc clinical presentation) by
+helping them understand the underlying deep
+structure (e.g. the pathophysiology of the disease)
+that enables the solution principle to be applied
+across variable problems. Although some would
+argue that true analogical transfer can only succeed
+by virtue of making a comparison across the deep
+structural level of problems, it is plausible that
+promotion of a contrastive learning style would also
+help students in tasks like ECG diagnosis by assisting
+them to learn the critical features that discriminate
+between categories. That is, highlighting the similar-
+ities and differences between disorders in terms of
+the features present on an ECG might make the
+diagnosticity of each symptom more apparent or
+more inﬂuential in helping students learn to
+discriminate between categories. Hatala et al.14 have
+already demonstrated the value of mixed practice.
+After learning the basics of ECG interpretation,
+participants in their study had the opportunity to
+practise ECG diagnosis via the presentation of ECGs
+that had not been sorted into disorders, but were
+mixed across the various diagnoses.14 The current
+study extends these ﬁndings by testing the value of
+implementing a contrastive learning approach during
+the initial learning of the categorisation scheme.
+Participants in the contrastive learning condition
+were asked to explicitly compare diagnostic
+categories that were:
+1
+similar by virtue of their having features in
+common, and
+2
+known to be easily confusable based on the results
+of previous studies.
+For example, participants were asked to compare and
+contrast the features of ischaemia with those of left
+ventricular hypertrophy with strain; both share S)T
+depression and T wave inversions in many of the
+leads on an ECG. This instructional manipulation was
+contrasted with a non-contrastive condition in which
+normal practices were applied: participants were
+asked to learn the features of a series of diseases in
+sequence, as they would when working through most
+courses and textbooks.15
+In summary, half the participants were asked to study
+the ECG features present in a series of cardiologic
+disorders without explicit reference being made to the
+value of comparing and contrasting any particular
+disorder with another (i.e. the non-contrastive learn-
+ing condition). The other half of the participants were
+asked to learn the disorders in the same sequence, but
+learners were told to intentionally consider the
+similarities and differences between pairs of disorders
+(i.e. the contrastive learning condition). Within each
+of these groups, half the participants were instructed
+to trust any sense of familiarity they might have when
+diagnosing test cases while also carefully considering
+features (i.e. the combined reasoning condition),
+whereas the other half were given no instructions
+regarding how best to approach the diagnosis of test
+cases (i.e. the spontaneous reasoning condition). If
+learners tend spontaneously to utilise a combined
+approach successfully, then explicit instructions to
+adopt this approach would be expected to have
+minimal effect. Any differences observed across these
+2 variables would, however, provide a pedagogic
+strategy to enable implementation of the literatures
+on clinical reasoning and analogical transfer in
+clinical teaching contexts.
+METHODS
+Participants
+A sample of 48 undergraduate psychology students
+enrolled at McMaster University participated in this
+3-phase experiment for course credit. None of the
+participants had previous experience with ECGs.
+Design and procedure
+Training phase
+Using the material developed by Norman et al.,5 all
+participants were taught general information
+regarding the 12 leads in an ECG during one-to-one
+teaching sessions with the experimenter. They were
+then taught to recognise the general structures of
+a normal ECG waveform (i.e. P wave, QRS complex,
+S)T segment and T wave).
+After this introduction participants were randomly
+assigned to 1 of 2 learning conditions. Those in the
+283
+ Blackwell Publishing Ltd 2007. MEDICAL EDUCATION 2007; 41: 281–287
+[PAGE 4]
+non-contrastive condition were taught each of 8
+diagnostic categories, beginning with normal, using
+a feature list containing the key features for each
+diagnosis. For example, right bundle branch block
+was presented as typically having:
+•
+RSR (rabbit ears) present in V1 and V2, and
+•
+a widened QRS complex.16
+For each diagnostic category, participants were pre-
+sented with 4 examples. For the ﬁrst 2 ECGs in each
+category, the instructor identiﬁed key features that
+were indicative of that particular disorder using the
+feature list. For the latter 2, participants were asked to
+identify the relevant features before moving onto the
+next diagnostic category. This process was repeated
+until all diagnostic categories and their examples
+were presented. On average, this learning task
+required approximately 35 minutes to complete.
+The procedure for participants assigned to the
+contrastive learning condition was identical, with
+the exception that, instead of merely identifying the
+features, participants were asked to compare and
+contrast the features present on each example with
+those of a normal ECG and with those of
+a confusable differential. For example, participants
+were asked to compare and contrast the ﬁrst 2 slides
+in the set of 4 examples of left ventricular hyper-
+trophy with those of a normal ECG by identifying
+features that were similar and dissimilar. They were
+then asked to compare and contrast the latter 2
+examples with 2 examples of ischaemia (a disorder
+that was known to be confusable, given our prior
+work). Participants were encouraged to self-generate
+the similarities and differences between categories
+as much as possible. However, in instances where
+they failed, the instructor would provide hints at the
+differences. This process was repeated until all
+diagnostic categories had been considered. On
+average, training time for participants in the
+contrastive learning condition was 5–10 minutes
+longer than that in the non-contrastive learning
+condition.
+Immediate test phase
+After the training phase, participants were presented
+with a booklet consisting of 7 ECGs that had been
+randomly selected from the training materials.
+During this phase, participants were randomly
+further divided into 1 of 2 reasoning conditions.
+To emphasise a combined diagnostic strategy, half
+the participants were given the following instructions,
+which were intended to emphasise the value of both
+analytic and non-analytic approaches (i.e. combined
+instructions) to medical diagnosis:
+For each ECG, assign a diagnosis using similarity as
+a guide. New ECGs often look like ECGs that have
+been seen before (i.e. during training). Trust this
+sense of familiarity, but realise that basing decisions
+solely on similarity can lead to diagnostic errors.
+So, dont jump the gun. Use the response sheet list
+to indicate the features that can be seen. Use the
+disease list to help you.’
+By contrast, participants in the spontaneous reason-
+ing condition were told to:
+Assign a diagnosis to each ECG using whatever
+strategy comes naturally to you. Feel free to use the
+feature list, but approach each case using whatever
+strategy seems most appropriate to help you reach
+the correct diagnosis.
+All participants were allowed to view the ECG when
+assigning their diagnosis. They were told the correct
+answer after diagnosing each ECG. Whenever an
+incorrect diagnosis was assigned, immediate feedback
+was given that reinforced the instructions that had
+been provided.
+Delayed test phase
+One week after training, participants were presented
+with a booklet of 15 ECGs; 8 were novel and 7 had
+been seen during training but were distinct from the
+ECGs seen during the immediate test phase. Partic-
+ipants were given the same reasoning instructions as
+those they had received during the immediate test
+phase and were asked to diagnose each ECG. Feed-
+back was not provided during this phase of the
+experiment.
+RESULTS
+Diagnostic accuracy
+Participants’ diagnostic accuracy was submitted to
+a repeated measures analysis of variance (ANOVA) with
+learning instruction (contrastive⁄non-contrastive)
+and reasoning instruction (combined⁄spontaneous)
+as between-subject grouping factors. The mean
+proportion correct (as a function of learning
+condition, reasoning instruction and test) is
+illustrated in Table 1. Participants in the contrastive
+learning condition performed signiﬁcantly better
+clinical reasoning
+284
+ Blackwell Publishing Ltd 2007. MEDICAL EDUCATION 2007; 41: 281–287
+[PAGE 5]
+than those in the non-contrastive learning condition
+(F1,572 ¼ 19.2, P < 0.05). Those in the combined
+reasoning condition signiﬁcantly outperformed those
+in the spontaneous reasoning condition
+(F1,572 ¼ 17.9, P < 0.05). These 2 variables did not
+interact with each other. Nor did they interact with
+test (i.e. the differences were consistent, both
+immediately after training and after a 1-week delay).
+In addition, the delayed test data were analysed
+separately to consider the impact novelty of the
+stimulus had on the results. The mean proportion
+correct (as a function of learning condition, reason-
+ing instruction and novelty) is illustrated in Table 2.
+Previously seen ECGs were diagnosed more accu-
+rately than novel ECGs (F1,572 ¼ 10.7, P < 0.05). The
+interactions between novelty and learning condition
+and between novelty and reasoning instruction were
+both non-signiﬁcant.
+Feature identiﬁcation
+Previous work has suggested that a combined
+reasoning approach to ECG diagnosis results in
+better performance relative to when trainees are
+instructed to be very analytic due to a decrease in the
+diagnostician’s tendency to be distracted by mislead-
+ing features.5,6 The feature data in this study, how-
+ever, were not analysed as a function of reasoning
+instruction because it is impossible to know which
+features the spontaneous reasoning group identiﬁed
+as participants in that group were not instructed to
+record the features they considered. This was to avoid
+biasing their spontaneous approach to reasoning, but
+it makes any feature comparison across reasoning
+conditions meaningless.
+The feature data provided by the combined reason-
+ing group were analysed as a function of learning
+condition for the sake of completeness, but there was
+no a priori reason to expect a difference between
+contrastive and non-contrastive learning conditions
+on this variable. For each ECG, features were
+categorised as:
+1
+hit-indicative (a feature that was present and
+indicative of the correct diagnosis);
+2
+hit-not indicative (a feature that was present but
+indicative of another diagnosis), or
+3
+false alarm (a feature that was not present in the
+ECG).
+An ANOVA analogous to that performed on diagnostic
+accuracy was performed on the number of features
+identiﬁed within each feature classiﬁcation. The
+mean number of features identiﬁed as a function
+of classiﬁcation and learning instruction is presented
+in Table 3. No signiﬁcant difference was found
+between the learning conditions (contrastive
+and non-contrastive) in any of the features
+classiﬁcations (F1,572 > 0.22, P > 0.05 for all
+comparisons).
+DISCUSSION
+Across a series of studies, instructions to be both
+feature-oriented and to trust similarity-based reason-
+Table 1 Mean diagnostic accuracy (%) as a function of learning condition, reasoning instruction and moment of test
+Immediate test
+Delayed test
+Contrastive learning
+Non-contrastive learning
+Average
+Contrastive learning
+Non-contrastive learning
+Average
+Combined instructions
+83.3
+77.4
+80.4
+75.6
+58.3
+66.9
+Spontaneous instructions
+76.2
+63.1
+69.6
+59.4
+54.4
+56.9
+Average
+79.8
+70.2
+75.0
+67.5
+56.4
+61.9
+Table 2 Mean diagnostic accuracy (%) on the delayed test as a function of learning condition, reasoning instruction and novelty of the stimulus
+Previously seen electrocardiograms
+Novel electrocardiograms
+Contrastive learning
+Non-contrastive learning
+Average
+Contrastive learning
+Non-contrastive learning
+Average
+Combined instructions
+81.0
+69.0
+75.0
+70.8
+49.0
+59.9
+Spontaneous instructions
+72.6
+66.7
+69.7
+47.9
+43.8
+45.9
+Average
+76.8
+67.9
+72.3
+59.4
+46.4
+52.9
+285
+ Blackwell Publishing Ltd 2007. MEDICAL EDUCATION 2007; 41: 281–287
+[PAGE 6]
+ing strategies (i.e. a combined approach to clinical
+reasoning) have led to signiﬁcantly better diagnostic
+performance than alternative sets of instructions.
+Prior work compared instructions to use a combined
+reasoning strategy with instructions to use either of
+this strategy’s components in isolation, and found the
+combined reasoning strategy to be superior. This
+study adds a comparison with the natural tendencies
+of novice diagnosticians, thus conﬁrming that,
+indeed, instructions to utilise a combined reasoning
+strategy can improve performance above and beyond
+what can be expected in the absence of such
+instructions. However, based on these results, we
+cannot make conclusive statements about whether
+participants in the spontaneous reasoning condition
+did or did not implement a combined reasoning
+strategy or whether they did so but less effectively.
+Our suspicion is the latter. The consistency with
+which old (i.e. previously seen) ECGs were diag-
+nosed more accurately than new ECGs suggests that
+similarity-based processes were operational in all
+conditions, although past work leads us to assume
+these processes were applied unconsciously in many
+instances. Moreover, it is implausible that
+participants would exert no effort in trying carefully
+to consider the features present on an ECG and
+match them to the possible diagnostic categories,
+given that the diagnostic categories were deﬁned
+during training based upon the features, and that all
+participants had a feature list available to them when
+making their diagnoses. Thus, despite the likelihood
+that some form of combined reasoning will be
+adopted spontaneously by diagnosticians, the
+provision of explicit and concrete instructions
+regarding how to do so appears to be beneﬁcial.
+In addition, this study revealed that learners who were
+instructed to compare and contrast categories (those
+in the contrastive condition) achieved greater diag-
+nostic accuracy than those who were simply told to
+learn the relationship between the features and
+disorders (those in the non-contrastive condition).
+One plausible, although speculative, explanation for
+this ﬁnding is that participants in the contrastive
+condition better understood the diagnosticity of each
+symptom. That is, they were less likely to fall victim to
+premature closure due to an increased awareness that
+a feature indicative of a particular disorder can also be
+indicative of another diagnosis. Whether or not this
+mechanism provides the best explanation for these
+ﬁndings requires further study. Nevertheless, it
+appears safe to conclude that the beneﬁts of
+contrastive learning (relative to the more traditional
+non-contrastive approach to learning) that have been
+found in the psychology literature on transfer do
+generalise to the domain of medicine (at least with
+highly visual tasks like ECG diagnosis). Moreover, it
+appears to be equally effective relative to the strategy of
+instructing learners to adopt a combined reasoning
+approach. However, it should be noted that although
+participants in the contrastive learning condition
+spent slightly more time studying the material than
+participants in the non-contrastive learning condition,
+no such time-on-task differences confound the com-
+parisons of combined versus spontaneous instructions.
+It is worth emphasising that the conclusion that
+contrastive learning and combined reasoning
+instructions hold pedagogical value applies readily to
+the most ecologically valuable condition – the pres-
+entation of novel ECGs after a time delay. These
+instructions enabled 70% accuracy even when ECGs
+that had never been seen before were presented to
+participants a full week after their initial training
+(Table 2, novel ECGs). It is also worth noting that
+comparison of the other half of Table 2 (previously
+seen ECGs) with the results of the immediate test
+condition illustrated in Table 1 (in which all ECGs
+were previously seen yet unique from the delayed test
+ECGs) provides further evidence for the beneﬁt of
+prior experience with speciﬁc cases. Little decline in
+accuracy was observed over the course of the week for
+ECGs that had been seen before, especially in
+comparison with the magnitude of the difference
+between previously seen and novel ECGs.
+Limitations of this study include the fact that only 1
+diagnostic domain (ECG), a highly visual domain at
+that, was utilised and that our participants were
+undergraduate psychology students as opposed to
+medical trainees. In fact, we view the latter limitation
+as a strength of the study design in the context of this
+clinical reasoning
+Table 3 Mean number of features identiﬁed as a function of both feature classiﬁcation and learning instruction for participants in the combined reasoning condition
+Hit indicative
+Hit not indicative
+False alarms
+Total features
+Contrastive learning
+0.877
+0.136
+0.326
+1.33
+Non-contrastive learning
+0.762
+0.129
+0.409
+1.30
+Total
+0.820
+0.133
+0.368
+1.32
+286
+ Blackwell Publishing Ltd 2007. MEDICAL EDUCATION 2007; 41: 281–287
+[PAGE 7]
+paper. In assessing whether or not diagnosticians can
+beneﬁt from the instruction to trust non-analytic
+processes (i.e. diagnostic strategies that have primar-
+ily been considered the realm of the expert), one
+would anticipate that those with more experience
+would be better positioned to derive beneﬁt from
+such an instruction because they have seen a larger
+number of cases previously. This study, combined
+with our previous work,6 suggests that clinical
+teachers should not hesitate to empower learners to
+consider similarity even when the learners are
+absolute novices with no prior ECG experience. The
+higher diagnostic accuracy observed for old ECGs
+relative to new ECGs, regardless of instructions,
+suggests that very little exposure is required for
+individuals to take advantage of the beneﬁts
+non-analytic processes provide. Whether or not these
+ﬁndings are generalisable to other domains within
+medicine remains to be tested, but we have outlined
+elsewhere a number of reasons why generalisability
+beyond ECG diagnosis is likely.6,17 A second
+limitation of this study is its small sample size.
+However, the sample size was clearly large enough for
+the analyses to hold sufﬁcient power to reveal
+statistically signiﬁcant differences between groups.
+In conclusion, it appears that instructions to use
+contrastive learning and instructions to use
+combined reasoning lead to signiﬁcantly higher
+diagnostic accuracy than instructions for non-
+contrastive learning and student-derived reasoning
+strategies, respectively. Students might naturally
+utilise a combined reasoning strategy, but they appear
+to do so with less beneﬁt than when they are provided
+with concrete instructions regarding how to approach
+the diagnostic task. Therefore, prompting novices to
+consider the similarities and differences between
+diagnostic categories (perhaps especially those that
+are likely to form a differential diagnosis) and
+providing them with explicit instructions to utilise
+a combined reasoning strategy appears to represent
+an effective pedagogic suggestion that can aid in the
+education of novices and facilitate their progress to
+a more expert level of diagnostic capability.
+Contributors:
+KWE and LRB conceived and designed the
+study. TKA collected the data, ran the analyses and drafted
+the paper. KWE and LRB made critical revisions. All
+authors approved the ﬁnal version of the paper.
+Acknowledgements:
+none.
+Funding:
+none.
+Conﬂicts of interest:
+none.
+Ethical approval:
+this study was approved by the
+Hamilton Health Sciences Research Ethics Board.
+### END_PAPER_TEXT

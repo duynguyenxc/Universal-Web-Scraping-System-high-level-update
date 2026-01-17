@@ -1,0 +1,688 @@
+### METADATA (IGNORE FOR ENTITY/CLAIM EXTRACTION)
+Title: Teaching from the clinical reasoning literature: combined reasoning strategies help novice diagnosticians overcome misleading information
+DOI: 10.1111/j.1365-2923.2007.02923.x
+Year: 2007
+Journal: Medical Education
+URL: https://doi.org/10.1111/j.1365-2923.2007.02923.x
+Authors: Kevin W Eva, Rose M Hatala, Vicki R LeBlanc, Lee R Brooks
+RecordID: doi:10.1111/j.1365-2923.2007.02923.x
+Source: pdf EBSCO-FullText-01_02_2026 (1).pdf
+### END_METADATA
+
+### PAPER_TEXT (USE FOR ENTITY/CLAIM EXTRACTION)
+[PAGE 1]
+Teaching from the clinical reasoning literature:
+combined reasoning strategies help novice
+diagnosticians overcome misleading information
+KEVIN W EVA,1 ROSE M HATALA,2 VICKI R LEBLANC3 & LEE R BROOKS4
+OBJECTIVE Previous research has revealed a peda-
+gogical beneﬁt of instructing novice diagnosticians to
+utilise a combined approach to clinical reasoning
+(familiarity-driven pattern recognition combined
+with a careful consideration of the presenting fea-
+tures) when diagnosing electrocardiograms (ECGs).
+This paper reports 2 studies demonstrating that the
+combined instructions are especially valuable in
+helping students overcome biasing inﬂuences.
+METHODS Undergraduate psychology students were
+trained to diagnose 10 cardiac conditions via ECG
+presentation. Half of all participants were instructed
+to reason in a combined manner and half were
+given no explicit instruction regarding the diagnostic
+task. In Study 1 (n = 60), half of each group was
+biased towards an incorrect diagnosis through pre-
+sentation of counter-indicative features. In Study 2
+(n = 48), a third of the test ECGs were presented with
+a correct diagnostic suggestion, a third with an
+incorrect suggestion, and a third without a suggestion.
+RESULTS Overall, the instruction to utilise a com-
+bined reasoning approach resulted in greater diag-
+nostic accuracy relative to leaving students to their
+own intuitions regarding how best to approach
+new cases. The effect was particularly pronounced
+when cases were made challenging by biasing
+participants towards an incorrect diagnosis, either
+through mention of a speciﬁc feature or by making
+an inaccurate diagnostic suggestion.
+DISCUSSION These studies advance a growing
+body of evidence suggesting that various diagnostic
+strategies identiﬁed in the literature on clinical
+reasoning are not mutually exclusive and that
+trainees can beneﬁt from explicit guidance regard-
+ing the value of both analytic and non-analytic
+reasoning tendencies.
+KEYWORDS teaching⁄*methods; *clinical compe-
+tence; education, medical, undergraduate ⁄*methods;
+psychology⁄*education; cardiology⁄*education;
+*diagnosis.
+Medical Education 2007: 41: 1152–1158
+doi:10.1111/j.1365-2923.2007.02923.x
+INTRODUCTION
+Since the publication of Custers et al.s review1 of
+the clinical reasoning literature a decade ago, there
+has been increasing recognition that, ﬁrstly, many of
+the models of clinical reasoning present in the
+medical education literature are not mutually
+exclusive and, secondly, that there is value for the
+diagnostician in not getting locked into any single
+mode of thinking about clinical cases.1,2 To a large
+extent, the debate that has taken place in medical
+education research is reﬂective of many broader
+literatures aimed at understanding how humans
+make decisions.
+One approach to studying and⁄or understanding
+judgement and decision making, commonly applied
+in economics, is based upon a model of rationality,
+clinical expertise
+1Department of Clinical Epidemiology and Biostatistics, McMaster
+University, Hamilton, Ontario, Canada
+2Department of Medicine, University of British Columbia, Vancouver,
+British Columbia, Canada
+3Department of Medicine, University of Toronto, Toronto, Ontario,
+Canada
+4Department of Psychology, McMaster University, Hamilton, Ontario,
+Canada
+Correspondence: Kevin W Eva PhD, Department of Clinical Epidemiology
+and Biostatistics, Program for Educational Research and Development,
+MDCL 3522, McMaster University, 1200 Main Street West, Hamilton,
+Ontario L8N 3Z5, Canada. Tel: 00 1 905 525 9140 (ext 27241);
+Fax: 00 1 905 572 7099; E-mail: evakw@mcmaster.ca
+ Blackwell Publishing Ltd 2007. MEDICAL EDUCATION 2007; 41: 1152–1158
+1152
+[PAGE 2]
+the notion being that the utility of a decision can be
+derived from the product of the value gained from
+each particular outcome and the probability with
+which the outcome will occur. From this analytical
+perspective, it is an irrational act to buy a lottery
+ticket because, although the pay-out to the winner
+may be very large, the probability of winning is so
+small that the resultant utility (the product of the 2
+values) is less than the cost of the ticket.3 In
+medicine, severity and probability often interact in
+the same manner, so that low-probability diagnoses
+are intentionally considered because the cost of
+missing a serious diagnosis would be signiﬁcant.
+From this perspective, bias is deﬁned as a consistent
+deviation from rationality. Psychologists Amos Tver-
+sky and Daniel Kahneman, among others, provided
+great insight into human judgement by systematically
+identifying and experimentally exploring biases that
+are prevalent in our decision making, work which
+resulted in Kahneman receiving the Nobel Prize in
+Economics in 2002. One such bias they identiﬁed is
+the availability heuristic, which refers to the ten-
+dency we have to base judgements on vivid or salient
+outcomes (i.e. those that are readily available to us
+when imagining what might happen and which,
+thereby, seem more probable) rather than on a more
+rational, utility-driven approach.4 To follow up on
+the above example, many continue to buy lottery
+tickets despite the low utility of such actions because
+the vividness and excitement generated through
+imagining what it would be like to win contributes to
+an over-estimation of the likelihood that one might
+win. Importantly, these sorts of mental short-cuts
+often (if not always) inﬂuence our decisions without
+our being aware that the heuristic is being used,
+thus leading many to argue that we can improve
+medical decision making (or decision making more
+generally) and reduce diagnostic errors by educating
+individuals about the ways in which their decision
+making can be biased.5,6 Alternative, but comple-
+mentary, strategies for achieving the same goal in
+medicine include teaching individuals to become
+better Bayesians by explicitly directing their attention
+to the need to learn (and consider) the probability
+of any particular diagnosis (and how that probability
+is conditional upon the presence or absence of
+variable signs and symptoms)7 or by provision of
+explicit diagnostic algorithms as guidance for how
+to complete a diagnostic search.8
+An alternative view of decision making derives from
+the argument that these biases exist with such
+prevalence and robustness because they are useful
+and, therefore, not something we should ever hope
+to abolish from our decision making. Gerd Gigeren-
+zer, among others, has noted that many of these
+heuristics and their associated biases are adaptive;
+they may leave us susceptible to error in some cases,
+but, given our complicated world, they help us more
+than they hurt.9 We might have the illusion that
+the use of heuristics is suboptimal, but that is because
+their use is noticeable only in cases where the
+heuristic leads to inaccurate decisions relative to what
+might be deemed optimal by rational standards. By
+analogy, in medical diagnosis, the use of pattern
+recognition is often noticed, and labelled as prob-
+lematic, when it has led to an incorrect diagnosis
+based on superﬁcial similarity. A more complete
+consideration, however, requires one to acknowledge
+that pattern recognition strategies not only often
+yield the same decision as analytic decision-making
+tendencies, but they sometimes result in better
+outcomes.10 When a classic case of pneumonia
+presents in a doctors ofﬁce, the features that could
+be carefully collected and converted into a diagnosis
+of pneumonia will share a great deal of overlap
+Overview
+What is already known on this subject
+When teaching electrocardiogram diagnosis
+there is pedagogical benefit in encouraging
+students to utilise analytic and non-analytic
+reasoning strategies rather than treating either
+class of strategies solely as a source of
+detrimental bias.
+What this study adds
+Maintaining an optimal balance between non-
+analytic and analytic reasoning strategies is
+fragile for students. Giving them explicit
+instructions to utilise a combined approach to
+reasoning helps them to overcome the diffi-
+culty provided by mention of a counter-indic-
+ative feature or an incorrect diagnosis, both of
+which are legitimate instructional techniques.
+Suggestions for further research
+Further research should examine these phe-
+nomena within non-visual diagnostic domains
+and across varying levels of training and
+experience.
+1153
+ Blackwell Publishing Ltd 2007. MEDICAL EDUCATION 2007; 41: 1152–1158
+[PAGE 3]
+with those of previously seen cases of pneumonia, so
+assigning a diagnosis on either basis will yield the
+same conclusion. Of real beneﬁt, however, is that the
+concurrent reference to prior cases can overcome
+some of the limitations of the traditionally recom-
+mended careful, analytic inspection of features.
+That is routinely considering the features in a very
+careful, analytic manner may avoid the dangers of
+premature closure, but it can also be detrimental.
+Norman et al. have shown that prompting diagnosti-
+cians to be particularly careful in their feature calls
+can yield a list of features that is irreconcilable with
+any particular diagnosis, possibly because considering
+features individually rather than in context leads to
+overcalling normal variants (i.e. leads to the diag-
+nostician being misled by features that would not
+have been distracting otherwise).11 It is arguable
+that, were that not the case, these sorts of non-
+analytic decision-making tendencies would be much
+more readily (and, in all likelihood, naturally)
+extinguishable.12
+Taken together, these different views of our deci-
+sion-making tendencies generate the impression
+that balance between multiple decision-making ten-
+dencies is necessary to enable a robust system that
+will maximise diagnosticians accuracy. In a recent
+series of studies, we strived to test whether or not
+there is pedagogical value in instructing novice
+diagnosticians to avoid getting locked into any
+single mode of reasoning. Absolute novices (under-
+graduate psychology students) were given instruc-
+tion in electrocardiogram (ECG) diagnosis. After a
+training phase, we found that groups of participants
+given advice to trust feelings of familiarity when
+making their diagnoses but to also carefully consider
+the features that are present on ECGs (i.e. those
+who were instructed to use a combined approach
+to clinical reasoning) revealed greater diagnostic
+accuracy than groups of participants who were: (a)
+given no advice regarding how to work through new
+cases;13 (b) were told to be analytic by adopting a
+feature-ﬁrst approach to diagnosis in which all
+features should be listed before generating a diag-
+nosis; or (c) were told to be non-analytic by
+instructing them simply to diagnose based on
+familiarity-driven ﬁrst impressions of each new
+ECG.14 The combined instruction is not intended
+(or expected) to have prompted a particular
+reasoning process that could be used as a how-to
+guide for diagnosticians, but, rather, was simply
+aimed at helping trainees to beneﬁt from the
+suggestion in the literature on clinical reasoning
+that there are multiple mechanisms through which
+one can accurately generate a diagnosis.
+In the current paper we report on the ﬁndings from
+a pair of additional studies aimed at testing the
+robustness of this phenomenon. As alluded to
+above, there are many ways that the diagnostic
+process can go wrong. If he or she relies too
+heavily on non-analytic processes (i.e. the feeling of
+having seen it all before), the diagnostician may be
+overly susceptible to missing key features that are
+indicative of alternative diagnoses, but which do
+not ﬁt the overall pattern of the case. If, by contrast,
+the diagnostician relies too heavily on analytic
+processes (i.e. being particularly systematic and
+objective), his or her perception of the cohesive-
+ness of the case may be undermined, thus resulting
+in excessive weighting of unusual or distracting
+features. One could easily expect that novices, who
+have just learned a set of diagnostic rules, might be
+especially vulnerable to this overly analytic ap-
+proach. Here we report a pair of studies in which we
+tried to make the case presentations particularly
+difﬁcult by biasing participants consideration of the
+cases away from the correct diagnosis either through
+mention of a feature consistent with an incorrect
+diagnosis (Study 1) or through mention of a
+plausible but incorrect diagnostic hypothesis (Study
+2). These types of experimental manipulations are
+consistent with the uncommon but important
+sources of misinformation a clinician may obtain,
+such as a referring doctors incorrect diagnosis or an
+erroneous computer-generated list of ECG features.
+In Study 1, the aim of the feature manipulation was
+to induce people towards placing greater reliance
+on their analytic tendencies (i.e. careful consider-
+ation of the features presented in the case), whereas
+the aim of the diagnostic hypothesis manipulation
+in Study 2 was to induce people towards greater
+reliance on their non-analytic tendencies (i.e.
+greater inﬂuence of their Gestalt impressions).
+Prior research by our group has shown the latter
+manipulation to have a strong inﬂuence on the
+diagnostic process.15,16
+METHODS
+General methodology
+Undergraduate psychology students were recruited
+from McMaster University to ensure that participants
+had no previous experience with ECG diagnosis.
+They were given bonus credits in their introductory
+psychology class for participation.
+Both studies involved 3 phases (training, practice and
+test) that took place in one-to-one teaching environ-
+clinical expertise
+1154
+ Blackwell Publishing Ltd 2007. MEDICAL EDUCATION 2007; 41: 1152–1158
+[PAGE 4]
+ments with a research assistant. Only the experimen-
+tal manipulation during the test phase varied between
+the 2 studies. During the training phase, the
+researcher taught participants the basics regarding
+ECG diagnosis (i.e. the names of the 12 leads and the
+labels assigned to a normal waveform). They were
+then taught the key features of 10 diagnostic
+categories through presentation of a written feature
+list and a series of examples. The diagnostic categories
+were:
+1 normal;
+2 right ventricular hypertrophy;
+3 left ventricular hypertrophy with strain;
+4 left bundle branch block;
+5 right bundle branch block;
+6 acute anterior myocardial infarction;
+7 acute inferior myocardial infarction;
+8 ischaemia;
+9 pericarditis, and
+10 hyperkalaemia.
+Within each category 4 examples were presented.
+During presentation of the ﬁrst 2 examples, the
+researcher pointed to and described the features that
+made that particular ECG a member of the category.
+During the presentation of the second 2 examples,
+the participant was asked to do the same. This phase
+of the experiment required 45–60 minutes to
+complete per participant.
+After studying all 10 categories in this way,
+participants entered a practice phase during which
+they were presented with a booklet of 10 ECGs,
+all of which had been seen during training, but
+which were randomly sorted without diagnostic
+labels. At the start of the practice phase, partici-
+pants were randomly assigned to either a com-
+bined instruction group or a no instruction
+group. Those in the combined instruction group
+were encouraged to use a combination of analytic
+and non-analytic reasoning strategies when con-
+fronted with each new ECG through the following
+instructions:
+New ECGs often look like ECGs that have been
+seen before (i.e. during training). Trust this sense
+of familiarity, but realise that basing decisions
+solely on similarity can lead to diagnostic errors.
+So, dont ‘‘jump the gun’’. Consider the feature list
+before providing a ﬁnal diagnosis.
+The other half of the participants were not given
+instructions that would promote any particular
+reasoning process. Instead, they were told:
+Assign a diagnosis to each ECG using whatever
+strategy comes naturally to you. Feel free to use the
+feature list, but approach each case using whatever
+strategy seems most appropriate to help you
+reach the correct diagnosis.
+All participants in both groups were allowed to view
+the ECG, the feature list and the generic waveform
+image from the training materials when assigning
+their diagnosis. They were given feedback after
+interpreting each ECG, consisting of the correct
+diagnosis and an indication of which features
+determined the correct diagnosis.
+Finally, during the test phase, participants were
+presented with an additional booklet of ECGs. All
+participants were provided with the same instructions
+and feature list as during the practice phase, but no
+feedback was given regarding the accuracy of
+performance during the test. The biasing interven-
+tions were implemented during the test phase. No
+time limits were imposed, but all participants
+completed the entire study in 90–120 minutes.
+Study-speciﬁc methodology
+During the test phase of Study 1, participants were
+presented with 1 of 2 possible test booklets, each
+consisting of the same 16 ECGs. In 1 booklet the
+ECGs were presented along with a distracting feature.
+With each presentation, participants were asked to
+consider (before trying to diagnose the ECG)
+whether or not the feature named was present on the
+recording. Participants were unaware that the feature
+presented was indicative of an incorrect diagnosis
+in all cases. However, in all cases it was somewhat
+unclear whether or not the feature was actually
+present. The other half of the participants were
+shown the same set of 16 ECGs without an interfering
+feature included. They were simply asked to provide a
+diagnosis for each ECG using the instructions they
+had been given in the practice phase of the study. In
+other words, both instruction and bias were crossed,
+between-subject, manipulations. The number of
+correct diagnoses (out of 16) was calculated for each
+participant and a 2-way ANOVA was performed on this
+accuracy variable with instruction and bias as
+between-subject variables. Posthoc t-tests were used to
+resolve the source of a signiﬁcant interaction.
+The test phase of Study 2 was similar to that of Study
+1 in that the biasing manipulation was implemented
+during the test. In Study 2, however, the bias
+condition was incorporated as a within-subjects
+manipulation such that each participant was
+1155
+ Blackwell Publishing Ltd 2007. MEDICAL EDUCATION 2007; 41: 1152–1158
+[PAGE 5]
+presented with ECGs in each bias condition. Three
+test booklets were used, each containing the same 18
+ECGs, but differing in the information presented
+along with the recording. Six of the ECGs were
+presented with no additional information, 6 were
+presented with the correct diagnosis, and 6 were
+presented with an incorrect diagnosis. To avoid the
+inﬂuence of prestige as much as possible, participants
+were told that the diagnostic suggestion had been
+raised by another psychology student at an equal level
+of training. For example, 1 ECG was presented with
+the statement: This ECG was shown to a group of
+psychology students and 1 of the diagnoses raised
+was ischaemia. Participants were then asked to
+diagnose the ECG using the instructions they had
+been given in the practice phase of the study. Adding
+2 ECGs to the set used in Study 1 enabled us to
+add a third bias condition while ensuring that each
+ECG was presented equally often in each bias
+condition by counter-balancing across participants.
+The number of correct diagnoses (out of 6) within
+each bias condition was calculated for each partici-
+pant and a mixed design ANOVA using instruction
+(combined versus none) as a between-subjects factor,
+and bias condition as a within-subjects factor was
+performed on this accuracy variable. We also used
+t-tests as planned comparisons, given that we did not
+expect a difference across instruction within the
+bias-correct condition.
+RESULTS
+Study 1
+Sixty students participated in this experiment; 30
+received combined instructions and 30 received no
+reasoning instructions. Fifteen from each group
+were given ECGs with an interfering feature and 15
+were not. ANOVA revealed a main effect of instruc-
+tion; the group provided with the combined
+reasoning instruction outperformed those given no
+instruction on how to diagnose new ECGs
+(F[1,56] = 9.06, P < 0.01). The main effect of bias
+did not reach signiﬁcance, but was in the expected
+direction (F[1,56] = 1.87, P < 0.2). The interaction
+between instruction and bias indicated that the
+impact of a negatively biasing feature presentation
+was greater in the no-instruction condition (effect
+size = 1.02) than in the combined reasoning con-
+dition (effect size = 0.32) (F[1,56] = 3.7, P < 0.07).
+t-tests further indicated that the accuracy rates
+achieved when a biasing feature was presented were
+lower than when no biasing feature was presented
+in the no-instruction condition (P < 0.06), but
+that the accuracy rates did not differ in the
+combined reasoning condition (P > 0.6). The
+mean scores for each condition are illustrated in
+Table 1. All groups performed markedly better than
+chance, which would result in a score of 1.6⁄16
+given that there were 10 possible response
+categories.
+Study 2
+A total of 48 students participated in this experi-
+ment; 24 received combined instructions and 24
+received no reasoning instructions. All participants
+were presented with 6 ECGs in each of the bias
+conditions (correct diagnosis, incorrect diagnosis,
+no bias). ANOVA revealed that none of the main
+effects of instruction, bias or the bias · instruction
+interactions were statistically signiﬁcant. Planned
+comparisons revealed, however, that the key com-
+parison (combined versus no-instruction within the
+bias-incorrect condition) revealed a statistically
+signiﬁcant difference (F[1,46] = 4.2, P < 0.05).
+Similarly, although the group given combined
+instructions did not reveal a statistically signiﬁcant
+effect of bias (F[2,46] = 1.4, P > 0.25), there was
+a signiﬁcant difference between the bias-incorrect
+condition and the bias-correct condition in the
+no-instruction group (F[1,46] = 4.3, P < 0.05). The
+mean scores for each condition are illustrated in
+Table 2. Again, all groups performed markedly
+better than chance, which would result in a score
+of 0.6⁄6 given that there were 10 possible response
+categories.
+clinical expertise
+Table 1 Mean diagnostic accuracy (out of 16) and standard error as a function of reasoning instruction and presence or absence of a biasing feature presentation
+Interfering feature
+No interference
+Average
+P
+Effect size
+Combined reasoning instructions
+8.13 (0.45)
+7.80 (0.55)
+7.97
+> 0.6
+0.17
+No reasoning instructions
+5.13 (0.83)
+7.13 (0.54)
+6.13
+< 0.06
+0.70
+Average
+6.63
+7.47
+7.05
+< 0.2
+P
+< 0.01
+> 0.3
+< 0.01
+Effect size
+1.02
+0.32
+1156
+ Blackwell Publishing Ltd 2007. MEDICAL EDUCATION 2007; 41: 1152–1158
+[PAGE 6]
+DISCUSSION
+This pair of studies provides further empirical
+support for the notion that explicitly telling novice
+diagnosticians to utilise multiple forms of reasoning
+(in this case, familiarity-driven pattern recognition
+combined with careful consideration of the present-
+ing features) can result in improved diagnostic
+accuracy. Despite the intuitive nature of statements
+such as no single tool will be right for every job, a
+series of studies, including these, has now been
+conducted that suggest students do not spontane-
+ously adopt this approach to clinical reasoning as
+effectively as they might.11,13,14 In other words, there
+appears to be pedagogical beneﬁt in explicitly guid-
+ing students to reason in a way that probably sounds
+as if it should occur naturally. Although nobody can
+control (or even say with certainty) what reasoning
+processes are operational when a diagnostician works
+through a case, there is every reason to believe that
+participants in the no-instruction condition would
+have been inﬂuenced by similarity when making their
+diagnostic decisions13,17 and it is inconceivable that
+they would not have utilised the feature list to help
+scan each ECG for features. However, participants in
+that group did not perform as successfully as partic-
+ipants who had been explicitly told to trust feelings of
+familiarity and to be careful not to overlook pre-
+senting features.
+Unique to this study are ﬁndings that suggest just
+how frail this balance between analytic and non-
+analytic reasoning strategies can be and that instruc-
+tion to adopt a combined reasoning approach can
+help maintain this balance when faced with chal-
+lenging cases. Biasing participants either towards
+excessive reliance on feature-level information (as
+might occur if one were overly analytic) or towards
+excessive reliance on diagnosis-level information (as
+might occur if one were overly non-analytic) had the
+impact of reducing diagnostic accuracy differentially
+across groups of participants. In both studies, those
+randomly assigned to receive a combined reasoning
+instruction showed no decline in performance when
+they were intentionally misled by the researcher
+towards an incorrect response, by contrast with those
+who were not given any instruction about how to
+reason through these stimuli. Study 2 is the ﬁrst study
+in 6 not to have shown an overall main effect of
+combined reasoning instructions compared with
+other reasoning instructions,11,13,14 a fact that leads
+us to suspect that performance in the no-bias
+condition for this group was simply anomalously
+(and erroneously) low.
+Limitations of this programme of research include
+the fact that it is intentionally focused narrowly on
+knowledge-based components of the diagnostic pro-
+cess in an aim to better understand how knowledge is
+organised in memory and how it can best be utilised
+in practice. We intentionally use visual materials
+(ECGs) in order to study the balance between
+analytic and non-analytic processing. There are
+certainly other aspects of practice that deﬁne com-
+petence for doctors, including the related, but
+under-studied, aspect of making treatment decisions,
+and broader tendencies that are usually described
+as being non-cognitive (e.g. communication skills or
+the inclination towards re-investing ones extra
+mental resources into continuing professional or
+personal development).18 In addition, it remains to
+be seen whether or not the effects reported in this
+paper will generalise to other medical training
+contexts with actual medical trainees. Absolute nov-
+ices were selected for this research to ensure naı¨vete´
+with respect to ECG diagnosis, thus maximising the
+control we had over prior relevant experiences and
+minimising the mental database of previously seen
+ECGs on which participants could draw. Whether or
+not these strategies yield similar (and longterm)
+Table 2 Mean diagnostic accuracy (out of 6) and standard error as a function of reasoning instruction and presence or absence of a biasing diagnostic suggestion
+Incorrect diagnosis
+presented
+No diagnosis
+presented
+Correct diagnosis
+presented
+Average
+P
+Combined reasoning instructions
+3.58 (0.25)
+3.08 (0.28)
+3.67 (0.27)
+3.44
+NS
+No reasoning instructions
+2.83 (0.27)
+3.21 (0.32)
+3.50 (0.24)
+3.18
+Incorrect < correct
+(P < 0.05)
+Average
+3.21
+3.15
+3.58
+3.31
+> 0.15
+P
+< 0.05
+> 0.75
+> 0.65
+> 0.3
+Effect size
+0.59
+0.09
+0.13
+NS = not signiﬁcant
+1157
+ Blackwell Publishing Ltd 2007. MEDICAL EDUCATION 2007; 41: 1152–1158
+[PAGE 7]
+beneﬁts for medical students at intermediate or
+senior levels of training or practice, the current
+ﬁndings should be construed as providing beneﬁt in
+that they can help to set learning off on the right
+foot, at least in visual domains such as those provided
+by ECG diagnosis.
+As we mentioned earlier, we stress that we do not
+interpret these ﬁndings to mean that we have
+discovered the process through which to maximise
+diagnostic success. On the contrary, among the
+principles guiding this work is the notion that
+diagnostic ability is somewhat amorphous and ﬂexi-
+ble.2 Better diagnosticians are likely to be those who
+can overcome case-speciﬁc weaknesses through the
+recruitment of additional diagnostic strategies
+(either consciously or unconsciously) as it is unlikely
+that any single diagnostic pathway will be capable
+of resolving every patient presentation a doctor is
+likely to encounter. Better diagnosticians may also be
+those who are less likely to be satisﬁed (again, either
+consciously or unconsciously) with diagnoses that
+are derived from a single diagnostic pathway because
+these ﬁndings and the work that precedes them
+suggest that increased reliance on any single diag-
+nostic strategy is likely to harm performance. Further
+work is required, however, to tease apart the rela-
+tionships between these phenomena and ability. For
+now, we treat these ﬁndings as simply indicative of
+the value that can be derived from providing explicit
+guidance regarding appropriate ways to solve diag-
+nostic problems without limiting that guidance to any
+single particular strategy.
+Contributors:
+KWE and LRB conceived and designed
+Study 1. All 4 authors conceived and designed Study 2. LRB
+oversaw data collection for Study 1. KWE oversaw data
+collection for Study 2. KWE performed all data analyses and
+drafted the paper. RMH, VRL and LRB then made critical
+revisions. All authors approved the ﬁnal manuscript.
+Acknowledgements:
+the authors would like to thank
+Tavinder Ark, Lindsay Cameron, Samantha Johnson and
+Jessie McCready for their assistance with data collection.
+Funding:
+none.
+Conﬂicts of interest:
+none.
+Ethical approval:
+this study was approved by the
+Hamilton Health Sciences Research Ethics Board.
+### END_PAPER_TEXT

@@ -1,0 +1,575 @@
+### METADATA (IGNORE FOR ENTITY/CLAIM EXTRACTION)
+Title: Fostering diagnostic knowledge through computer‐supported, case‐based worked examples: effects of erroneous examples and feedback
+DOI: 10.1111/j.1365-2923.2008.03122.x
+Year: 2008
+Journal: Medical Education
+URL: https://doi.org/10.1111/j.1365-2923.2008.03122.x
+Authors: Veronika Kopp, Robin Stark, Martin R Fischer
+RecordID: doi:10.1111/j.1365-2923.2008.03122.x
+Source: pdf EBSCO-FullText-01_02_2026 (10).pdf
+### END_METADATA
+
+### PAPER_TEXT (USE FOR ENTITY/CLAIM EXTRACTION)
+[PAGE 1]
+Fostering diagnostic knowledge through computer-
+supported, case-based worked examples: effects of
+erroneous examples and feedback
+Veronika Kopp,1 Robin Stark2 & Martin R Fischer1
+OBJECTIVES A case-based, worked example approach
+was realised in a computer-based learning environ-
+ment with the intention of facilitating medical
+students diagnostic knowledge. In order to enhance
+the effectiveness of the approach, two additional
+measures were implemented: erroneous examples
+and elaborated feedback. In the context of an
+experimental study, the two measures were varied
+experimentally.
+METHODS A total of 153 medical students were ran-
+domly assigned to four experimental conditions of a
+2 · 2-factor design (errors versus no errors, elabo-
+rated feedback versus knowledge of correct result
+[KCR]). In order to verify the sustainability of the
+effects, a subgroup of subjects (n = 52) was compared
+with a control group of students who did not
+participate in the experiment (n = 145) on a regular
+multiple-choice question (MCQ) test.
+RESULTS Results show that the acquisition of diag-
+nostic knowledge is mainly supported by providing
+erroneous examples in combination with elaborated
+feedback. These effects were independent from
+differences in time-on-task and prior knowledge.
+Furthermore, the effects of the learning environment
+proved sustainable.
+CONCLUSIONS Our results demonstrate that the
+case-based, worked example approach is effective
+and efﬁcient.
+KEYWORDS randomised controlled trial [publication type];
+computer-assisted instruction ⁄ *standards; clinical competence ⁄
+*standards; *feedback; teaching ⁄ *methods; *diagnosis;
+education, medical, undergraduate ⁄ *methods.
+Medical Education 2008: 42: 823–829
+doi:10.1111/j.1365-2923.2008.03122.x
+INTRODUCTION
+Diagnosing is a fundamental competence for every
+doctor. However, students and attending doctors
+have difﬁculties ascertaining the right diagnosis.
+Gra¨sel and Mandl,1 for example, showed that medical
+students at the end of their clinical studies proceed
+in an additive and mechanistic way; they tend to
+collect large amounts of data without building
+concrete hypotheses. We postulate that the diagnostic
+knowledge base of the students encompassing
+declarative knowledge components (conceptual
+knowledge: what information) and action-related
+knowledge components like strategic knowledge
+(how information2) and teleological knowledge
+(why information2) is deﬁcient. Furthermore,
+these components are not sufﬁciently integrated
+into more abstract structures (schemata) which would
+allow effective and efﬁcient diagnostic reasoning.
+In order to overcome this problem and to foster
+diagnostic knowledge which allows competent diag-
+nostic reasoning, a complex computer-based learning
+environment was developed based on the CASUSTM
+online learning tool, which has proved effective in
+various studies.3,4
+Following Mandin,5 diagnostic reasoning can be
+understood as schema-based problem-solving.
+Therefore, effective learning environments that
+systematically support students in constructing and
+organising schemata must be provided. We postulate
+that learning environments taking advantage of the
+transitioning into and during residency
+1Department of Internal Medicine, Medical Education Unit,
+University of Munich Hospital, Munich, Germany
+2Institute of Education, Saarland University, Saarbru¨cken, Germany
+Correspondence: Veronika Kopp, Klinikum der Universita¨t Mu¨nchen,
+Medizinische Klinik Innenstadt, Schwerpunkt Medizindidaktik,
+Ziemssenstrasse 1, 80336 Munich, Germany.
+Tel: 00 49 89 5160 2374; Fax: 00 49 89 5160 4931;
+E-mail: veronika.kopp@med.uni-muenchen.de
+ª Blackwell Publishing Ltd 2008. MEDICAL EDUCATION 2008; 42: 823–829
+823
+[PAGE 2]
+worked example effect 6,7 are especially appropriate to
+achieve this instructional goal. Learning with worked
+examples is superior to directly teaching abstract
+principles, as well as to actively solving training
+problems – at least with regard to initial skill
+acquisition.6 This worked example effect is attributed
+to the fact that studying worked examples imposes
+lower levels of cognitive load on the learner than
+solving training problems, particularly because no
+extensive search processes with regard to the correct
+solution steps are involved.6 Therefore, more cogni-
+tive resources can be invested in processes of schema
+construction. Moreover, studying worked examples
+(by contrast with attempting to solve training prob-
+lems) focuses the learners attention on information
+that is relevant to schema construction. In various
+domains schema-based problem solving is consid-
+ered to be very efﬁcient and therefore often seen as a
+marking feature of experts problem solving.6
+However, studies on the self-explanation effect8–11
+clearly show that studying worked examples does not
+automatically result in effective problem-solving
+schemas. In order to achieve this goal, cognitive and
+meta-cognitive self-explanation processes have to be
+fostered systematically by implementing additional
+instructional measures.11–13 In addition, the worked
+example method has to be adapted to the instruc-
+tional context, instructional goals and domain in
+which it is implemented.
+So far, worked examples have been investigated
+primarily in studies on initial learning in rather
+simple and well-structured domains. Thus, we com-
+bined the example method with elements of case-
+based learning which proved effective in various
+problem-based learning scenarios in medicine.14,15 In
+addition, two instructional measures aimed at foster-
+ing diagnostic knowledge by stimulating processes of
+schema induction were integrated into the learning
+environment: erroneous worked examples and
+feedback.
+A major objective of our study was to assess the
+effectiveness of erroneous examples and feedback in
+the context of our case-based, worked example
+approach. Furthermore, the sustainability of the
+learning environment in general was investigated.
+Learning from errors
+Confronting learners with errors introduces difﬁcul-
+ties for the learner – difﬁculties which are desirable
+because they can foster the quality of learning
+processes and, as a result, learning outcomes.16 The
+method represents a particularly promising measure in
+the ﬁeld of medicine, where errors in the process of
+diagnosing can have fatal consequences.17 Following
+the classiﬁcation of diagnostic errors by Graber et al.,18
+we focused on relevant and severe cognitive errors
+caused by inadequate knowledge or faulty data gath-
+ering, inaccurate clinical reasoning, or faulty veriﬁca-
+tion.18 Oser and Spychiger19 assume that every error
+can be learned from when and if learners use the error
+purposefully as such an opportunity. Therefore,
+learners must identify the error and understand the
+correct solution by systematically comparing the
+incorrect solution with the correct one. A study by
+Grosse and Renkl20 on learning from worked examples
+can be interpreted in terms of the necessity of
+implementing effective feedback methods when
+confronting learners with erroneous examples.
+Feedback
+According to van Gog et al.,2 understanding a proce-
+dure must involve knowledge of its domain and of its
+teleology. Knowledge of a domain consists of princi-
+pled knowledge about objects and events in that
+domain. Knowledge of the teleology of a procedure is
+knowledge of the rationale behind or purpose of the
+steps in a procedure.2 Therefore, effective feedback
+should not only contain conceptual knowledge, but
+also information which informs the learner of the
+rationale behind the selection and application of
+operators (designated why information) and
+Overview
+What is already known on this subject
+The effectiveness of worked examples is verified
+for initial skills acquisition in well-structured
+domains. This also holds true for the effective-
+ness of elaborated feedback.
+What this study adds
+A case-based, worked example approach
+implemented in a complex domain proved
+effective and efficient; elaborated feedback in
+combination with errors is an effective learning
+method in the context of worked examples.
+Suggestions for further research
+These findings must be replicated. Think-aloud
+protocols used to investigate students learning
+processes should be considered.
+824
+ª Blackwell Publishing Ltd 2008. MEDICAL EDUCATION 2008; 42: 823–829
+V Kopp et al
+[PAGE 3]
+information about strategic knowledge used by
+experts in selecting the operators (designated
+how information).
+Especially when learners are confronted with com-
+plex tasks, elaborated feedback which combines these
+kinds of information (in comparison with less infor-
+mative feedback such as knowledge of correct result
+[KCR] feedback) has positive effects on feedback
+reception21 and knowledge acquisition.22–25 How-
+ever, when only conceptual knowledge has to be
+acquired, KCR feedback can be sufﬁcient.26
+Time-on-task
+The implementation of erroneous examples and
+feedback in the present study aimed to enhance the
+effectiveness of the learning environment by fostering
+the quality of learning processes. However, coping with
+erroneous examples and processing elaborated feed-
+back information (or compensating superﬁcial feed-
+back by self-explanation behaviour) and the resulting
+processes can prolong the time-on-task, thereby
+confounding the quality and quantity of learning
+processes. From a practical perspective, such effects
+are acceptable when the prolonging is moderate and
+at the same time associated with substantial learning
+effects. However, from a theoretical perspective, these
+effects are only acceptable when they do not under-
+mine the internal validity of the study. Despite these
+potential problems, time-on-task was not restricted
+because of considerations about ecological validity:
+following an integrative research approach,27 we planned
+to investigate the effects of the two instructional
+measures under conditions which are not too far from
+realistic learning scenarios in practice.
+Research questions
+1 To what extent is time-on-task increased by
+erroneous examples and feedback?
+We expected both measures to increase time-on-task.
+However, we postulated that the potential effects on
+diagnostic knowledge cannot be explained by
+differences in time-on-task.
+2 To what extent is diagnostic knowledge facilitated
+by erroneous examples and feedback?
+We assumed that both erroneous examples and
+elaborated feedback have positive effects on the
+acquisition of diagnostic knowledge and that the
+combination of both measures is especially effective.
+3 To what extent are effects of the learning environ-
+ment sustainable?
+We supposed that effects of the learning environment
+on conceptual knowledge would still be veriﬁable
+6 weeks after the learning session.
+METHODS
+Sample and design
+A total of 153 medical students (104 women, 49 men)
+from two Munich medical faculties, Germany, took
+part in the study. All participants were engaged in
+clinical studies and were in the second to the sixth
+clinical semesters. The average age was around
+25 years (mean = 25.02 years, standard deviation
+[SD] = 3.62). Students were voluntarily recruited and
+received €40 for participation. The subjects were
+randomly assigned to the four conditions of a
+2 · 2-factor design (Table 1).
+Sustainability was assessed with students in their
+second clinical semester. Arterial hypertension is part
+of the curriculum during this semester and is also
+part of a regular multiple-choice question (MCQ)
+test. From this population, we drew a sample of
+students who had participated in our study (n = 52;
+experimental group) and compared their results on
+the MCQ test with those of the rest of the students
+from the second clinical semester (n = 145; control
+group). Experimental and control group subjects did
+not differ in terms of relevant learning prerequisites.
+Furthermore, experimental group students did not
+differ from the rest of the students, who participated
+in the main study but not in the sustainability study,
+with respect to relevant learning prerequisites and
+diagnostic knowledge.
+Learning environment
+The learning environment, integrated in the
+CASUS learning tool, consisted of a schema
+Table 1 2 · 2-factor design
+Design
+Factor 2: feedback
+Elaborated
+KCR
+Factor 1: errors
+With errors
+n = 36
+n = 41
+Without errors
+n = 40
+n = 36
+KCR = knowledge of correct result
+ª Blackwell Publishing Ltd 2008. MEDICAL EDUCATION 2008; 42: 823–829
+825
+Learning with worked examples in medicine
+[PAGE 4]
+illustrating the steps of the diagnostic process and
+six worked examples dealing with pheochromocy-
+toma, renal artery stenosis and primary hyperald-
+osteronism. Working through these examples,
+learners see themselves in the role of a student on
+an elective working together with a general practi-
+tioner (GP) who gives feedback. All examples begin
+with a clinical situation. The (ﬁctitious) student
+starts drawing his conclusions for the working
+diagnosis and for the further workup. Subsequently,
+the GP gives feedback on his diagnostic steps. The
+sequence of giving information, drawing conclu-
+sions and obtaining feedback then continues until
+the ﬁnal diagnosis is reached. Every example
+consists of three or four such sequences containing
+three or four screenshots.
+The additional schema allows the steps of the
+diagnostic process to be contextualised by providing
+structured information on all secondary hypertension
+diseases. Additionally, the schema explains the
+relationship between the different illnesses and the
+underlying pathophysiological processes. Further-
+more, it indicates which further information is
+needed for excluding and including diagnoses,
+respectively.
+Instructional measures
+Errors
+In the condition without errors, the student comes to
+the right considerations on the basis of the given
+information, draws the right conclusions and ﬁnishes
+the case with the right diagnosis. In the condition
+with errors, the student makes several severe errors.
+The choice of errors was guided by the error
+taxonomy described by Graber et al.,18 as well as by an
+analysis of relevant cognitive errors in this domain.
+After each erroneous decision, the error is corrected
+in the GPs feedback.
+Feedback
+In the elaborated version of the feedback, the
+(ﬁctitious) doctor gives additional explanations to
+the (right or wrong) considerations and further
+consequences drawn by the student. Furthermore,
+he elucidates the diagnostic process referring to
+underlying pathophysiological knowledge. The con-
+ditions with the KCR feedback were very frugal in
+comparison with the elaborated version. Consider-
+ations, conclusions and further procedures are eval-
+uated only as right or wrong; no further explanation
+is forthcoming. In the condition errors and KCR
+feedback the learners had to deduce the right step in
+the diagnostic process from the subsequent solution
+step in the example.
+Instruments
+Prior knowledge
+The prior knowledge test measuring domain-speciﬁc
+conceptual knowledge contained 21 MCQs, most of
+which had been used in the German National Boards
+medical examination. Two items were excluded from
+analysis because of low item)total correlation. Thus
+19 points could be achieved in this measure. The
+reliability of the test was sufﬁcient (Cronbachs
+a = 0.63).
+Diagnostic knowledge
+The construct of diagnostic knowledge followed
+considerations about relevant knowledge for
+understanding domain-speciﬁc procedures. There-
+fore, it comprised conceptual, strategic and teleo-
+logical knowledge. The 19 conceptual knowledge
+tasks of the prior knowledge test were presented
+again after the learning phase (Cronbachs
+a = 0.60). In order to measure strategic knowledge,
+10 key feature problems were applied.28,29 A max-
+imum of 29 points could be achieved. The reli-
+ability score was 0.72 (Cronbachs a). Additionally,
+three problem-solving items, which functioned as
+measures for strategic and teleological knowledge,
+were used. In each item, the students had to answer
+three questions. They had to generate their leading
+diagnosis from the information given in a clinical
+case scenario. Furthermore, they were asked to
+explain their decision and to describe the under-
+lying pathophysiological processes (maximum:
+20 points; Cronbachs a = 0.73).
+The three tests operationalising diagnostic
+knowledge correlated with Pearson coefﬁcients
+of 0.45)0.63. The reliability of the aggregated
+diagnostic knowledge measure (maximum:
+68 points) was 0.85 (Cronbachs a).
+Sustainability of the learning environment was
+assessed by a regular MCQ examination which
+consisted of 30 questions measuring primarily
+conceptual knowledge in the domain of internal
+medicine (maximum: 30 points; Cronbachs
+a = 0.68). Seven of these questions dealt with the
+content matter of the learning environment
+(arterial hypertension); the rest of the items
+referred to other aspects of internal medicine.
+826
+ª Blackwell Publishing Ltd 2008. MEDICAL EDUCATION 2008; 42: 823–829
+V Kopp et al
+[PAGE 5]
+Time-on-task
+Time-on-task was recorded automatically by the
+computer-based learning environment.
+Procedure
+After a short introduction, students completed the
+MCQ test measuring prior knowledge, which was
+followed by the learning session, in which the
+students worked through the worked examples. After
+a 15-min pause, the students worked on the diag-
+nostic knowledge tests. Six weeks after the experi-
+ment, the regular MCQ examination took place.
+Statistical analyses
+Effects of the two instructional measures on time-on-
+task and sustainability effects were analysed by
+variance analyses. In order to determine effects on
+diagnostic knowledge, a general linear model (GLM)
+was speciﬁed for each knowledge aspect. In the GLM,
+the instructional measures were integrated as inde-
+pendent variables and prior knowledge and time-
+on-task as control variables. Partial g2 was used as a
+measure for effect strength. For bivariate
+correlations, Pearson product)moment correlation
+coefﬁcients were applied.
+RESULTS
+Inﬂuence of time-on-task
+Students learning with elaborated feedback worked
+signiﬁcantly longer with the learning environment
+than students in the two KCR conditions (Table 2).
+The main effect feedback was signiﬁcant and
+substantial (F[1,149] = 36.15; P < 0.01; partial
+g2 = 0.20). Errors had only a small effect on time-
+on-task, which did not reach statistical signiﬁcance
+(F[1,149] < 1). The interaction also missed statistical
+signiﬁcance (F[1,149] < 1). Time-on-task was not
+associated with diagnostic knowledge. The respective
+correlations varied between 0.01 and 0.09.
+Effects on diagnostic knowledge
+Concerning prior knowledge, no signiﬁcant group
+differences were found. However, descriptive differ-
+ences in prior knowledge and time-on-task were
+statistically controlled in the subsequent analyses.
+There were neither ceiling nor ﬂoor effects. Students
+in the condition with errors and elaborated feedback
+achieved the highest scores in diagnostic knowledge,
+followed by the without errors and KCR group and the
+without errors and elaborated feedback group.
+Students working with erroneous examples and
+receiving only KCR feedback did rather poorly.
+Themaineffecterrorswassigniﬁcant(F[1,144] = 4.30;
+P < 0.05; partial g2 = 0.03). On average, more diag-
+nostic knowledge was acquired when erroneous
+examples were provided. The interaction effect was
+also signiﬁcant (F[1,144] = 9.34; P < 0.01; partial
+g2 = 0.06). As expected, students proﬁted from erro-
+neous examples, especially when they received elabo-
+rated feedback. Against our expectations, the main
+effect feedback missed the level of statistical signiﬁ-
+cance (F[1,144] = 1.76; not signiﬁcant [NS]).
+Sustainability
+On the MCQs not dealing with arterial hypertension,
+experimental group students achieved 15.7 of 23
+points (SD = 3.12) and control group students
+achieved 14.8 points (SD = 3.11). This difference was
+not signiﬁcant (F[1,195] = 2.99; NS). However, on
+the arterial hypertension questions, experimental
+group students achieved 5.59 of 7 points (SD = 0.95),
+whereas control group students achieved only 5.07
+Table 2 Time-on-task and diagnostic knowledge in the different learning conditions
+With errors
+Without errors
+EF mean (SD)
+KCR mean (SD)
+EF mean (SD)
+KCR mean (SD)
+Time-on-task, mins
+44.60 (14.70)
+31.37 (7.75)
+45.49 (16.87)
+33.70 (10.02)
+Diagnostic knowledge (maximum: 68 points)
+47.30 (7.64)
+40.57 (6.75)
+42.56 (9.44)
+43.49 (8.58)
+SD = standard deviation; EF = elaborated feedback; KCR = knowledge of correct result
+ª Blackwell Publishing Ltd 2008. MEDICAL EDUCATION 2008; 42: 823–829
+827
+Learning with worked examples in medicine
+[PAGE 6]
+points (SD = 1.14). This effect was signiﬁcant
+(F[1,195] = 8.49; P < 0.01) and of medium size
+(partial g2 = 0.04).
+DISCUSSION
+The primary objective of this study was to facilitate
+students diagnostic knowledge in a sustainable
+manner. Therefore, a case-based, worked example
+approach was realised in a computer-based learning
+environment. In order to assure internal validity,
+differences in time-on-task and prior knowledge were
+statistically controlled for. Furthermore, the students
+were randomly assigned to the four experimental
+conditions.
+The results show that the acquisition of diagnostic
+knowledge is mainly fostered by providing erroneous
+examples in combination with elaborated feedback.
+When only KCR feedback is given, erroneous exam-
+ples are detrimental. Against the background of the
+rather short time-on-task invested by learners in all
+conditions, the effects of the two instructional mea-
+sures are remarkable. They conﬁrm pedagogical
+considerations about the learning potential of
+errors.19 The unfavourable effect of erroneous
+examples in combination with KCR feedback on
+knowledge acquisition replicates ﬁndings of studies
+in which erroneous examples were provided without
+informative feedback measures.20 In addition, these
+ﬁndings are in line with current feedback research in
+which the effectiveness of informative feedback
+measures is stressed, at least in complex learning.23
+For most students, the information that a speciﬁc
+diagnostic conclusion or procedure is not adequate
+seems not to be sufﬁcient to induce deep conceptual
+understanding. The information deﬁcit in the con-
+ditions with KCR feedback, especially when learners
+are confronted with erroneous examples, must be
+compensated for by effective self-explanation.7,8,11
+However, as Renkl10 showed, a lot of learners process
+example information rather superﬁcially. As a result,
+the full potential of the learning method is not
+tapped. In fact, at least in the context of complex
+learning environments, the feedback given must
+inform students why the respective step in the
+diagnostic process is wrong and which speciﬁc
+conclusion or procedure is adequate. It is clear that
+effective processing of this additional information is
+not without cost: in our study, elaborated feedback
+resulted in a substantial increase in learning time.
+However, from a pedagogical perspective, this
+additional investment in time-on-task pays off, at
+least when erroneous examples are provided.
+Six weeks after the experiment had concluded,
+medium effects of the learning environment on
+conceptual knowledge were still signiﬁcant. The fact
+that this effect only occurred when the learners had
+to answer MCQs focusing on content aspects repre-
+sented in the learning environment validates the
+sustainability effect. From a pedagogical perspective,
+this ﬁnding is astonishing because the learning
+sessions were short and the learning environment was
+targeted at fostering not conceptual knowledge, but
+diagnostic knowledge, which includes strategic and
+teleological knowledge components.
+OUTLOOK
+If the positive ﬁndings of our study can be replicated,
+this learning environment should be integrated into
+the regular clinical curriculum at medical schools.
+Concerning further studies, sustainability analyses
+should include all aspects of diagnostic knowledge. In
+addition, in order to gain more penetrating insights
+into the sustainability of the instructional measures,
+further analyses should include larger experimental
+groups which enable differentiated comparisons. Fur-
+thermore, thinking-aloud procedures30 should be
+employed in order to investigate effects of erroneous
+examples and feedback on the quality of the learning
+process. Only by recording the learners self-explana-
+tions can more direct indicators for pedagogically
+desired processes of schema induction be won.
+Contributors: VK contributed to the conception and design
+of the study, the acquisition and analysis of data, the
+literature search and the write-up of the paper. RS
+contributed to the conception and design of the study,
+analysis and interpretation of data, and the write-up of
+the paper. MRF contributed to the conception and design
+of the study, the acquisition of data and the critical revision
+of the paper. All authors approved the ﬁnal manuscript.
+Acknowledgements: none.
+Funding: this project was funded by the DFG (Deutsche
+Forschungsgemeinschaft).
+Conﬂicts of interest: none.
+Ethical approval: this study was approved by the Deutsche
+Forschungsgemeinschaft.
+### END_PAPER_TEXT
