@@ -31,7 +31,7 @@ Given a text document and a list of entity types (CMO-oriented), identify the en
      - self-efficacy / confidence / anxiety / motivation
      - cognitive state (cognitive load, fatigue, time pressure)
      - coping strategies / biases / uncertainty tolerance
-     Also capture setting/task constraints (clinical setting, simulation, case complexity) when relevant.
+     - Setting/task constraints (clinical setting, simulation, case complexity)
    - Intervention/comparator: what was done / compared
 
 3) Be specific but not overly granular:
@@ -43,14 +43,9 @@ Given a text document and a list of entity types (CMO-oriented), identify the en
    - If you see a generic term like "mechanism" or "outcome" in the text, extract the SPECIFIC mechanism/outcome (e.g., "COGNITIVE LOAD REGULATION", "DIAGNOSTIC ACCURACY"), not the category label.
    - **REQUIRED**: Every entity MUST have a non-empty entity_type. If you cannot assign a type, do NOT create the entity.
 
-3.2) Soft constraints to reduce measurement-skew (avoid overfitting, but reduce noise):
-   - Only create ASSESSMENT_MEASURE entities when they are central to interpreting the outcome (e.g., "diagnostic accuracy test", "delayed test", "OSCE score").
-   - Do NOT create separate ASSESSMENT_MEASURE entities for every timepoint/item unless the paper explicitly treats them as distinct outcomes.
-   - Prefer OUTCOME entities (e.g., DIAGNOSTIC ACCURACY, CONFIDENCE) over measurement artifacts (e.g., "immediate test") unless needed for verification.
-
-3.3) Typing guidance (common confusion in this domain):
-   - MECHANISM = learner cognitive/affective process (e.g., pattern recognition, illness script activation, cognitive load regulation, reflection, bias mitigation).
-   - INTERVENTION = what educators/designers DO (e.g., schema-based instruction, worked examples, self-explanation prompts, simulation sessions).
+3.2) Typing guidance (common confusion in this domain):
+   - **MECHANISM** = learner cognitive/affective process (e.g., pattern recognition, illness script activation, cognitive load regulation, reflection, bias mitigation). It is INTERNAL to the learner.
+   - **INTERVENTION** = what educators/designers DO (e.g., schema-based instruction, worked examples, self-explanation prompts, simulation sessions). It is EXTERNAL to the learner.
    - If a term is a reasoning mode (analytic / non-analytic / dual-process), treat it as MECHANISM unless the paper describes it as a taught training intervention.
 
 -Steps-
@@ -67,9 +62,7 @@ Format: ("entity"{tuple_delimiter}<entity_name>{tuple_delimiter}<entity_type>{tu
 - intervention -> outcome (direct effect, when mechanism is implicit)
 - context -> mechanism (context enables/triggers mechanism)
 - context -> outcome (context moderates outcome directly)
-- study_design/assessment_measure -> outcome (how measured)
-- comparator -> outcome (relative effect)
-**AVOID reverse patterns** unless explicitly stated in the text (e.g., avoid "outcome -> mechanism" unless the paper explicitly says the outcome caused the mechanism).
+**AVOID reverse patterns** unless explicitly stated.
 For each relationship, extract:
 - source_entity (from step 1)
 - target_entity (from step 1)
@@ -82,10 +75,61 @@ Format: ("relationship"{tuple_delimiter}<source_entity>{tuple_delimiter}<target_
 4. When finished, output {completion_delimiter}
 
 ######################
+-Examples-
+######################
+Example 1 (Context -> Mechanism -> Outcome):
+Entity_types: CONTEXT,MECHANISM,OUTCOME,INTERVENTION
+Text:
+Novice students often experience high cognitive load during complex diagnoses, which reduces their diagnostic accuracy. However, providing schema-based instruction helps these students organize their knowledge, thereby reducing load and improving performance.
+######################
+Output:
+("entity"{tuple_delimiter}NOVICE STUDENTS{tuple_delimiter}CONTEXT{tuple_delimiter}Students with low prior knowledge or experience in diagnosis)
+{record_delimiter}
+("entity"{tuple_delimiter}HIGH COGNITIVE LOAD{tuple_delimiter}MECHANISM{tuple_delimiter}A state of varying mental effort that can impede learning and performance)
+{record_delimiter}
+("entity"{tuple_delimiter}DIAGNOSTIC ACCURACY{tuple_delimiter}OUTCOME{tuple_delimiter}The correctness of the medical diagnosis)
+{record_delimiter}
+("entity"{tuple_delimiter}SCHEMA-BASED INSTRUCTION{tuple_delimiter}INTERVENTION{tuple_delimiter}Instructional method that provides structured frameworks for organizing knowledge)
+{record_delimiter}
+("entity"{tuple_delimiter}KNOWLEDGE ORGANIZATION{tuple_delimiter}MECHANISM{tuple_delimiter}The process of structuring information to facilitate retrieval and application)
+{record_delimiter}
+("relationship"{tuple_delimiter}NOVICE STUDENTS{tuple_delimiter}HIGH COGNITIVE LOAD{tuple_delimiter}Novice students are prone to experiencing high cognitive load due to lack of schemas{tuple_delimiter}8)
+{record_delimiter}
+("relationship"{tuple_delimiter}HIGH COGNITIVE LOAD{tuple_delimiter}DIAGNOSTIC ACCURACY{tuple_delimiter}High cognitive load negatively impacts diagnostic accuracy{tuple_delimiter}9)
+{record_delimiter}
+("relationship"{tuple_delimiter}SCHEMA-BASED INSTRUCTION{tuple_delimiter}KNOWLEDGE ORGANIZATION{tuple_delimiter}Schema-based instruction facilitates better knowledge organization in students{tuple_delimiter}8)
+{record_delimiter}
+("relationship"{tuple_delimiter}KNOWLEDGE ORGANIZATION{tuple_delimiter}HIGH COGNITIVE LOAD{tuple_delimiter}Better knowledge organization leads to a reduction in cognitive load{tuple_delimiter}8)
+{completion_delimiter}
+
+######################
+Example 2 (Distinguishing Intervention vs Mechanism):
+Entity_types: INTERVENTION,MECHANISM,OUTCOME
+Text:
+The study implemented a simulation-based workshop where students received immediate feedback. This encouraged them to engage in self-explanation, which in turn fostered illness script formation and led to better retention on the delayed test.
+######################
+Output:
+("entity"{tuple_delimiter}SIMULATION-BASED WORKSHOP{tuple_delimiter}INTERVENTION{tuple_delimiter}A workshop using simulation to practice clinical skills)
+{record_delimiter}
+("entity"{tuple_delimiter}IMMEDIATE FEEDBACK{tuple_delimiter}INTERVENTION{tuple_delimiter}Feedback provided right after the student's performance)
+{record_delimiter}
+("entity"{tuple_delimiter}SELF-EXPLANATION{tuple_delimiter}MECHANISM{tuple_delimiter}The cognitive process where students explain the rationale to themselves)
+{record_delimiter}
+("entity"{tuple_delimiter}ILLNESS SCRIPT FORMATION{tuple_delimiter}MECHANISM{tuple_delimiter}The development of structured clinical knowledge patterns in memory)
+{record_delimiter}
+("entity"{tuple_delimiter}RETENTION{tuple_delimiter}OUTCOME{tuple_delimiter}The ability to recall knowledge or skills after a delay)
+{record_delimiter}
+("relationship"{tuple_delimiter}IMMEDIATE FEEDBACK{tuple_delimiter}SELF-EXPLANATION{tuple_delimiter}Immediate feedback encouraged students to engage in self-explanation{tuple_delimiter}7)
+{record_delimiter}
+("relationship"{tuple_delimiter}SELF-EXPLANATION{tuple_delimiter}ILLNESS SCRIPT FORMATION{tuple_delimiter}Self-explanation fostered the formation of illness scripts{tuple_delimiter}8)
+{record_delimiter}
+("relationship"{tuple_delimiter}ILLNESS SCRIPT FORMATION{tuple_delimiter}RETENTION{tuple_delimiter}Possessing illness scripts led to improved retention on the delayed test{tuple_delimiter}9)
+{completion_delimiter}
+
+######################
 -Real Data-
 ######################
 Entity_types: {entity_types}
 Text: {input_text}
 ######################
 Output:
-

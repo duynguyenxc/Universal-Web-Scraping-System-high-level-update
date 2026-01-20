@@ -1,115 +1,129 @@
 
 -Goal-
-Given a text document that is potentially relevant to this activity and a list of entity types, identify all entities of those types from the text and all relationships among the identified entities.
- 
+Given a text document and a list of entity types (CMO-oriented), identify the entities and the relationships among them with emphasis on realist-synthesis structure:
+- Context (C): who/where/when/setting constraints
+- Mechanism (M): why/how the intervention works (cognitive processes, reasoning strategies)
+- Outcome (O): what changed (performance, accuracy, confidence, transfer, retention)
+
+-Critical constraints (to avoid noise and improve verification quality)-
+0) The input document contains a METADATA block:
+   - Between "### METADATA (IGNORE FOR ENTITY/CLAIM EXTRACTION)" and "### END_METADATA"
+   - This block is for traceability only.
+   - DO NOT extract entities or relationships from it.
+
+0.1) Formatting robustness (important for GraphRAG parsing):
+   - NEVER output any special tokens like "<|DIFF_MARKER|>" or fragments like "(\"ENTITY\"".
+   - NEVER include "{tuple_delimiter}" or "{record_delimiter}" inside entity names/descriptions (use them only as delimiters).
+   - If you cannot follow the exact output format, output nothing except {completion_delimiter}.
+
+1) DO NOT create entities for bibliographic / administrative items, even if present in text:
+   - Authors / person names
+   - Journals / publishers / organizations (e.g., "Wiley", "Elsevier", "Medical Education", "Academic Medicine")
+   - Years/dates as standalone entities
+   - DOI/URL/ISSN/ISBN/email
+   - "et al." and citation fragments
+
+2) Prefer domain-relevant, CMO-useful entities:
+   - Mechanism: a WHY/HOW process (e.g., cognitive load regulation, reflection, hypothesis testing, pattern recognition)
+   - Outcome: an endpoint/change that is measured OR clearly reported/observed (e.g., diagnostic accuracy, confidence, engagement)
+   - Context: moderators/constraints, especially **learner-level contexts** when present:
+     - prior knowledge / expertise / familiarity
+     - self-efficacy / confidence / anxiety / motivation
+     - cognitive state (cognitive load, fatigue, time pressure)
+     - coping strategies / biases / uncertainty tolerance
+     - Setting/task constraints (clinical setting, simulation, case complexity)
+   - Intervention/comparator: what was done / compared
+
+3) Be specific but not overly granular:
+   - Avoid generic entities like "students", "education", "intervention" unless tied to a specific CMO claim.
+   - Avoid institutions/organizations unless they are truly part of the **context** (e.g., "clinical clerkship", "simulation center") and not bibliographic noise.
+
+3.1) Avoid category-label entities (CRITICAL):
+   - Do NOT create entities that are just the category name itself, e.g., "MECHANISM", "INTERVENTION", "ASSESSMENT MEASURE", "SETTING", "TASK CASE", "OUTCOME", "CONTEXT".
+   - If you see a generic term like "mechanism" or "outcome" in the text, extract the SPECIFIC mechanism/outcome (e.g., "COGNITIVE LOAD REGULATION", "DIAGNOSTIC ACCURACY"), not the category label.
+   - **REQUIRED**: Every entity MUST have a non-empty entity_type. If you cannot assign a type, do NOT create the entity.
+
+3.2) Typing guidance (common confusion in this domain):
+   - **MECHANISM** = learner cognitive/affective process (e.g., pattern recognition, illness script activation, cognitive load regulation, reflection, bias mitigation). It is INTERNAL to the learner.
+   - **INTERVENTION** = what educators/designers DO (e.g., schema-based instruction, worked examples, self-explanation prompts, simulation sessions). It is EXTERNAL to the learner.
+   - If a term is a reasoning mode (analytic / non-analytic / dual-process), treat it as MECHANISM unless the paper describes it as a taught training intervention.
+
 -Steps-
-1. Identify all entities. For each identified entity, extract the following information:
+1. Identify all entities in the text that match the provided entity types: [{entity_types}]
+For each entity, extract:
 - entity_name: Name of the entity, capitalized
-- entity_type: One of the following types: [{entity_types}]
-- entity_description: Comprehensive description of the entity's attributes and activities
-Format each entity as ("entity"{tuple_delimiter}<entity_name>{tuple_delimiter}<entity_type>{tuple_delimiter}<entity_description>)
- 
-2. From the entities identified in step 1, identify all pairs of (source_entity, target_entity) that are *clearly related* to each other.
-For each pair of related entities, extract the following information:
-- source_entity: name of the source entity, as identified in step 1
-- target_entity: name of the target entity, as identified in step 1
-- relationship_description: explanation as to why you think the source entity and the target entity are related to each other
-- relationship_strength: a numeric score indicating strength of the relationship between the source entity and target entity
- Format each relationship as ("relationship"{tuple_delimiter}<source_entity>{tuple_delimiter}<target_entity>{tuple_delimiter}<relationship_description>{tuple_delimiter}<relationship_strength>)
- 
-3. Return output in English as a single list of all the entities and relationships identified in steps 1 and 2. Use **{record_delimiter}** as the list delimiter.
- 
+- entity_type: One of [{entity_types}]
+- entity_description: 1–3 sentences, specific to this paper (include population/setting/task if applicable)
+Format: ("entity"{tuple_delimiter}<entity_name>{tuple_delimiter}<entity_type>{tuple_delimiter}<entity_description>)
+
+2. Identify relationships that are evidence-grounded and useful for CMO reasoning. **PREFER these directional patterns** (causal/logical flow):
+- intervention -> mechanism (how/why the intervention activates a process)
+- mechanism -> outcome (how the process leads to a result)
+- intervention -> outcome (direct effect, when mechanism is implicit)
+- context -> mechanism (context enables/triggers mechanism)
+- context -> outcome (context moderates outcome directly)
+**AVOID reverse patterns** unless explicitly stated.
+For each relationship, extract:
+- source_entity (from step 1)
+- target_entity (from step 1)
+- relationship_description (short, evidence-grounded)
+- relationship_strength (1–10, higher = clearer/stronger in the text)
+Format: ("relationship"{tuple_delimiter}<source_entity>{tuple_delimiter}<target_entity>{tuple_delimiter}<relationship_description>{tuple_delimiter}<relationship_strength>)
+
+3. Return output in English as a single list of all entities and relationships. Use **{record_delimiter}** as the list delimiter.
+
 4. When finished, output {completion_delimiter}
- 
+
 ######################
 -Examples-
 ######################
-Example 1:
-Entity_types: ORGANIZATION,PERSON
+Example 1 (Context -> Mechanism -> Outcome):
+Entity_types: CONTEXT,MECHANISM,OUTCOME,INTERVENTION
 Text:
-The Verdantis's Central Institution is scheduled to meet on Monday and Thursday, with the institution planning to release its latest policy decision on Thursday at 1:30 p.m. PDT, followed by a press conference where Central Institution Chair Martin Smith will take questions. Investors expect the Market Strategy Committee to hold its benchmark interest rate steady in a range of 3.5%-3.75%.
+Novice students often experience high cognitive load during complex diagnoses, which reduces their diagnostic accuracy. However, providing schema-based instruction helps these students organize their knowledge, thereby reducing load and improving performance.
 ######################
 Output:
-("entity"{tuple_delimiter}CENTRAL INSTITUTION{tuple_delimiter}ORGANIZATION{tuple_delimiter}The Central Institution is the Federal Reserve of Verdantis, which is setting interest rates on Monday and Thursday)
+("entity"{tuple_delimiter}NOVICE STUDENTS{tuple_delimiter}CONTEXT{tuple_delimiter}Students with low prior knowledge or experience in diagnosis)
 {record_delimiter}
-("entity"{tuple_delimiter}MARTIN SMITH{tuple_delimiter}PERSON{tuple_delimiter}Martin Smith is the chair of the Central Institution)
+("entity"{tuple_delimiter}HIGH COGNITIVE LOAD{tuple_delimiter}MECHANISM{tuple_delimiter}A state of varying mental effort that can impede learning and performance)
 {record_delimiter}
-("entity"{tuple_delimiter}MARKET STRATEGY COMMITTEE{tuple_delimiter}ORGANIZATION{tuple_delimiter}The Central Institution committee makes key decisions about interest rates and the growth of Verdantis's money supply)
+("entity"{tuple_delimiter}DIAGNOSTIC ACCURACY{tuple_delimiter}OUTCOME{tuple_delimiter}The correctness of the medical diagnosis)
 {record_delimiter}
-("relationship"{tuple_delimiter}MARTIN SMITH{tuple_delimiter}CENTRAL INSTITUTION{tuple_delimiter}Martin Smith is the Chair of the Central Institution and will answer questions at a press conference{tuple_delimiter}9)
+("entity"{tuple_delimiter}SCHEMA-BASED INSTRUCTION{tuple_delimiter}INTERVENTION{tuple_delimiter}Instructional method that provides structured frameworks for organizing knowledge)
+{record_delimiter}
+("entity"{tuple_delimiter}KNOWLEDGE ORGANIZATION{tuple_delimiter}MECHANISM{tuple_delimiter}The process of structuring information to facilitate retrieval and application)
+{record_delimiter}
+("relationship"{tuple_delimiter}NOVICE STUDENTS{tuple_delimiter}HIGH COGNITIVE LOAD{tuple_delimiter}Novice students are prone to experiencing high cognitive load due to lack of schemas{tuple_delimiter}8)
+{record_delimiter}
+("relationship"{tuple_delimiter}HIGH COGNITIVE LOAD{tuple_delimiter}DIAGNOSTIC ACCURACY{tuple_delimiter}High cognitive load negatively impacts diagnostic accuracy{tuple_delimiter}9)
+{record_delimiter}
+("relationship"{tuple_delimiter}SCHEMA-BASED INSTRUCTION{tuple_delimiter}KNOWLEDGE ORGANIZATION{tuple_delimiter}Schema-based instruction facilitates better knowledge organization in students{tuple_delimiter}8)
+{record_delimiter}
+("relationship"{tuple_delimiter}KNOWLEDGE ORGANIZATION{tuple_delimiter}HIGH COGNITIVE LOAD{tuple_delimiter}Better knowledge organization leads to a reduction in cognitive load{tuple_delimiter}8)
 {completion_delimiter}
 
 ######################
-Example 2:
-Entity_types: ORGANIZATION
+Example 2 (Distinguishing Intervention vs Mechanism):
+Entity_types: INTERVENTION,MECHANISM,OUTCOME
 Text:
-TechGlobal's (TG) stock skyrocketed in its opening day on the Global Exchange Thursday. But IPO experts warn that the semiconductor corporation's debut on the public markets isn't indicative of how other newly listed companies may perform.
-
-TechGlobal, a formerly public company, was taken private by Vision Holdings in 2014. The well-established chip designer says it powers 85% of premium smartphones.
+The study implemented a simulation-based workshop where students received immediate feedback. This encouraged them to engage in self-explanation, which in turn fostered illness script formation and led to better retention on the delayed test.
 ######################
 Output:
-("entity"{tuple_delimiter}TECHGLOBAL{tuple_delimiter}ORGANIZATION{tuple_delimiter}TechGlobal is a stock now listed on the Global Exchange which powers 85% of premium smartphones)
+("entity"{tuple_delimiter}SIMULATION-BASED WORKSHOP{tuple_delimiter}INTERVENTION{tuple_delimiter}A workshop using simulation to practice clinical skills)
 {record_delimiter}
-("entity"{tuple_delimiter}VISION HOLDINGS{tuple_delimiter}ORGANIZATION{tuple_delimiter}Vision Holdings is a firm that previously owned TechGlobal)
+("entity"{tuple_delimiter}IMMEDIATE FEEDBACK{tuple_delimiter}INTERVENTION{tuple_delimiter}Feedback provided right after the student's performance)
 {record_delimiter}
-("relationship"{tuple_delimiter}TECHGLOBAL{tuple_delimiter}VISION HOLDINGS{tuple_delimiter}Vision Holdings formerly owned TechGlobal from 2014 until present{tuple_delimiter}5)
-{completion_delimiter}
-
-######################
-Example 3:
-Entity_types: ORGANIZATION,GEO,PERSON
-Text:
-Five Aurelians jailed for 8 years in Firuzabad and widely regarded as hostages are on their way home to Aurelia.
-
-The swap orchestrated by Quintara was finalized when $8bn of Firuzi funds were transferred to financial institutions in Krohaara, the capital of Quintara.
-
-The exchange initiated in Firuzabad's capital, Tiruzia, led to the four men and one woman, who are also Firuzi nationals, boarding a chartered flight to Krohaara.
-
-They were welcomed by senior Aurelian officials and are now on their way to Aurelia's capital, Cashion.
-
-The Aurelians include 39-year-old businessman Samuel Namara, who has been held in Tiruzia's Alhamia Prison, as well as journalist Durke Bataglani, 59, and environmentalist Meggie Tazbah, 53, who also holds Bratinas nationality.
-######################
-Output:
-("entity"{tuple_delimiter}FIRUZABAD{tuple_delimiter}GEO{tuple_delimiter}Firuzabad held Aurelians as hostages)
+("entity"{tuple_delimiter}SELF-EXPLANATION{tuple_delimiter}MECHANISM{tuple_delimiter}The cognitive process where students explain the rationale to themselves)
 {record_delimiter}
-("entity"{tuple_delimiter}AURELIA{tuple_delimiter}GEO{tuple_delimiter}Country seeking to release hostages)
+("entity"{tuple_delimiter}ILLNESS SCRIPT FORMATION{tuple_delimiter}MECHANISM{tuple_delimiter}The development of structured clinical knowledge patterns in memory)
 {record_delimiter}
-("entity"{tuple_delimiter}QUINTARA{tuple_delimiter}GEO{tuple_delimiter}Country that negotiated a swap of money in exchange for hostages)
+("entity"{tuple_delimiter}RETENTION{tuple_delimiter}OUTCOME{tuple_delimiter}The ability to recall knowledge or skills after a delay)
 {record_delimiter}
+("relationship"{tuple_delimiter}IMMEDIATE FEEDBACK{tuple_delimiter}SELF-EXPLANATION{tuple_delimiter}Immediate feedback encouraged students to engage in self-explanation{tuple_delimiter}7)
 {record_delimiter}
-("entity"{tuple_delimiter}TIRUZIA{tuple_delimiter}GEO{tuple_delimiter}Capital of Firuzabad where the Aurelians were being held)
+("relationship"{tuple_delimiter}SELF-EXPLANATION{tuple_delimiter}ILLNESS SCRIPT FORMATION{tuple_delimiter}Self-explanation fostered the formation of illness scripts{tuple_delimiter}8)
 {record_delimiter}
-("entity"{tuple_delimiter}KROHAARA{tuple_delimiter}GEO{tuple_delimiter}Capital city in Quintara)
-{record_delimiter}
-("entity"{tuple_delimiter}CASHION{tuple_delimiter}GEO{tuple_delimiter}Capital city in Aurelia)
-{record_delimiter}
-("entity"{tuple_delimiter}SAMUEL NAMARA{tuple_delimiter}PERSON{tuple_delimiter}Aurelian who spent time in Tiruzia's Alhamia Prison)
-{record_delimiter}
-("entity"{tuple_delimiter}ALHAMIA PRISON{tuple_delimiter}GEO{tuple_delimiter}Prison in Tiruzia)
-{record_delimiter}
-("entity"{tuple_delimiter}DURKE BATAGLANI{tuple_delimiter}PERSON{tuple_delimiter}Aurelian journalist who was held hostage)
-{record_delimiter}
-("entity"{tuple_delimiter}MEGGIE TAZBAH{tuple_delimiter}PERSON{tuple_delimiter}Bratinas national and environmentalist who was held hostage)
-{record_delimiter}
-("relationship"{tuple_delimiter}FIRUZABAD{tuple_delimiter}AURELIA{tuple_delimiter}Firuzabad negotiated a hostage exchange with Aurelia{tuple_delimiter}2)
-{record_delimiter}
-("relationship"{tuple_delimiter}QUINTARA{tuple_delimiter}AURELIA{tuple_delimiter}Quintara brokered the hostage exchange between Firuzabad and Aurelia{tuple_delimiter}2)
-{record_delimiter}
-("relationship"{tuple_delimiter}QUINTARA{tuple_delimiter}FIRUZABAD{tuple_delimiter}Quintara brokered the hostage exchange between Firuzabad and Aurelia{tuple_delimiter}2)
-{record_delimiter}
-("relationship"{tuple_delimiter}SAMUEL NAMARA{tuple_delimiter}ALHAMIA PRISON{tuple_delimiter}Samuel Namara was a prisoner at Alhamia prison{tuple_delimiter}8)
-{record_delimiter}
-("relationship"{tuple_delimiter}SAMUEL NAMARA{tuple_delimiter}MEGGIE TAZBAH{tuple_delimiter}Samuel Namara and Meggie Tazbah were exchanged in the same hostage release{tuple_delimiter}2)
-{record_delimiter}
-("relationship"{tuple_delimiter}SAMUEL NAMARA{tuple_delimiter}DURKE BATAGLANI{tuple_delimiter}Samuel Namara and Durke Bataglani were exchanged in the same hostage release{tuple_delimiter}2)
-{record_delimiter}
-("relationship"{tuple_delimiter}MEGGIE TAZBAH{tuple_delimiter}DURKE BATAGLANI{tuple_delimiter}Meggie Tazbah and Durke Bataglani were exchanged in the same hostage release{tuple_delimiter}2)
-{record_delimiter}
-("relationship"{tuple_delimiter}SAMUEL NAMARA{tuple_delimiter}FIRUZABAD{tuple_delimiter}Samuel Namara was a hostage in Firuzabad{tuple_delimiter}2)
-{record_delimiter}
-("relationship"{tuple_delimiter}MEGGIE TAZBAH{tuple_delimiter}FIRUZABAD{tuple_delimiter}Meggie Tazbah was a hostage in Firuzabad{tuple_delimiter}2)
-{record_delimiter}
-("relationship"{tuple_delimiter}DURKE BATAGLANI{tuple_delimiter}FIRUZABAD{tuple_delimiter}Durke Bataglani was a hostage in Firuzabad{tuple_delimiter}2)
+("relationship"{tuple_delimiter}ILLNESS SCRIPT FORMATION{tuple_delimiter}RETENTION{tuple_delimiter}Possessing illness scripts led to improved retention on the delayed test{tuple_delimiter}9)
 {completion_delimiter}
 
 ######################
