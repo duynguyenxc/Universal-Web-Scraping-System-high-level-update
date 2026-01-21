@@ -1,0 +1,114 @@
+ 
+ -Goal-
+ Given a text document and a list of entity types (CMO-oriented), identify the entities and the relationships among them with emphasis on realist-synthesis structure:
+ - Context (C): who/where/when/setting constraints that *moderate* mechanisms/outcomes
+ - Mechanism (M): why/how an intervention works (cognitive/affective processes, reasoning strategies)
+ - Outcome (O): what changed (performance, accuracy, confidence, transfer, retention)
+ - Intervention/Comparator (I): what was done / compared
+ 
+ -Critical constraints (to avoid noise and improve verification quality)-
+ 0) The input document contains a METADATA block:
+    - Between "### METADATA (IGNORE FOR ENTITY/CLAIM EXTRACTION)" and "### END_METADATA"
+    - This block is for traceability only.
+    - DO NOT extract entities or relationships from it.
+ 
+ 0.1) Formatting robustness (important for GraphRAG parsing):
+    - NEVER output any special tokens like "<|DIFF_MARKER|>" or fragments like "(\"ENTITY\"".
+    - NEVER include "{tuple_delimiter}" or "{record_delimiter}" inside entity names/descriptions (use them only as delimiters).
+    - If you cannot follow the exact output format, output nothing except {completion_delimiter}.
+ 
+ 1) DO NOT create entities for bibliographic / administrative items, even if present in text:
+    - Authors / person names
+    - Journals / publishers / organizations (e.g., "Wiley", "Elsevier", "Medical Education", "Academic Medicine")
+    - Years/dates as standalone entities
+    - DOI/URL/ISSN/ISBN/email
+    - "et al." and citation fragments
+ 
+ 2) Prefer domain-relevant, CMO-useful entities (Richmond backbone):
+    - Learner contexts: prior knowledge / expertise / familiarity; self-efficacy; self-confidence; anxiety; coping strategies; uncertainty tolerance
+    - Cognitive states: cognitive load; time pressure; fatigue (if present)
+    - Mechanisms: pattern recognition; illness script activation/formation; reflection; self-explanation; bias mitigation; knowledge organization; cognitive flexibility
+    - Outcomes: diagnostic accuracy/performance; error rate; transfer; retention; confidence rating; response time
+    - Interventions/comparators: simulation; worked examples; schema-based instruction; self-explanation prompts; feedback; deliberate practice; test-enhanced learning
+ 
+ 3) Be specific but not overly granular:
+    - Avoid generic entities like "STUDENTS", "EDUCATION", "INTERVENTION", "LEARNING" unless tied to a specific CMO relation.
+    - Avoid placeholders: "THE RESULTS", "THE STUDY", "STUDY", "RESULTS".
+    - Do NOT create "STUDY 1", "STUDY 2", etc. (treat as noise).
+ 
+ 3.1) Avoid category-label entities (CRITICAL):
+    - Do NOT create entities that are just category names themselves (e.g., "MECHANISM", "INTERVENTION", "OUTCOME", "CONTEXT").
+    - Extract the specific construct (e.g., "COGNITIVE LOAD", "DIAGNOSTIC ACCURACY"), not the label.
+    - REQUIRED: Every entity MUST have a non-empty entity_type. If you cannot assign a type, do NOT create the entity.
+ 
+ 3.2) Typing guidance (common confusion in this domain):
+    - MECHANISM = INTERNAL learner process (cognitive/affective) that explains why/how (e.g., pattern recognition, illness scripts, reflection, cognitive load).
+    - INTERVENTION = EXTERNAL instructional/educational action (e.g., simulation session, feedback, worked examples).
+    - If a term is a reasoning mode (analytic / non-analytic / dual-process), treat it as MECHANISM unless the text describes it as a taught intervention.
+ 
+ 3.3) Minimize measurement noise:
+    - Only extract a measurement-related entity if it is CENTRAL to the CMO logic (e.g., OSCE as the key outcome measurement in a comparison).
+    - Otherwise, prefer to encode measurement details via claims (not as graph hubs).
+ 
+ -Steps-
+ 1) Identify all entities in the text that match the provided entity types: [{entity_types}]
+ For each entity, extract:
+ - entity_name: Name of the entity, capitalized
+ - entity_type: One of [{entity_types}]
+ - entity_description: 1–3 sentences, specific to THIS paper (include population/setting/task if applicable)
+ Format: ("entity"{tuple_delimiter}<entity_name>{tuple_delimiter}<entity_type>{tuple_delimiter}<entity_description>)
+ 
+ 2) Identify relationships that are evidence-grounded and useful for CMO reasoning. Prefer these directional patterns:
+ - intervention -> mechanism
+ - mechanism -> outcome
+ - intervention -> outcome
+ - context -> mechanism
+ - context -> outcome
+ - comparator -> outcome
+ Avoid reverse patterns unless explicitly stated.
+ 
+ For each relationship, extract:
+ - source_entity (from step 1)
+ - target_entity (from step 1)
+ - relationship_description (short, evidence-grounded)
+ - relationship_strength (1–10, higher = clearer/stronger in the text)
+ Format: ("relationship"{tuple_delimiter}<source_entity>{tuple_delimiter}<target_entity>{tuple_delimiter}<relationship_description>{tuple_delimiter}<relationship_strength>)
+ 
+ 3) Return output in English as a single list of all entities and relationships. Use **{record_delimiter}** as the list delimiter.
+ 4) When finished, output {completion_delimiter}
+ 
+ ######################
+ -Examples-
+ ######################
+ Example 1 (Context -> Mechanism -> Outcome):
+ Entity_types: learner_context,mechanism,outcome,intervention
+ Text:
+ Novice students often experience high cognitive load during complex diagnoses, which reduces their diagnostic accuracy. However, providing schema-based instruction helps these students organize their knowledge, thereby reducing load and improving performance.
+ ######################
+ Output:
+ ("entity"{tuple_delimiter}LOW PRIOR KNOWLEDGE{tuple_delimiter}LEARNER_CONTEXT{tuple_delimiter}Learners with insufficient prior knowledge or familiarity for the diagnostic task)
+ {record_delimiter}
+ ("entity"{tuple_delimiter}COGNITIVE LOAD{tuple_delimiter}COGNITIVE_STATE{tuple_delimiter}A mental effort burden experienced during diagnostic reasoning tasks)
+ {record_delimiter}
+ ("entity"{tuple_delimiter}DIAGNOSTIC ACCURACY{tuple_delimiter}OUTCOME{tuple_delimiter}Correctness of diagnoses produced in the task)
+ {record_delimiter}
+ ("entity"{tuple_delimiter}SCHEMA-BASED INSTRUCTION{tuple_delimiter}INTERVENTION{tuple_delimiter}Instructional support providing a structured framework for organizing diagnostic knowledge)
+ {record_delimiter}
+ ("entity"{tuple_delimiter}KNOWLEDGE ORGANIZATION{tuple_delimiter}MECHANISM{tuple_delimiter}Structuring knowledge to support retrieval and application during reasoning)
+ {record_delimiter}
+ ("relationship"{tuple_delimiter}LOW PRIOR KNOWLEDGE{tuple_delimiter}COGNITIVE LOAD{tuple_delimiter}Low prior knowledge increases cognitive load during complex diagnostic tasks{tuple_delimiter}8)
+ {record_delimiter}
+ ("relationship"{tuple_delimiter}COGNITIVE LOAD{tuple_delimiter}DIAGNOSTIC ACCURACY{tuple_delimiter}Higher cognitive load reduces diagnostic accuracy{tuple_delimiter}9)
+ {record_delimiter}
+ ("relationship"{tuple_delimiter}SCHEMA-BASED INSTRUCTION{tuple_delimiter}KNOWLEDGE ORGANIZATION{tuple_delimiter}Schema-based instruction supports knowledge organization for diagnosis{tuple_delimiter}8)
+ {record_delimiter}
+ ("relationship"{tuple_delimiter}KNOWLEDGE ORGANIZATION{tuple_delimiter}COGNITIVE LOAD{tuple_delimiter}Knowledge organization reduces cognitive load during reasoning{tuple_delimiter}8)
+ {completion_delimiter}
+ 
+ ######################
+ -Real Data-
+ ######################
+ Entity_types: {entity_types}
+ Text: {input_text}
+ ######################
+ Output:
