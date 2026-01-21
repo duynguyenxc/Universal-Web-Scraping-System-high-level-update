@@ -22,7 +22,7 @@ Interpretation:
 **Concrete IPT statement (for the professor’s “what was in their mind?” question):**
 - **IPT (compact)**: Educational interventions improve clinical reasoning **only when** the learner’s **context** (e.g., prior knowledge, self-efficacy/confidence, coping) supports the intervention’s **mechanisms** (cognitive/emotional responses such as understanding vs anxiety/cognitive load), which then produces measurable **outcomes** (e.g., diagnostic accuracy/performance).
 
-### 4) What is the input from human? (answering the professor’s question)
+### 4) What is the input from human?
 In Richmond et al. (2020), **human input is essential and front-loaded**:
 - **IPT construction** from:
   - scoping search,
