@@ -1,6 +1,6 @@
 ## Professor Q&A + What we did this week (grounded in v3 run)
 
-This document answers the professor’s questions from the transcript and connects them to the current **GraphRAG Part A v3** implementation and outputs.
+This document answers the professor’s questions and connects them to the current **GraphRAG Part A v3** implementation and outputs.
 
 **Framing (to match the professor’s “interactive process” expectation):**
 - This week’s output is a **prototype run (subset5)** to validate end-to-end GraphRAG artifacts and **evidence traceability**.
@@ -65,7 +65,7 @@ Evidence from our v3 run:
 3. Normalize claims → `claims_fixed.parquet`
 4. Quality gates + audit → `verification_audit_v3.md`
 
-**Interactive iteration loop (what the professor asked us to “continue figuring out”):**
+**Interactive iteration loop**
 1. **Define/lock ontology** (CMO-first entity types + allowed relations + directionality).
 2. **Run a small subset** (subset5) to get fast feedback.
 3. **Audit** (blank types, outcome-as-source edges, claim evidence spans, noise patterns).
@@ -169,20 +169,20 @@ And claims already express I→O and C→… patterns with evidence spans and pa
   - **Edges** (direction matters): \(C/I \rightarrow M \rightarrow O\) and \(C \rightarrow O\) (moderation)
   - **Claims**: evidence rows that tie edges to text snippets with page markers.
 
-**Concrete example (the professor’s “X leads to good learning outcome”):**
+**Concrete example**
 - `SCHEMA-BASED INSTRUCTION (INTERVENTION)` → *(triggers)* → `SELF-EXPLANATION (MECHANISM)` → *(leads_to)* → `DIAGNOSTIC ACCURACY (OUTCOME)`
 - `LOW PRIOR KNOWLEDGE (CONTEXT)` → *(increases)* → `COGNITIVE LOAD (MECHANISM / cognitive state)` → *(reduces)* → `DIAGNOSTIC ACCURACY (OUTCOME)`
 - Each arrow must be backed by **claims with evidence** (snippet + `[PAGE N]`).
 
 ---
 
-### Q6) “What next should I do?” (the professor’s action item)
+### Q6) “What next should I do?"
 
 #### Immediate (this week deliverable)
 1. Submit the two paper reviews:
    - `paper_review_richmond_2020.md`
    - `paper_review_microsoft_graphrag_2025.md`
-2. Submit this Q&A plan document with **v3 evidence** (this file).
+2. Submit this Q&A plan document with **v3 evidence**
 
 #### Next iteration (technical fixes based on v3 evidence)
 From `verification_audit_v3.md` and direct parquet inspection:
@@ -194,10 +194,6 @@ From `verification_audit_v3.md` and direct parquet inspection:
 Then rerun:
 - **subset5_v3** (fast validation),
 - then **full 28** for the final evidence base.
-
-**What I recommend you tell the professor (one sentence, matches transcript):**
-- “This week I focused on making the KG more realist-ready by tightening **entity typing** and **relationship directionality**, because entities must be big concepts and relations must express ‘X leads to Y outcome’ with evidence.”
-
 ---
 
 ### Q7) “Does the paper give you any clue what KG we should build? Do you have a clear picture?”
@@ -211,18 +207,4 @@ So the “clear picture” after reading both papers is:
 
 ---
 
-### Q8) “what KG? what agents? role in LangChain?”
-How we operationalize this (without hand-waving):
-- **Use GraphRAG as a tool** for the agents (GraphRAG provides evidence-grounded subgraph/context).
-- **Ask/plan prompts** to produce *schemas* (entity types, relation templates) and *validators* (quality gates), not just narrative text.
-
-In LangChain terms (conceptually):
-- Define a set of agents where each agent has:
-  - a **toolset** (GraphRAG query + file access + schema validator),
-  - a **contract** (input/output schema),
-  - a **policy** (rules; e.g., “Outcome should be sink”, “no blank types”, “evidence required”).
-
-This is exactly what the professor meant by “simulate their action”:
-- The manual actions (screening, coding, synthesis, adjudication) become **agent roles**.
-- The outputs (CMOCs, programme theory) become **structured artifacts** that are auditable via claims and evidence paths.
 
