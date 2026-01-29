@@ -373,13 +373,3 @@ This step:
 └── web_crawler_scrapy_report.md  # Detailed report about the Scrapy web crawler adapter
 ```
 
-
-## Summary for New Collaborators
-
-- Edit `config/config.yaml` to define your **corrosion/durability** keyword space.
-- Run the **library-based discover commands** to populate the DB from Crossref, OpenAlex, Semantic Scholar, PubMed, and arXiv.
-- Use `score-keywords` and `export` to get clean **JSONL outputs**.
-- Use `fetch` (and optionally `extract-full-text`) to obtain and analyze PDFs.
-- Use the **Scrapy crawler** when you need **page‑level data from specific research groups or centers**, not covered well by standard APIs.
-
-Will add and show some more output soon to make people easy to see
