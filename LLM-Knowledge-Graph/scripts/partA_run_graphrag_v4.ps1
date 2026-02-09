@@ -9,7 +9,8 @@ Param(
   [Parameter(Mandatory=$false)][ValidateSet("global","local","basic","drift")][string]$QueryMethod = "global",
   [Parameter(Mandatory=$false)][switch]$SkipIndex,
   [Parameter(Mandatory=$false)][int]$Limit = 0,
-  [Parameter(Mandatory=$false)][switch]$OnlyPdf
+  [Parameter(Mandatory=$false)][switch]$OnlyPdf,
+  [Parameter(Mandatory=$false)][switch]$UseExistingInput
 )
 
 $ErrorActionPreference = "Stop"
@@ -46,26 +47,28 @@ New-Item -ItemType Directory -Force -Path (Join-Path $env:PARTA_CACHE_DIR "embed
 New-Item -ItemType Directory -Force -Path $env:PARTA_LOG_DIR | Out-Null
 New-Item -ItemType Directory -Force -Path $env:PARTA_LANCEDB_DIR | Out-Null
 
-# 1) Build metadata (PDF + embedded PubMed links)
-python "scripts/partA_extract_study_metadata.py" `
-  --pdf-dir "$PdfDir" `
-  --links-pdf "$LinksPdf" `
-  --out-dir "artifacts/partA" `
-  --max-pages 3 `
-  --user-agent "$UserAgent"
-if ($LASTEXITCODE -ne 0) { throw "Metadata extraction failed (exit=$LASTEXITCODE)." }
+if (-not $UseExistingInput) {
+  # 1) Build metadata (PDF + embedded PubMed links)
+  python "scripts/partA_extract_study_metadata.py" `
+    --pdf-dir "$PdfDir" `
+    --links-pdf "$LinksPdf" `
+    --out-dir "artifacts/partA" `
+    --max-pages 3 `
+    --user-agent "$UserAgent"
+  if ($LASTEXITCODE -ne 0) { throw "Metadata extraction failed (exit=$LASTEXITCODE)." }
 
-# 2) Build GraphRAG input .txt
-$PrepareArgs = @(
-  "scripts/partA_prepare_graphrag_input.py",
-  "--metadata-jsonl", "artifacts/partA/studies_metadata.jsonl",
-  "--pdf-dir", "$PdfDir",
-  "--out-input-dir", "$InputDir"
-)
-if ($OnlyPdf) { $PrepareArgs += "--only-pdf" }
-if ($Limit -gt 0) { $PrepareArgs += @("--limit", "$Limit") }
-python @PrepareArgs
-if ($LASTEXITCODE -ne 0) { throw "GraphRAG input preparation failed (exit=$LASTEXITCODE)." }
+  # 2) Build GraphRAG input .txt
+  $PrepareArgs = @(
+    "scripts/partA_prepare_graphrag_input.py",
+    "--metadata-jsonl", "artifacts/partA/studies_metadata.jsonl",
+    "--pdf-dir", "$PdfDir",
+    "--out-input-dir", "$InputDir"
+  )
+  if ($OnlyPdf) { $PrepareArgs += "--only-pdf" }
+  if ($Limit -gt 0) { $PrepareArgs += @("--limit", "$Limit") }
+  python @PrepareArgs
+  if ($LASTEXITCODE -ne 0) { throw "GraphRAG input preparation failed (exit=$LASTEXITCODE)." }
+}
 
 if (-not $SkipIndex) {
   # 3) GraphRAG index (authoritative knowledge layer)
