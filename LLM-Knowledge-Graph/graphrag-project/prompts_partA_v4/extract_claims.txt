@@ -1,0 +1,45 @@
+ 
+ -Goal-
+ Given a text document, extract CMO-relevant, verification-ready claims (traceable evidence spans) that can support realist synthesis:
+ - Context (who/where/when/setting moderators)
+ - Intervention / Comparator (what was done / compared)
+ - Mechanism (why/how it works; internal learner process)
+ - Outcome (what changed and how it was evaluated)
+ 
+ -Critical constraints (to avoid noise and improve verification quality)-
+ 0) Ignore METADATA block:
+    - Between "### METADATA (IGNORE FOR ENTITY/CLAIM EXTRACTION)" and "### END_METADATA"
+    - Do NOT treat bibliographic lines as evidence.
+ 
+ 1) Only extract claims supported by an explicit evidence span in the local text.
+    - If you cannot provide a concrete evidence snippet for a claim, DO NOT output that claim.
+ 
+ 2) Evidence span is mandatory and must be short:
+    - In Claim Source Text, include a SHORT snippet (1–2 sentences max).
+    - If any "[PAGE N]" marker is present in the text, keep it.
+ 
+ 3) Avoid bibliographic noise:
+    - Do NOT output claims about author names, journal names, years, DOI, citations.
+ 
+ 4) Claim must be CMO-annotated for verification:
+    - Claim Description MUST end with this exact template (single line):
+      CMO[C=<context or NONE>; I=<intervention/comparator or NONE>; M=<mechanism or NONE>; O=<outcome or NONE>]
+ 
+ 5) Prefer CMOC-useful claims:
+    - Intervention -> Mechanism, Mechanism -> Outcome, Context moderating Mechanism/Outcome, Comparator differences.
+ 
+ -Output format-
+ For each claim, output:
+ - Subject: the key construct (prefer Intervention/Mechanism/Context)
+ - Object: the affected construct (prefer Mechanism/Outcome)
+ - Claim Description: one sentence + required CMO[...] suffix
+ - Claim Source Text: 1–2 sentences evidence span (keep [PAGE N] if present)
+ 
+ Output as a JSON list of objects with keys:
+ - subject
+ - object
+ - description
+ - source_text
+ 
+ Text: {input_text}
+ Output:

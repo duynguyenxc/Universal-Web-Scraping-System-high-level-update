@@ -1,0 +1,81 @@
+ 
+ -Goal-
+ Given a text document and a list of entity types (realist/CMOC-oriented), identify the entities and the relationships among them with emphasis on *verifiable* CMOC structure:
+ - Context (C): who/where/when/setting constraints that *moderate* mechanisms/outcomes
+ - Intervention/Comparator (I): what was done / compared
+ - Mechanism (M): internal learner process (cognitive/affective) explaining why/how
+ - Outcome (O): what changed (performance, accuracy, confidence, transfer, retention)
+ 
+ -Critical constraints (to avoid noise and improve verification quality)-
+ 0) The input document contains a METADATA block:
+    - Between "### METADATA (IGNORE FOR ENTITY/CLAIM EXTRACTION)" and "### END_METADATA"
+    - This block is for traceability only.
+    - DO NOT extract entities or relationships from it.
+ 
+ 0.1) Formatting robustness (important for GraphRAG parsing):
+    - NEVER output any special tokens like "<|DIFF_MARKER|>" or fragments like "(\"ENTITY\"".
+    - NEVER include "{tuple_delimiter}" or "{record_delimiter}" inside entity names/descriptions (use them only as delimiters).
+    - If you cannot follow the exact output format, output nothing except {completion_delimiter}.
+ 
+ 1) Entities MUST be construct-level (big concepts), not names:
+    - Do NOT create entities for authors, institutions, journals, publishers, years, DOI/URL, citation fragments.
+    - Avoid generic placeholders unless tied to a specific CMOC relation: STUDENTS, EDUCATION, INTERVENTION, LEARNING, RESULTS, THE STUDY.
+    - REQUIRED: Every entity MUST have a non-empty entity_type from [{entity_types}]. If you cannot assign a type, do NOT create the entity.
+ 
+ 2) Minimal realist ontology (preferred):
+    - CONTEXT: learner context or setting constraint (e.g., prior knowledge, self-efficacy, time pressure)
+    - INTERVENTION: external instructional action (worked examples, feedback, simulation, prompts)
+    - COMPARATOR: alternative condition (control/no instruction/non-contrastive)
+    - MECHANISM: internal process (self-explanation, cognitive load, pattern recognition, reflection)
+    - OUTCOME: measured change (diagnostic accuracy, errors, retention, confidence)
+    - Optional only if clearly present: LEARNER_POPULATION, SETTING_CONTEXT, STUDY_DESIGN
+ 
+ 3) Relationships MUST be CMOC-like, directional, and evidence-local:
+    - Prefer ONLY these directional families:
+      * CONTEXT -> MECHANISM
+      * CONTEXT -> OUTCOME
+      * INTERVENTION -> MECHANISM
+      * MECHANISM -> OUTCOME
+      * INTERVENTION -> OUTCOME
+      * COMPARATOR -> OUTCOME
+    - Default rule: OUTCOME SHOULD BE A SINK.
+      * Do NOT output OUTCOME -> X relations unless the text explicitly states the reverse causality (rare).
+      * If the text explicitly states reverse causality, you may output it but set a very low strength (1–3) and make the verb explicit.
+ 
+ 3.1) Evidence-local requirement (STRICT):
+    - Only output a relationship if the source and target are explicitly connected within a small local span.
+    - The relationship description MUST correspond to a concrete statement in the local text (not general background).
+ 
+ 3.2) Relationship description style (STRICT):
+    - ONE sentence only.
+    - MUST start with one verb from this list (uppercase): INCREASES | REDUCES | IMPROVES | HARMS | MODERATES | ENABLES | HINDERS | TRIGGERS | LEADS_TO | ASSOCIATED_WITH
+    - Do NOT write narrative summaries (avoid phrases like "complex and multifaceted", "research indicates", "in summary").
+ 
+ -Steps-
+ 1) Identify entities that match the provided entity types: [{entity_types}]
+ For each entity, extract:
+ - entity_name: Name of the entity, capitalized
+ - entity_type: One of [{entity_types}]
+ - entity_description: 1–3 sentences, specific to THIS paper (include population/setting/task if applicable)
+ Format:
+ ("entity"{tuple_delimiter}<entity_name>{tuple_delimiter}<entity_type>{tuple_delimiter}<entity_description>)
+ 
+ 2) Identify relationships that are CMOC-useful, directional, and evidence-local (see constraints above).
+ For each relationship, extract:
+ - source_entity (from step 1)
+ - target_entity (from step 1)
+ - relationship_description (ONE sentence; verb-led; evidence-local)
+ - relationship_strength (1–10, higher = more explicit in the text)
+ Format:
+ ("relationship"{tuple_delimiter}<source_entity>{tuple_delimiter}<target_entity>{tuple_delimiter}<relationship_description>{tuple_delimiter}<relationship_strength>)
+ 
+ 3) Return output in English as a single list of all entities and relationships. Use {record_delimiter} as the list delimiter.
+ 4) When finished, output {completion_delimiter}
+ 
+ ######################
+ -Real Data-
+ ######################
+ Entity_types: {entity_types}
+ Text: {input_text}
+ ######################
+ Output:
