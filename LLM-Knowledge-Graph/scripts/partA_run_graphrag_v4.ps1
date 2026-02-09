@@ -92,6 +92,11 @@ if (Test-Path (Join-Path $OutAbs "covariates.parquet")) {
 # 7) KG quality gates (detect regressions early)
 python "scripts/partA_quality_gates.py" --out-dir "$OutAbs"
 
+# 7.1) KG postprocess / validator report (CMOC directionality normalization)
+if (Test-Path (Join-Path $OutAbs "entities.parquet")) {
+  python "scripts/partA_postprocess_kg.py" --out-dir "$OutAbs" --label "v4"
+}
+
 # 8) Verification audit report (v4 artifact)
 python "scripts/partA_audit_outputs.py" --out-dir "$OutAbs" --out-md "artifacts/partA/verification_audit_v4.md"
 
