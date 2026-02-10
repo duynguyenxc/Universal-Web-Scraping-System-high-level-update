@@ -95,14 +95,16 @@ def main() -> int:
     art_dir = args.artifacts_dir
 
     rep_p = out_dir / "community_reports.parquet"
+    fixed_p = out_dir / "claims_fixed.parquet"
     cov_p = out_dir / "covariates.parquet"
     if not rep_p.exists():
         raise SystemExit(f"Missing: {rep_p}")
-    if not cov_p.exists():
-        raise SystemExit(f"Missing: {cov_p}")
 
     rep = pd.read_parquet(rep_p)
-    cov = pd.read_parquet(cov_p)
+    claims_src = fixed_p if fixed_p.exists() else cov_p
+    if not claims_src.exists():
+        raise SystemExit(f"Missing: {fixed_p} (preferred) or {cov_p}")
+    cov = pd.read_parquet(claims_src)
 
     top_com = _pick_communities(rep, k=args.k_communities)
     top_claims = _pick_claims(cov, k=args.k_claims)
@@ -183,12 +185,23 @@ def main() -> int:
 
     note.append("### Known limitations (transparent)\n")
     note.append("- 8/28 studies are URL-only (abstract-based), so evidence spans may be less detailed than full text.")
-    note.append("- Only ~25% of extracted claim snippets preserve `[PAGE N]` markers; improving span traceability is a next refinement.")
+    # Evidence traceability snapshot (computed from claims)
+    try:
+        src_col = "source_text" if "source_text" in cov.columns else ("text" if "text" in cov.columns else None)
+        if src_col:
+            has_page = cov[src_col].fillna("").astype(str).str.contains(r"\[PAGE\s+\d+\]", regex=True).mean() * 100.0
+            note.append(f"- Claim evidence traceability: **{has_page:.1f}%** include a `[PAGE N]` marker (auto-extracted).")
+    except Exception:
+        # keep limitations section resilient; do not fail the meeting pack
+        pass
     note.append("")
 
     note.append("### Where to look in the repo\n")
     note.append(f"- Selected examples: `{(art_dir / 'verification_selected_examples.md').as_posix()}`")
-    note.append(f"- Quality gates: `{(art_dir / 'verification_audit.md').as_posix()}`")
+    audit_p = art_dir / "verification_audit_v4.md"
+    if not audit_p.exists():
+        audit_p = art_dir / "verification_audit.md"
+    note.append(f"- Quality gates: `{audit_p.as_posix()}`")
     note.append(f"- Community reports: `{(out_dir / 'human_readable/community_reports.md').as_posix()}`")
     note.append(f"- Claims: `{(out_dir / 'human_readable/claims.md').as_posix()}`")
     note.append("")

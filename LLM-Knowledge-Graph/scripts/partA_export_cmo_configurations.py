@@ -112,7 +112,11 @@ def main() -> int:
     out_dir = args.out_dir
     docs = pd.read_parquet(out_dir / "documents.parquet")
     tus = pd.read_parquet(out_dir / "text_units.parquet")
-    ent = pd.read_parquet(out_dir / "entities.parquet")
+    # Prefer postprocessed/normalized entities if present (improves typing consistency for verification exports).
+    ent_p = out_dir / "entities_cmoc_normalized.parquet"
+    if not ent_p.exists():
+        ent_p = out_dir / "entities.parquet"
+    ent = pd.read_parquet(ent_p)
     fixed = out_dir / "claims_fixed.parquet"
     cov_path = out_dir / (
         "claims_fixed.parquet"
