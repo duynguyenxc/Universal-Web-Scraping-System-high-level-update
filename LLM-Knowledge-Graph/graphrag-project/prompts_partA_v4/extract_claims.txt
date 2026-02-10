@@ -1,52 +1,72 @@
 
+-Target activity-
+You are an assistant helping a researcher perform a realist-synthesis style analysis of education interventions for clinical reasoning.
+
 -Goal-
-Extract **verification-grade claims** that are auditable and realist-relevant (C/M/O), with an evidence snippet that includes page markers.
+Given a text document, extract CMO-relevant claims that can support verification against a human-written review:
+- Context (who/where/when/setting moderators)
+- Intervention / Comparator (what was done / compared)
+- Mechanism (why/how it works)
+- Outcome (what changed and how it was evaluated)
 
--Critical constraints (strict)-
-0) Ignore METADATA block:
+-Critical constraints (to avoid noise and improve verification quality)-
+0) The input document contains a METADATA block:
    - Between "### METADATA (IGNORE FOR ENTITY/CLAIM EXTRACTION)" and "### END_METADATA"
-   - DO NOT use it to generate claims.
+   - This block is for traceability only.
+   - DO NOT extract claims from it.
 
-1) Evidence is mandatory:
-   - Every claim MUST include an evidence snippet copied from the text.
-   - Evidence MUST include a page marker like: [PAGE N]
-   - Keep evidence local (1–2 sentences) and do not paraphrase evidence.
+0.1) Formatting robustness (important for GraphRAG parsing):
+   - Output MUST be a single list, with records separated ONLY by {record_delimiter}.
+   - Each record MUST be exactly ONE parenthesized tuple with 8 fields (subject, object, type, status, start, end, description, source_text).
+   - NEVER output special tokens like "<|DIFF_MARKER|>" or fragments like "(\"ENTITY\"".
+   - NEVER include "{tuple_delimiter}" or "{record_delimiter}" inside Subject/Object/Description/Source Text.
 
-2) Subject/Object must be construct-level:
-   - Use construct-level concepts (e.g., worked examples, feedback, self-efficacy, diagnostic accuracy).
-   - Avoid authors, institutions, journal names, DOI/URLs, years, section headings.
-   - Avoid generic placeholders like STUDENTS, EDUCATION, LEARNING.
+1) Claims MUST be grounded in the paper text and should be CMO-useful:
+   - Prefer these patterns:
+     * MECHANISM_EXPLANATION: I→M, C→M (how/why interventions work; what contexts enable mechanisms)
+     * CONTEXT_MODERATOR: C→O, C→M (conditions affecting outcomes/mechanisms)
+     * INTERVENTION_EFFECT: I→O (direct effects when mechanism is implicit)
+     * OUTCOME_MEASUREMENT: (any)→O (use sparingly; only when measurement method matters)
 
-3) Claim types (minimal, realist-aligned):
-   - CONTEXT
-   - INTERVENTION
-   - MECHANISM
-   - OUTCOME
-   - CONTEXT_MODERATOR
-   - INTERVENTION_EFFECT
-   - MECHANISM_OUTCOME
-   - ASSOCIATION (use only when causality is not explicit)
+2) Anti-noise rules (strict):
+   - Do NOT use generic placeholders as subject/object: THE STUDY, STUDY, STUDY 1, STUDY 2, THE RESULTS, RESULTS, INTERVENTION, LEARNING.
+   - Do NOT use bibliographic items as subject/object: author names, journal names, DOI/URL, years as standalone.
 
-4) Format must be clean:
-   - Do NOT include any markup artifacts like "<worked examples...>" or "<|DIFF_MARKER|>".
-   - Do NOT include the tuple/record delimiters inside any field values.
+3) Evidence span is mandatory:
+   - In Claim Source Text, include a SHORT snippet (1–2 sentences max) and keep any "[PAGE N]" marker if present.
+   - If you cannot provide a concrete evidence snippet for a claim, DO NOT output that claim.
 
--Output format-
-Return a list of claim tuples delimited by {record_delimiter}. Each claim:
-("claim"{tuple_delimiter}<claim_type>{tuple_delimiter}<subject>{tuple_delimiter}<object>{tuple_delimiter}<claim_text>{tuple_delimiter}<evidence>)
+4) CMO field is mandatory for verification:
+   - Claim Description must end with this exact template (single line):
+     CMO[C=<context or NONE>; I=<intervention/comparator or NONE>; M=<mechanism or NONE>; O=<outcome or NONE>]
+   - If a claim type is INTERVENTION_EFFECT, set I and O (and set C/M if available).
+   - If a claim type is CONTEXT_MODERATOR, set C and (M or O).
+   - If a claim type is MECHANISM_EXPLANATION, set M and (I or C) and ideally O.
 
-Where:
-- claim_type is one of the list above
-- subject/object are short concept labels (capitalized)
-- claim_text is a single sentence summarizing the claim (no citations)
-- evidence is a direct snippet including [PAGE N]
+-Steps-
+1. Extract named entities that match the provided entity specification (names or types).
+2. Extract claims that explicitly connect:
+   - Context → Mechanism / Outcome
+   - Intervention → Mechanism / Outcome
+   - Comparator → Outcome (if present)
+3. For each claim, extract:
+   - Subject (capitalized)
+   - Object (capitalized; MUST NOT be NONE)
+   - Claim Type: INTERVENTION_EFFECT | MECHANISM_EXPLANATION | CONTEXT_MODERATOR | OUTCOME_MEASUREMENT
+   - Claim Status: TRUE | FALSE | SUSPECTED
+   - Claim Date: (start_date, end_date) in ISO-8601 or NONE
+   - Claim Description: 1–3 sentences + required CMO[...] line
+   - Claim Source Text: evidence snippet (short; keep [PAGE N] when present)
 
-When finished, output {completion_delimiter}
+Format each claim as:
+(<subject_entity>{tuple_delimiter}<object_entity>{tuple_delimiter}<claim_type>{tuple_delimiter}<claim_status>{tuple_delimiter}<claim_start_date>{tuple_delimiter}<claim_end_date>{tuple_delimiter}<claim_description>{tuple_delimiter}<claim_source>)
 
-######################
+4. Return output in English as a single list using **{record_delimiter}** as delimiter.
+5. When finished, output {completion_delimiter}
+
 -Real Data-
-######################
+Entity specification: {entity_specs}
+Claim description: {claim_description}
 Text: {input_text}
-######################
 Output:
 
