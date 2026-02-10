@@ -1,6 +1,6 @@
 ### Part A v4 (Education verification) config.
-### - Clean-slate iteration to lock realist ontology and relationship directionality.
-### - Uses stronger model for extract_graph to improve schema discipline; claims remain cheap.
+### - Clean-slate iteration focusing on **CMOC-shape** and **evidence-local** edges.
+### - Strict: typed constructs only; OUTCOME is sink by default.
 ###
 ### Required env vars (set by scripts/partA_run_graphrag_v4.ps1):
 ###   PARTA_INPUT_DIR
@@ -8,6 +8,7 @@
 ###   PARTA_CACHE_DIR
 ###   PARTA_LOG_DIR
 ###   PARTA_LANCEDB_DIR
+###
 
 models:
   default_chat_model:
@@ -61,8 +62,8 @@ input:
   file_type: text
 
 chunks:
-  # v4: keep smaller chunks; improves recall and reduces drift.
-  size: 1200
+  # v4: slightly smaller chunks to help evidence-local extraction.
+  size: 1000
   overlap: 80
   group_by_columns: [id]
 
@@ -89,17 +90,21 @@ embed_text:
   vector_store_id: default_vector_store
 
 extract_graph:
-  # v4: prioritize schema discipline + relationship semantics.
+  # v4: use stronger model to reduce schema/direction errors.
   model_id: default_chat_model
   prompt: "prompts_partA_v4/extract_graph.txt"
   entity_types:
     - intervention
     - comparator
+    - learner_population
+    - learner_context
+    - cognitive_state
+    - motivation_affect
+    - setting_context
     - context
     - mechanism
     - outcome
-    - learner_population
-    - setting_context
+    - clinical_domain
     - study_design
   max_gleanings: 1
 
@@ -120,7 +125,7 @@ extract_claims:
   enabled: true
   model_id: cheap_chat_model
   prompt: "prompts_partA_v4/extract_claims.txt"
-  description: "v4: evidence-local claims with strict CMO tags."
+  description: "v4: evidence-local realist claims with mandatory [PAGE N] snippet."
   max_gleanings: 1
 
 community_reports:

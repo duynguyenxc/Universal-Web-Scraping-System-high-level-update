@@ -1,45 +1,52 @@
- 
- -Goal-
- Given a text document, extract CMO-relevant, verification-ready claims (traceable evidence spans) that can support realist synthesis:
- - Context (who/where/when/setting moderators)
- - Intervention / Comparator (what was done / compared)
- - Mechanism (why/how it works; internal learner process)
- - Outcome (what changed and how it was evaluated)
- 
- -Critical constraints (to avoid noise and improve verification quality)-
- 0) Ignore METADATA block:
-    - Between "### METADATA (IGNORE FOR ENTITY/CLAIM EXTRACTION)" and "### END_METADATA"
-    - Do NOT treat bibliographic lines as evidence.
- 
- 1) Only extract claims supported by an explicit evidence span in the local text.
-    - If you cannot provide a concrete evidence snippet for a claim, DO NOT output that claim.
- 
- 2) Evidence span is mandatory and must be short:
-    - In Claim Source Text, include a SHORT snippet (1–2 sentences max).
-    - If any "[PAGE N]" marker is present in the text, keep it.
- 
- 3) Avoid bibliographic noise:
-    - Do NOT output claims about author names, journal names, years, DOI, citations.
- 
- 4) Claim must be CMO-annotated for verification:
-    - Claim Description MUST end with this exact template (single line):
-      CMO[C=<context or NONE>; I=<intervention/comparator or NONE>; M=<mechanism or NONE>; O=<outcome or NONE>]
- 
- 5) Prefer CMOC-useful claims:
-    - Intervention -> Mechanism, Mechanism -> Outcome, Context moderating Mechanism/Outcome, Comparator differences.
- 
- -Output format-
- For each claim, output:
- - Subject: the key construct (prefer Intervention/Mechanism/Context)
- - Object: the affected construct (prefer Mechanism/Outcome)
- - Claim Description: one sentence + required CMO[...] suffix
- - Claim Source Text: 1–2 sentences evidence span (keep [PAGE N] if present)
- 
- Output as a JSON list of objects with keys:
- - subject
- - object
- - description
- - source_text
- 
- Text: {input_text}
- Output:
+
+-Goal-
+Extract **verification-grade claims** that are auditable and realist-relevant (C/M/O), with an evidence snippet that includes page markers.
+
+-Critical constraints (strict)-
+0) Ignore METADATA block:
+   - Between "### METADATA (IGNORE FOR ENTITY/CLAIM EXTRACTION)" and "### END_METADATA"
+   - DO NOT use it to generate claims.
+
+1) Evidence is mandatory:
+   - Every claim MUST include an evidence snippet copied from the text.
+   - Evidence MUST include a page marker like: [PAGE N]
+   - Keep evidence local (1–2 sentences) and do not paraphrase evidence.
+
+2) Subject/Object must be construct-level:
+   - Use construct-level concepts (e.g., worked examples, feedback, self-efficacy, diagnostic accuracy).
+   - Avoid authors, institutions, journal names, DOI/URLs, years, section headings.
+   - Avoid generic placeholders like STUDENTS, EDUCATION, LEARNING.
+
+3) Claim types (minimal, realist-aligned):
+   - CONTEXT
+   - INTERVENTION
+   - MECHANISM
+   - OUTCOME
+   - CONTEXT_MODERATOR
+   - INTERVENTION_EFFECT
+   - MECHANISM_OUTCOME
+   - ASSOCIATION (use only when causality is not explicit)
+
+4) Format must be clean:
+   - Do NOT include any markup artifacts like "<worked examples...>" or "<|DIFF_MARKER|>".
+   - Do NOT include the tuple/record delimiters inside any field values.
+
+-Output format-
+Return a list of claim tuples delimited by {record_delimiter}. Each claim:
+("claim"{tuple_delimiter}<claim_type>{tuple_delimiter}<subject>{tuple_delimiter}<object>{tuple_delimiter}<claim_text>{tuple_delimiter}<evidence>)
+
+Where:
+- claim_type is one of the list above
+- subject/object are short concept labels (capitalized)
+- claim_text is a single sentence summarizing the claim (no citations)
+- evidence is a direct snippet including [PAGE N]
+
+When finished, output {completion_delimiter}
+
+######################
+-Real Data-
+######################
+Text: {input_text}
+######################
+Output:
+

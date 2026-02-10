@@ -37,6 +37,18 @@ def main() -> int:
     ap.add_argument("--out-dir", type=Path, default=Path("graphrag-project/output_partA_v3"))
     ap.add_argument("--artifacts-dir", type=Path, default=Path("artifacts/partA"))
     ap.add_argument(
+        "--share-subdir",
+        type=str,
+        default="share_v3",
+        help="Subdirectory under artifacts-dir for the stable share page (e.g., share_v3, share_v4).",
+    )
+    ap.add_argument(
+        "--artifact-suffix",
+        type=str,
+        default="v3",
+        help="Suffix for artifact filenames (e.g., v3 writes verification_audit_v3.md).",
+    )
+    ap.add_argument(
         "--mode",
         type=str,
         default="share",
@@ -51,20 +63,22 @@ def main() -> int:
     artifacts_dir = args.artifacts_dir
 
     if args.mode == "share":
-        share_dir = artifacts_dir / "share_v3"
+        suffix = args.artifact_suffix.strip() or "v3"
+        share_subdir = args.share_subdir.strip() or "share_v3"
+        share_dir = artifacts_dir / share_subdir
         share_dir.mkdir(parents=True, exist_ok=True)
 
         out_rel = _rel_from_share_to_outdir(out_dir)
 
         lines: list[str] = []
-        lines.append("## Part A (Education) — Share page v3 (START HERE)\n")
+        lines.append(f"## Part A (Education) — Share page {suffix} (START HERE)\n")
         lines.append(f"- updated_at: {datetime.now().isoformat(timespec='seconds')}\n")
         lines.append("### Recommended reading order\n")
         lines.append("1. `../verification_note.md`")
         lines.append("2. `../verification_selected_examples.md`")
-        lines.append("3. `../verification_audit_v3.md`")
-        lines.append("4. `../claims_enriched_v3.md`")
-        lines.append("5. `../cmo_configurations_v3.md`")
+        lines.append(f"3. `../verification_audit_{suffix}.md`")
+        lines.append(f"4. `../claims_enriched_{suffix}.md`")
+        lines.append(f"5. `../cmo_configurations_{suffix}.md`")
         lines.append(f"6. `{out_rel}/human_readable/community_reports.md`")
         lines.append("")
         lines.append("### Raw GraphRAG human_readable exports\n")
@@ -77,23 +91,24 @@ def main() -> int:
         lines.append(f"- `{out_rel}/human_readable/stats.json`")
         lines.append("")
         lines.append("### Notes\n")
-        lines.append("- v3 artifacts are intentionally separated from earlier runs for clean comparison.")
+        lines.append(f"- {suffix} artifacts are intentionally separated from earlier runs for clean comparison.")
         lines.append("- Heavy GraphRAG outputs (`*.parquet`, `lancedb/`) are intentionally not included/committed.")
         _write_text(share_dir / "index.md", "\n".join(lines).strip() + "\n")
         print(f"Wrote: {share_dir.resolve() / 'index.md'}")
         return 0
 
     run_name = args.run_name.strip() or datetime.now().strftime("%Y%m%d_%H%M%S")
-    bundle_dir = artifacts_dir / "runs_v3" / run_name
+    suffix = args.artifact_suffix.strip() or "v3"
+    bundle_dir = artifacts_dir / f"runs_{suffix}" / run_name
     bundle_dir.mkdir(parents=True, exist_ok=True)
 
-    # Core artifacts (v3 filenames)
+    # Core artifacts (suffix-based filenames)
     for name in [
         "verification_note.md",
         "verification_selected_examples.md",
-        "verification_audit_v3.md",
-        "claims_enriched_v3.md",
-        "cmo_configurations_v3.md",
+        f"verification_audit_{suffix}.md",
+        f"claims_enriched_{suffix}.md",
+        f"cmo_configurations_{suffix}.md",
         "studies_metadata.csv",
         "studies_metadata.jsonl",
     ]:
@@ -113,16 +128,16 @@ def main() -> int:
         _copy_if_exists(hr / name, bundle_dir / "human_readable" / name)
 
     readme = []
-    readme.append("## Part A v3 — Run bundle\n")
+    readme.append(f"## Part A {suffix} — Run bundle\n")
     readme.append(f"- run: **{run_name}**")
     readme.append(f"- created_at: {datetime.now().isoformat(timespec='seconds')}")
     readme.append("")
     readme.append("### Start here (recommended order)\n")
     readme.append("1. `verification_note.md`")
     readme.append("2. `verification_selected_examples.md`")
-    readme.append("3. `verification_audit_v3.md`")
-    readme.append("4. `claims_enriched_v3.md`")
-    readme.append("5. `cmo_configurations_v3.md`")
+    readme.append(f"3. `verification_audit_{suffix}.md`")
+    readme.append(f"4. `claims_enriched_{suffix}.md`")
+    readme.append(f"5. `cmo_configurations_{suffix}.md`")
     readme.append("6. `human_readable/community_reports.md`")
     readme.append("")
     readme.append("### What is intentionally NOT included\n")

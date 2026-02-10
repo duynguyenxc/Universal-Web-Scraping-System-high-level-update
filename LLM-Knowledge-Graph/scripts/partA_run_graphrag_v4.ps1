@@ -9,8 +9,7 @@ Param(
   [Parameter(Mandatory=$false)][ValidateSet("global","local","basic","drift")][string]$QueryMethod = "global",
   [Parameter(Mandatory=$false)][switch]$SkipIndex,
   [Parameter(Mandatory=$false)][int]$Limit = 0,
-  [Parameter(Mandatory=$false)][switch]$OnlyPdf,
-  [Parameter(Mandatory=$false)][switch]$UseExistingInput
+  [Parameter(Mandatory=$false)][switch]$OnlyPdf
 )
 
 $ErrorActionPreference = "Stop"
@@ -47,28 +46,26 @@ New-Item -ItemType Directory -Force -Path (Join-Path $env:PARTA_CACHE_DIR "embed
 New-Item -ItemType Directory -Force -Path $env:PARTA_LOG_DIR | Out-Null
 New-Item -ItemType Directory -Force -Path $env:PARTA_LANCEDB_DIR | Out-Null
 
-if (-not $UseExistingInput) {
-  # 1) Build metadata (PDF + embedded PubMed links)
-  python "scripts/partA_extract_study_metadata.py" `
-    --pdf-dir "$PdfDir" `
-    --links-pdf "$LinksPdf" `
-    --out-dir "artifacts/partA" `
-    --max-pages 3 `
-    --user-agent "$UserAgent"
-  if ($LASTEXITCODE -ne 0) { throw "Metadata extraction failed (exit=$LASTEXITCODE)." }
+# 1) Build metadata (PDF + embedded PubMed links)
+python "scripts/partA_extract_study_metadata.py" `
+  --pdf-dir "$PdfDir" `
+  --links-pdf "$LinksPdf" `
+  --out-dir "artifacts/partA" `
+  --max-pages 3 `
+  --user-agent "$UserAgent"
+if ($LASTEXITCODE -ne 0) { throw "Metadata extraction failed (exit=$LASTEXITCODE)." }
 
-  # 2) Build GraphRAG input .txt
-  $PrepareArgs = @(
-    "scripts/partA_prepare_graphrag_input.py",
-    "--metadata-jsonl", "artifacts/partA/studies_metadata.jsonl",
-    "--pdf-dir", "$PdfDir",
-    "--out-input-dir", "$InputDir"
-  )
-  if ($OnlyPdf) { $PrepareArgs += "--only-pdf" }
-  if ($Limit -gt 0) { $PrepareArgs += @("--limit", "$Limit") }
-  python @PrepareArgs
-  if ($LASTEXITCODE -ne 0) { throw "GraphRAG input preparation failed (exit=$LASTEXITCODE)." }
-}
+# 2) Build GraphRAG input .txt
+$PrepareArgs = @(
+  "scripts/partA_prepare_graphrag_input.py",
+  "--metadata-jsonl", "artifacts/partA/studies_metadata.jsonl",
+  "--pdf-dir", "$PdfDir",
+  "--out-input-dir", "$InputDir"
+)
+if ($OnlyPdf) { $PrepareArgs += "--only-pdf" }
+if ($Limit -gt 0) { $PrepareArgs += @("--limit", "$Limit") }
+python @PrepareArgs
+if ($LASTEXITCODE -ne 0) { throw "GraphRAG input preparation failed (exit=$LASTEXITCODE)." }
 
 if (-not $SkipIndex) {
   # 3) GraphRAG index (authoritative knowledge layer)
@@ -95,18 +92,16 @@ if (Test-Path (Join-Path $OutAbs "covariates.parquet")) {
 # 7) KG quality gates (detect regressions early)
 python "scripts/partA_quality_gates.py" --out-dir "$OutAbs"
 
-# 7.1) KG postprocess / validator report (CMOC directionality normalization)
-if (Test-Path (Join-Path $OutAbs "entities.parquet")) {
-  python "scripts/partA_postprocess_kg.py" --out-dir "$OutAbs" --label "v4"
-}
-
-# 8) Verification audit report (v4 artifact)
+# 8) Verification audit report (v4; avoid overwriting stable artifact)
 python "scripts/partA_audit_outputs.py" --out-dir "$OutAbs" --out-md "artifacts/partA/verification_audit_v4.md"
 
-# 9) Verification-grade exports (v4 artifact)
+# 9) Verification-grade exports (v4; avoid overwriting stable artifact)
 if (Test-Path (Join-Path $OutAbs "entities.parquet")) {
   python "scripts/partA_export_cmo_configurations.py" --out-dir "$OutAbs" --out-claims-md "artifacts/partA/claims_enriched_v4.md" --out-md "artifacts/partA/cmo_configurations_v4.md"
 }
+
+# 10) v4 share page (stable link-page)
+python "scripts/partA_create_run_bundle_v3.py" --out-dir "$OutAbs" --artifacts-dir "artifacts/partA" --mode "share" --share-subdir "share_v4" --artifact-suffix "v4"
 
 Write-Host "Done. Output dir: $OutDir" -ForegroundColor Green
 
