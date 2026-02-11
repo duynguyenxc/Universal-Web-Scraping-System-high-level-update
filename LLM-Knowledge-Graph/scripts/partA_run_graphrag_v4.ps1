@@ -9,7 +9,8 @@ Param(
   [Parameter(Mandatory=$false)][ValidateSet("global","local","basic","drift")][string]$QueryMethod = "global",
   [Parameter(Mandatory=$false)][switch]$SkipIndex,
   [Parameter(Mandatory=$false)][int]$Limit = 0,
-  [Parameter(Mandatory=$false)][switch]$OnlyPdf
+  [Parameter(Mandatory=$false)][switch]$OnlyPdf,
+  [Parameter(Mandatory=$false)][switch]$SkipClaims
 )
 
 $ErrorActionPreference = "Stop"
@@ -29,7 +30,9 @@ New-Item -ItemType Directory -Force -Path $InputDir | Out-Null
 $OutAbs = (Resolve-Path $OutDir).Path
 $InAbs = (Resolve-Path $InputDir).Path
 $RootAbs = (Resolve-Path "graphrag-project").Path
-$SettingsAbs = (Resolve-Path $Settings).Path
+$SettingsToUse = $Settings
+if ($SkipClaims) { $SettingsToUse = "graphrag-project/settings.partA.v4.noclaims.yaml" }
+$SettingsAbs = (Resolve-Path $SettingsToUse).Path
 
 $env:PARTA_OUTPUT_DIR = $OutAbs
 $env:PARTA_INPUT_DIR = $InAbs
@@ -85,8 +88,10 @@ if (Test-Path (Join-Path $OutAbs "entities.parquet")) {
 python "scripts/graphrag_export_readable.py" --out-dir "$OutAbs" --export-dir "$OutAbs/human_readable" --n 15
 
 # 6) Claims normalization (robustness layer)
-if (Test-Path (Join-Path $OutAbs "covariates.parquet")) {
-  python "scripts/partA_repair_claims_parquet.py" --out-dir "$OutAbs" --in-parquet "covariates.parquet" --out-parquet "claims_fixed.parquet" --out-md "human_readable/claims_fixed.md"
+if (-not $SkipClaims) {
+  if (Test-Path (Join-Path $OutAbs "covariates.parquet")) {
+    python "scripts/partA_repair_claims_parquet.py" --out-dir "$OutAbs" --in-parquet "covariates.parquet" --out-parquet "claims_fixed.parquet" --out-md "human_readable/claims_fixed.md"
+  }
 }
 
 # 7) KG quality gates (detect regressions early)
@@ -101,8 +106,10 @@ if (Test-Path (Join-Path $OutAbs "entities.parquet")) {
 python "scripts/partA_audit_outputs.py" --out-dir "$OutAbs" --out-md "artifacts/partA/verification_audit_v4.md"
 
 # 9) Verification-grade exports (v4; avoid overwriting stable artifact)
-if (Test-Path (Join-Path $OutAbs "entities.parquet")) {
-  python "scripts/partA_export_cmo_configurations.py" --out-dir "$OutAbs" --out-claims-md "artifacts/partA/claims_enriched_v4.md" --out-md "artifacts/partA/cmo_configurations_v4.md"
+if (-not $SkipClaims) {
+  if (Test-Path (Join-Path $OutAbs "entities.parquet")) {
+    python "scripts/partA_export_cmo_configurations.py" --out-dir "$OutAbs" --out-claims-md "artifacts/partA/claims_enriched_v4.md" --out-md "artifacts/partA/cmo_configurations_v4.md"
+  }
 }
 
 # 10) v4 share page (stable link-page)

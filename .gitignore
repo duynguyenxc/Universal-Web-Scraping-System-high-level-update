@@ -99,3 +99,9 @@ UNIVERSAL_*.md
 
 # Allow committing Part A verification artifacts (even if they match generic *_SUMMARY.md patterns above).
 !LLM-Knowledge-Graph/artifacts/**
+
+# GraphRAG (local-only generated inputs/outputs)
+LLM-Knowledge-Graph/graphrag-project/input_partA*/
+LLM-Knowledge-Graph/graphrag-project/output_partA*/
+LLM-Knowledge-Graph/graphrag-project/**/lancedb/
+LLM-Knowledge-Graph/graphrag-project/**/logs/
