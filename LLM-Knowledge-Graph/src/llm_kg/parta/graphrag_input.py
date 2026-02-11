@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import re
 from dataclasses import dataclass
 from pathlib import Path
@@ -23,6 +24,26 @@ def _doi_to_filename(doi: str) -> str:
 
 def _record_id_to_filename(record_id: str) -> str:
     return _slugify(record_id.replace(":", "_").replace("|", "_"))
+
+
+def _stable_suffix(*parts: str, n: int = 10) -> str:
+    """
+    Stable short hash to keep filenames short on Windows (avoid MAX_PATH issues).
+    """
+    raw = "|".join([p or "" for p in parts]).encode("utf-8", errors="ignore")
+    return hashlib.sha1(raw).hexdigest()[:n]
+
+
+def _make_input_filename(*, doi: str | None, record_id: str, source_id: str, title: str | None) -> str:
+    """
+    Create a deterministic, short, filesystem-safe filename.
+
+    Windows paths can be long in this repo; keep filenames compact and stable.
+    """
+    key = (doi or "").strip() or record_id.strip() or source_id.strip() or (title or "").strip() or "doc"
+    slug = _slugify(key, max_len=40)
+    suf = _stable_suffix(doi or "", record_id or "", source_id or "", title or "")
+    return f"{slug}__{suf}.txt"
 
 
 def _safe_int(x: Any) -> int | None:
@@ -150,10 +171,8 @@ def build_graphrag_docs_from_metadata(
             + "\n### END_PAPER_TEXT\n"
         ).strip() + "\n"
 
-        if doi:
-            fname = _doi_to_filename(doi) + ".txt"
-        else:
-            fname = _record_id_to_filename(record_id or (title or "doc")) + ".txt"
+        # Keep filenames short and stable across runs (Windows path-length safety).
+        fname = _make_input_filename(doi=doi, record_id=record_id or "", source_id=source_id or "", title=title)
 
         docs.append(InputDoc(record_id=record_id or fname, filename=fname, text=full_text))
 
