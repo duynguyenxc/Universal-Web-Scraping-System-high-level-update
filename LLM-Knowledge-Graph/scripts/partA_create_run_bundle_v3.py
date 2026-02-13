@@ -70,19 +70,34 @@ def main() -> int:
 
         out_rel = _rel_from_share_to_outdir(out_dir)
 
+        # Only show links that exist in artifacts_dir to avoid confusing "missing file" references.
+        audit_p = artifacts_dir / f"verification_audit_{suffix}.md"
+        claims_p = artifacts_dir / f"claims_enriched_{suffix}.md"
+        cmo_p = artifacts_dir / f"cmo_configurations_{suffix}.md"
+        note_p = artifacts_dir / "verification_note.md"
+        examples_p = artifacts_dir / "verification_selected_examples.md"
+
         lines: list[str] = []
         lines.append(f"## Part A (Education) — Share page {suffix} (START HERE)\n")
         lines.append(f"- updated_at: {datetime.now().isoformat(timespec='seconds')}\n")
         lines.append("### Recommended reading order\n")
-        lines.append("1. `../verification_note.md`")
-        lines.append("2. `../verification_selected_examples.md`")
-        lines.append(f"3. `../verification_audit_{suffix}.md`")
-        lines.append(f"4. `../claims_enriched_{suffix}.md`")
-        lines.append(f"5. `../cmo_configurations_{suffix}.md`")
-        lines.append(f"6. `{out_rel}/human_readable/community_reports.md`")
+        order: list[str] = []
+        if note_p.exists():
+            order.append("`../verification_note.md`")
+        if examples_p.exists():
+            order.append("`../verification_selected_examples.md`")
+        if audit_p.exists():
+            order.append(f"`../verification_audit_{suffix}.md`")
+        if claims_p.exists():
+            order.append(f"`../claims_enriched_{suffix}.md`")
+        if cmo_p.exists():
+            order.append(f"`../cmo_configurations_{suffix}.md`")
+        order.append(f"`{out_rel}/human_readable/community_reports.md`")
+        for i, item in enumerate(order, start=1):
+            lines.append(f"{i}. {item}")
         lines.append("")
         lines.append("### Raw GraphRAG human_readable exports\n")
-        lines.append(f"- `{out_rel}/human_readable/claims.md`")
+        lines.append(f"- `{out_rel}/human_readable/claims.md` (if present)")
         lines.append(f"- `{out_rel}/human_readable/claims_fixed.md` (if present)")
         lines.append(f"- `{out_rel}/human_readable/entities.md`")
         lines.append(f"- `{out_rel}/human_readable/relationships.md`")

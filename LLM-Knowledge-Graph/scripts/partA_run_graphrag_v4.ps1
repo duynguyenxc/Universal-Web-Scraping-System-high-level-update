@@ -113,7 +113,8 @@ if (-not $SkipClaims) {
 }
 
 # 10) v4 share page (stable link-page)
-python "scripts/partA_create_run_bundle_v3.py" --out-dir "$OutAbs" --artifacts-dir "artifacts/partA" --mode "share" --share-subdir "share_v4" --artifact-suffix "v4"
+# Pass *relative* out-dir to keep links repo-relative (avoid absolute D:/ paths).
+python "scripts/partA_create_run_bundle_v3.py" --out-dir "$OutDir" --artifacts-dir "artifacts/partA" --mode "share" --share-subdir "share_v4" --artifact-suffix "v4"
 
 Write-Host "Done. Output dir: $OutDir" -ForegroundColor Green
 
