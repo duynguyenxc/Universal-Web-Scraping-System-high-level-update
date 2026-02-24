@@ -1028,6 +1028,8 @@ def build_parser() -> argparse.ArgumentParser:
 	p_export.add_argument("--require-match", action="store_true", help="Require matched keywords (ensures relevance)")
 	p_export.add_argument("--min-abstract-length", type=int, default=50, help="Minimum abstract length for quality (default: 50)")
 	p_export.add_argument("--require-abstract", action="store_true", help="Require abstract for quality data")
+	# screening: export only papers that meet required-signal rule (V4.2)
+	p_export.add_argument("--require-qualified", action="store_true", help="Require screening_qualified=true (included set)")
 	# logging
 	p_export.add_argument("--log-json", action="store_true")
 	# include-full-text excerpt
@@ -1062,6 +1064,10 @@ def build_parser() -> argparse.ArgumentParser:
 				# Quality filter: require abstract if specified
 				if args.require_abstract:
 					if not d.abstract or len(d.abstract) < args.min_abstract_length:
+						continue
+				# Screening filter: keep only qualified papers if requested
+				if getattr(args, "require_qualified", False):
+					if getattr(d, "screening_qualified", None) is not True:
 						continue
 				# negative keyword filter (simple substring check in title/abstract/excerpt)
 				nk_set = None
