@@ -29,6 +29,11 @@ def discover_semantic_scholar(
 	year_filter: Optional[int] = None,
 	api_key: Optional[str] = None,
 	throttle_sec: float = 0.1,
+	rate_limit_retries: int = 3,
+	rate_limit_wait_sec: int = 60,
+	queries: Optional[list[str]] = None,
+	keyword_start: int = 0,
+	keyword_count: int = 3,
 	**kwargs,
 ) -> Iterator[dict]:
 	"""Discover Semantic Scholar papers via semanticscholar library.
@@ -62,34 +67,40 @@ def discover_semantic_scholar(
 	# Initialize SemanticScholar client
 	sch = SemanticScholar(api_key=api_key) if api_key else SemanticScholar()
 
-	# Build search query list
-	is_corrosion_search = any(
-		term.lower()
-		in [
-			"corrosion",
-			"concrete",
-			"steel",
-			"reinforced",
-			"chloride",
-			"civil engineering",
-		]
-		for term in keywords
-	)
+	# Build search query list (allow caller to override for continuous/rotating runs)
+	if not queries:
+		is_corrosion_search = any(
+			term.lower()
+			in [
+				"corrosion",
+				"concrete",
+				"steel",
+				"reinforced",
+				"chloride",
+				"civil engineering",
+			]
+			for term in keywords
+		)
 
-	if is_corrosion_search:
-		queries = [
-			"corrosion reinforced concrete",
-			"steel corrosion protection",
-			"concrete corrosion chloride",
-			"corrosion inhibition civil engineering",
-			"corrosion stainless steel concrete",
-			"corrosion cracking concrete",
-			"corrosion durability concrete",
-		]
-		logger.info("Using corrosion-specific Semantic Scholar queries: %d", len(queries))
-	else:
-		# Use first few keywords as one focused query
-		queries = [" ".join(keywords[:3])]
+		if is_corrosion_search:
+			queries = [
+				"corrosion reinforced concrete",
+				"steel corrosion protection",
+				"concrete corrosion chloride",
+				"corrosion inhibition civil engineering",
+				"corrosion stainless steel concrete",
+				"corrosion cracking concrete",
+				"corrosion durability concrete",
+			]
+			logger.info("Using corrosion-specific Semantic Scholar queries: %d", len(queries))
+		else:
+			# Use a focused keyword slice; allow rotation in continuous mode.
+			if not isinstance(keyword_start, int) or keyword_start < 0:
+				keyword_start = 0
+			if not isinstance(keyword_count, int) or keyword_count <= 0:
+				keyword_count = 3
+			kw_slice = keywords[keyword_start : keyword_start + keyword_count] or keywords[:3]
+			queries = [" ".join(kw_slice)]
 
 	total_limit = max_records or 100
 	limit_per_query = max(1, min(50, total_limit // len(queries)))
@@ -101,18 +112,34 @@ def discover_semantic_scholar(
 
 		logger.info("Semantic Scholar query %d/%d: %r", idx, len(queries), q)
 
+		strikes = 0
 		if throttle_sec > 0:
 			time.sleep(throttle_sec)
 
-		try:
-			results = sch.search_paper(query=q, limit=limit_per_query)
-		except Exception as e:  # pragma: no cover - network / API errors
-			logger.error("Error during Semantic Scholar API call: %s", e)
-			if "429" in str(e) or "rate limit" in str(e).lower():
-				wait_time = 60
-				logger.warning("Rate limited. Waiting %d seconds...", wait_time)
-				time.sleep(wait_time)
-			continue
+		while True:
+			try:
+				results = sch.search_paper(query=q, limit=limit_per_query)
+				break
+			except Exception as e:  # pragma: no cover - network / API errors
+				msg = str(e)
+				logger.error("Error during Semantic Scholar API call: %s", msg)
+				if "429" in msg or "rate limit" in msg.lower():
+					strikes += 1
+					if strikes > max(0, int(rate_limit_retries)):
+						logger.error(
+							"Semantic Scholar rate limited too many times (%d). Skipping query to keep pipeline alive.",
+							strikes,
+						)
+						results = []
+						break
+					wait_time = int(rate_limit_wait_sec) if rate_limit_wait_sec else 0
+					logger.warning("Rate limited. Waiting %d seconds...", wait_time)
+					if wait_time > 0:
+						time.sleep(wait_time)
+					continue
+				# Non-rate-limit errors: skip this query (fail-soft)
+				results = []
+				break
 
 		if not results:
 			logger.info("No results for query: %r", q)

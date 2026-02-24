@@ -164,8 +164,30 @@ def build_parser() -> argparse.ArgumentParser:
 					conn.execute(sql_text("ALTER TABLE documents ADD COLUMN pdf_fetched_at DATETIME"))
 				except Exception:
 					pass
+			# Optional screening metadata for advanced scoring profiles
+			try:
+				conn.execute(sql_text("ALTER TABLE documents ADD COLUMN IF NOT EXISTS screening_profile VARCHAR(50)"))
+			except Exception:
+				try:
+					conn.execute(sql_text("ALTER TABLE documents ADD COLUMN screening_profile VARCHAR(50)"))
+				except Exception:
+					pass
+			try:
+				conn.execute(sql_text("ALTER TABLE documents ADD COLUMN IF NOT EXISTS screening_qualified BOOLEAN"))
+			except Exception:
+				try:
+					conn.execute(sql_text("ALTER TABLE documents ADD COLUMN screening_qualified BOOLEAN"))
+				except Exception:
+					pass
+			try:
+				conn.execute(sql_text("ALTER TABLE documents ADD COLUMN IF NOT EXISTS screening_meta TEXT"))
+			except Exception:
+				try:
+					conn.execute(sql_text("ALTER TABLE documents ADD COLUMN screening_meta TEXT"))
+				except Exception:
+					pass
 			conn.commit()
-		console.print("[green]Ensured pdf_status/pdf_fetched_at columns exist.[/green]")
+		console.print("[green]Ensured optional columns exist (pdf_status/pdf_fetched_at/screening_*).[/green]")
 		return 0
 
 	p_cols.set_defaults(func=_cmd_cols)
@@ -631,6 +653,9 @@ def build_parser() -> argparse.ArgumentParser:
 					"year": d.year,
 					"date": getattr(d, "pub_date", None),
 					"relevance_score": d.relevance_score,
+					"screening_profile": getattr(d, "screening_profile", None),
+					"screening_qualified": getattr(d, "screening_qualified", None),
+					"screening_meta": getattr(d, "screening_meta", None),
 					"status": d.status,
 					"local_path": d.local_path,
 					"pdf_path": d.local_path,
@@ -746,6 +771,12 @@ def build_parser() -> argparse.ArgumentParser:
 	p_score.add_argument("--db-url", default=os.getenv("UWSS_DB_URL"))
 	p_score.add_argument("--negative-keywords-file", default=None)
 	p_score.add_argument("--use-fulltext", action="store_true", default=True, help="Use full-text content for scoring when available (default: True)")
+	p_score.add_argument(
+		"--profile",
+		default="default",
+		choices=["default", "damage_v4_2"],
+		help="Scoring profile (default preserves legacy scoring; damage_v4_2 adds bonus/penalty + qualification gate).",
+	)
 
 	def _cmd_score(args: argparse.Namespace) -> int:
 		from src.uwss.score import score_documents
@@ -763,7 +794,16 @@ def build_parser() -> argparse.ArgumentParser:
 			cfg_neg = data.get("negative_keywords")
 			if isinstance(cfg_neg, list) and cfg_neg:
 				neg = [str(x).strip() for x in cfg_neg if str(x).strip()]
-		updated = score_documents(Path(args.db), keywords, args.min, db_url=getattr(args, "db_url", None), negative_keywords=neg, use_fulltext=args.use_fulltext)
+		updated = score_documents(
+			Path(args.db),
+			keywords,
+			args.min,
+			db_url=getattr(args, "db_url", None),
+			negative_keywords=neg,
+			use_fulltext=args.use_fulltext,
+			profile=str(getattr(args, "profile", "default")),
+			profile_config=data,
+		)
 		console.print(f"[green]Scored {updated} documents[/green]")
 		return 0
 
@@ -1043,6 +1083,9 @@ def build_parser() -> argparse.ArgumentParser:
 					"year": d.year,
 					"date": getattr(d, "pub_date", None),
 					"relevance_score": d.relevance_score,
+					"screening_profile": getattr(d, "screening_profile", None),
+					"screening_qualified": getattr(d, "screening_qualified", None),
+					"screening_meta": getattr(d, "screening_meta", None),
 					"status": d.status,
 					"local_path": d.local_path,
 					"pdf_path": d.local_path,
@@ -1209,15 +1252,19 @@ def build_parser() -> argparse.ArgumentParser:
 					oa_status = obj.get("oa_status") or None
 					relevance_score = obj.get("relevance_score") or None
 					keywords_found = obj.get("keywords_found") or None
+					screening_profile = obj.get("screening_profile") or None
+					screening_qualified = obj.get("screening_qualified") if "screening_qualified" in obj else None
+					screening_meta = obj.get("screening_meta") or None
 					url_hash = obj.get("url_hash_sha1") or _sha1_url(pdf_url or landing_url or source_url)
 
 					existing = None
 					if doi:
-						existing = session.execute(select(Document).where(Document.doi == doi)).scalar_one_or_none()
+						# Be robust to historical duplicates: pick the first match instead of failing.
+						existing = session.execute(select(Document).where(Document.doi == doi)).scalars().first()
 					if existing is None and title:
-						existing = session.execute(select(Document).where(Document.title == title)).scalar_one_or_none()
+						existing = session.execute(select(Document).where(Document.title == title)).scalars().first()
 					if existing is None and url_hash:
-						existing = session.execute(select(Document).where(Document.url_hash_sha1 == url_hash)).scalar_one_or_none()
+						existing = session.execute(select(Document).where(Document.url_hash_sha1 == url_hash)).scalars().first()
 
 					if existing is None:
 						if args.dry_run:
@@ -1239,6 +1286,9 @@ def build_parser() -> argparse.ArgumentParser:
 							content_chars=content_chars,
 							keywords_found=keywords_found,
 							relevance_score=relevance_score,
+							screening_profile=screening_profile,
+							screening_qualified=screening_qualified,
+							screening_meta=screening_meta,
 							source=source,
 							license=license_,
 							oa_status=oa_status,
@@ -1264,6 +1314,9 @@ def build_parser() -> argparse.ArgumentParser:
 						_set_if_empty("content_path", content_path)
 						_set_if_empty("content_chars", content_chars)
 						_set_if_empty("keywords_found", keywords_found)
+						_set_if_empty("screening_profile", screening_profile)
+						_set_if_empty("screening_qualified", screening_qualified)
+						_set_if_empty("screening_meta", screening_meta)
 						try:
 							if relevance_score is not None:
 								existing.relevance_score = max(filter(lambda x: x is not None, [existing.relevance_score, relevance_score]))

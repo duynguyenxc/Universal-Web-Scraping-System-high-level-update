@@ -1,4 +1,4 @@
-﻿domain_keywords:
+domain_keywords:
   - reinforced concrete corrosion experiment
   - long term durability concrete
   - concrete chloride diffusion test
@@ -59,6 +59,71 @@ negative_keywords:
   - GAN
   - big data
   - blockchain
+
+# Optional: advanced screening profiles (used by `uwss score-keywords --profile ...`)
+screening_profiles:
+  # Damage-Oriented Literature Screening System Upgrade (V4.2)
+  # - Adds strong negative penalties for undesired paper types
+  # - Adds positive weighting for desired evidence types
+  # - Adds a high-score qualification gate to prevent false positives from ranking too high
+  damage_v4_2:
+    positive_phrases:
+      field_data:
+        - field data
+        - in situ
+        - field monitoring
+        - inspection data
+        - bridge inspection
+      time_evolving_damage:
+        - time series
+        - long-term
+        - over time
+        - time-dependent
+        - progression
+        - deterioration rate
+      data_driven_modeling:
+        - data-driven
+        - statistical model
+        - bayesian
+        - regression model
+        - survival analysis
+    negative_phrases:
+      material_enhancement_only:
+        - fiber reinforced
+        - fly ash
+        - silica fume
+        - nano silica
+        - geopolymer
+        - mix design
+        - additive
+      mechanical_properties_only:
+        - compressive strength
+        - flexural strength
+        - split tensile
+        - mechanical properties
+      short_term_lab_only:
+        - accelerated test
+        - short-term
+        - 28 days
+        - 7 days
+      simulation_only:
+        - finite element
+        - numerical simulation
+        - computational model
+        - simulation study
+    bonuses:
+      field_data: 0.20
+      time_evolving_damage: 0.20
+      data_driven_modeling: 0.10
+    penalties:
+      # Multiplicative factor applied once per matched negative category (smaller = harsher)
+      category_factor: 0.20
+    qualification:
+      # Apply the "qualification gate" only when score is already high
+      high_score_threshold: 0.75
+      must_have_any: [field_data, time_evolving_damage]
+      # If unqualified but otherwise high, cap score below typical export thresholds
+      cap_if_unqualified: 0.49
 scrapy_whitelist_domains:
   - www.concrete.org
   - www.bzhb.ru

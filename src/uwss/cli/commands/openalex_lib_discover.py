@@ -11,7 +11,7 @@ from typing import Any, Dict
 
 from sqlalchemy.orm import Session
 
-from ...store import Base, Document
+from ...store import Base, Document, IngestionState
 from ...store import create_sqlite_engine, create_engine_from_url
 from ...sources.openalex_lib import discover_openalex
 
@@ -44,6 +44,9 @@ def register(sub) -> None:
         default=None,
         help="Optional JSON file to write harvest metrics",
     )
+    p.add_argument("--keyword-start", type=int, default=0, help="Start index into domain_keywords (for rotation)")
+    p.add_argument("--keyword-count", type=int, default=3, help="Number of keywords to use in the query batch")
+    p.add_argument("--resume", action="store_true", help="Rotate keyword batch using ingestion_state checkpoints")
     p.add_argument("--db-url", default=os.getenv("UWSS_DB_URL"))
 
     def _cmd(args: argparse.Namespace) -> int:
@@ -88,6 +91,23 @@ def register(sub) -> None:
         session = SessionLocal()
 
         try:
+            kw_start = int(getattr(args, "keyword_start", 0) or 0)
+            kw_count = int(getattr(args, "keyword_count", 3) or 3)
+            if args.resume:
+                st = (
+                    session.query(IngestionState)
+                    .filter(IngestionState.source == "openalex", IngestionState.checkpoint_key == "keyword_start")
+                    .first()
+                )
+                if st and st.checkpoint_value:
+                    try:
+                        kw_start = int(st.checkpoint_value)
+                    except Exception:
+                        kw_start = kw_start
+            kw_start = max(0, kw_start)
+            kw_count = max(1, kw_count)
+            kw_slice = keywords[kw_start : kw_start + kw_count] or keywords[:3]
+
             # Discover papers
             start_time = time.time()
             inserted = 0
@@ -95,7 +115,7 @@ def register(sub) -> None:
             duplicates = 0
 
             console.print(
-                f"[cyan]Starting OpenAlex discovery via pyalex with {len(keywords)} keywords...[/cyan]"
+                f"[cyan]Starting OpenAlex discovery via pyalex with {len(kw_slice)} keywords (slice {kw_start}:{kw_start+kw_count})...[/cyan]"
             )
 
             for metadata in discover_openalex(
@@ -103,6 +123,8 @@ def register(sub) -> None:
                 max_records=args.max,
                 year_filter=year_filter,
                 contact_email=contact_email,
+                keyword_start=kw_start,
+                keyword_count=kw_count,
             ):
                 try:
                     # Check for duplicates (by DOI first, then source_url, then title)
@@ -156,6 +178,21 @@ def register(sub) -> None:
                 f"[green]OpenAlex Discovery: inserted={inserted} duplicates={duplicates} failed={failed} elapsed={elapsed:.1f}s[/green]"
             )
 
+            # Update checkpoint for next run (rotation)
+            if args.resume:
+                next_start = (kw_start + kw_count) % max(1, len(keywords))
+                st = (
+                    session.query(IngestionState)
+                    .filter(IngestionState.source == "openalex", IngestionState.checkpoint_key == "keyword_start")
+                    .first()
+                )
+                if not st:
+                    st = IngestionState(source="openalex", checkpoint_key="keyword_start", checkpoint_value=str(next_start))
+                    session.add(st)
+                else:
+                    st.checkpoint_value = str(next_start)
+                session.commit()
+
             # Write metrics if requested
             if args.metrics_out:
                 metrics: Dict[str, Any] = {
@@ -164,6 +201,8 @@ def register(sub) -> None:
                     "duplicates": duplicates,
                     "failed": failed,
                     "elapsed_sec": elapsed,
+                    "keyword_start": kw_start,
+                    "keyword_count": kw_count,
                 }
                 import json
 

@@ -35,6 +35,9 @@ pip install -r requirements.txt
 
 ```bash
 python -m src.uwss.cli db-init --db data/uwss.sqlite
+
+# If you already have an existing DB from an older UWSS version, run:
+python -m src.uwss.cli db-migrate --db data/uwss.sqlite
 ```
 
 4. **Discover papers from modern academic APIs (improved adapters)**
@@ -59,6 +62,10 @@ python -m src.uwss.cli paperscraper-discover   --config config/config.yaml --db 
 ```bash
 # Score relevance using your corrosion/durability keywords
 python -m src.uwss.cli score-keywords --config config/config.yaml --db data/uwss.sqlite
+
+# Optional (V4.2): damage-oriented screening profile with bonus/penalty + qualification gate
+# (tunable via `screening_profiles.damage_v4_2` in config/config.yaml)
+python -m src.uwss.cli score-keywords --config config/config.yaml --db data/uwss.sqlite --profile damage_v4_2
 
 # Export a high‑quality subset to JSONL
 python -m src.uwss.cli export \
@@ -115,6 +122,7 @@ After this, you will have:
 
 - **Scoring + quality (`src/uwss/score`, `src/uwss/quality`, `src/uwss/clean`)**
   - Keyword relevance scoring (unigram + bigram + title boost + negative keywords).
+  - Optional scoring profiles (e.g., `damage_v4_2`) with explainable bonus/penalty logic and a qualification gate.
   - Data cleaning, deduplication, validation (duplicates, invalid years, missing files).
 
 - **Fetch & extract (`src/uwss/crawl`, `src/uwss/fetch`, `src/uwss/parse`)**

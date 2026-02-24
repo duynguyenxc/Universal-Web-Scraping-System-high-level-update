@@ -30,6 +30,8 @@ def discover_openalex(
     year_filter: Optional[int] = None,
     contact_email: Optional[str] = None,
     throttle_sec: float = 0.1,  # OpenAlex allows fast requests, but be respectful
+    keyword_start: int = 0,
+    keyword_count: int = 3,
     **kwargs,
 ) -> Iterator[dict]:
     """Discover OpenAlex papers via pyalex library.
@@ -67,8 +69,12 @@ def discover_openalex(
 
     # Build search query from keywords
     # OpenAlex search works best with focused queries
-    # Try using first 3 keywords for better results
-    limited_keywords = keywords[:3]
+    # Use a focused batch of keywords for better results; allow rotation in continuous mode.
+    if not isinstance(keyword_start, int) or keyword_start < 0:
+        keyword_start = 0
+    if not isinstance(keyword_count, int) or keyword_count <= 0:
+        keyword_count = 3
+    limited_keywords = keywords[keyword_start : keyword_start + keyword_count] or keywords[:3]
     search_query = " ".join(limited_keywords)
 
     count = 0

@@ -29,6 +29,10 @@ def discover_crossref(
     year_filter: Optional[int] = None,
     contact_email: Optional[str] = None,
     throttle_sec: float = 1.0,  # Crossref recommends polite use (1 req/sec)
+    retry_attempts: int = 4,
+    retry_backoff_sec: float = 5.0,
+    keyword_start: int = 0,
+    keyword_count: int = 5,
     **kwargs,
 ) -> Iterator[dict]:
     """Discover Crossref papers via habanero library.
@@ -61,9 +65,13 @@ def discover_crossref(
     # Crossref supports space-separated keywords (AND logic by default)
     # For OR logic, we can use query.title:keyword1 OR query.title:keyword2
     # For simplicity, use space-separated (AND) which works well for focused topics
-    # Limit to first 5 keywords to avoid query length issues
+    # Use a small batch of keywords to avoid query length issues; allow rotation in continuous mode.
+    if not isinstance(keyword_start, int) or keyword_start < 0:
+        keyword_start = 0
+    if not isinstance(keyword_count, int) or keyword_count <= 0:
+        keyword_count = 5
     query_parts = []
-    for kw in keywords[:5]:
+    for kw in (keywords[keyword_start : keyword_start + keyword_count] or keywords[:5]):
         query_parts.append(kw.strip())
     
     search_query = " ".join(query_parts)
@@ -91,8 +99,33 @@ def discover_crossref(
                 filter_dict = None
                 if year_filter:
                     filter_dict = {"from-pub-date": f"{year_filter}"}
-                
-                result = cr.works(query=search_query, limit=current_rows, offset=offset, filter=filter_dict)
+
+                attempt = 0
+                while True:
+                    try:
+                        result = cr.works(query=search_query, limit=current_rows, offset=offset, filter=filter_dict)
+                        break
+                    except Exception as e:
+                        msg = str(e)
+                        is_rate = ("429" in msg) or ("rate limit" in msg.lower())
+                        is_timeout = ("timed out" in msg.lower()) or ("timeout" in msg.lower())
+                        if attempt < max(0, int(retry_attempts)) and (is_rate or is_timeout):
+                            wait_time = int(retry_backoff_sec * (2**attempt)) if retry_backoff_sec > 0 else 0
+                            wait_time = min(wait_time, 120)
+                            logger.warning(
+                                "Crossref transient error (attempt %d/%d): %s. Waiting %ds then retrying...",
+                                attempt + 1,
+                                retry_attempts,
+                                msg,
+                                wait_time,
+                            )
+                            if wait_time > 0:
+                                time.sleep(wait_time)
+                            attempt += 1
+                            continue
+                        # Fail-soft: stop Crossref harvest this run, keep pipeline alive.
+                        logger.error("Crossref failed after retries at offset=%d: %s", offset, msg)
+                        return
                 
                 # Extract items from result
                 # habanero returns a dict with 'message' key containing the API response
@@ -138,18 +171,14 @@ def discover_crossref(
                 offset += len(items)
 
             except Exception as e:
-                logger.error(f"Error during Crossref API call: {e}")
-                # If it's a rate limit error, wait longer
-                if "429" in str(e) or "rate limit" in str(e).lower():
-                    wait_time = 60
-                    logger.warning(f"Rate limited. Waiting {wait_time} seconds...")
-                    time.sleep(wait_time)
-                    continue
-                raise
+                # Anything unexpected here: fail-soft to avoid killing continuous runs.
+                logger.error("Error during Crossref discovery loop at offset=%d: %s", offset, e)
+                return
 
         logger.info(f"Crossref discovery complete: {count} records")
 
     except Exception as e:
         logger.error(f"Error during Crossref discovery: {e}")
-        raise
+        # Fail-soft: Crossref should not kill the entire pipeline in continuous mode.
+        return
 

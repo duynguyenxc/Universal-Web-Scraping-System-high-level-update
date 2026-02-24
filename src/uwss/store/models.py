@@ -34,6 +34,10 @@ class Document(Base):
 	content_chars: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
 	keywords_found: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # JSON list of matched keywords
 	relevance_score: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+	# Optional screening metadata (for advanced scoring profiles)
+	screening_profile: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
+	screening_qualified: Mapped[Optional[bool]] = mapped_column(Boolean, nullable=True)
+	screening_meta: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # JSON blob: bonus/penalty hits, rationale
 	status: Mapped[str] = mapped_column(String(40), default="not_fetched")
 	# PDF fetch specific status and timestamps
 	pdf_status: Mapped[Optional[str]] = mapped_column(String(40), nullable=True)

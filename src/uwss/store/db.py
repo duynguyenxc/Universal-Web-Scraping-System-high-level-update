@@ -90,6 +90,16 @@ def migrate_db(db_path: Path) -> None:
 		if "content_chars" not in names:
 			conn.execute(sql_text("ALTER TABLE documents ADD COLUMN content_chars INTEGER"))
 			conn.commit()
+		# Optional screening metadata for advanced scoring profiles (e.g., damage_v4_2)
+		if "screening_profile" not in names:
+			conn.execute(sql_text("ALTER TABLE documents ADD COLUMN screening_profile VARCHAR(50)"))
+			conn.commit()
+		if "screening_qualified" not in names:
+			conn.execute(sql_text("ALTER TABLE documents ADD COLUMN screening_qualified BOOLEAN"))
+			conn.commit()
+		if "screening_meta" not in names:
+			conn.execute(sql_text("ALTER TABLE documents ADD COLUMN screening_meta TEXT"))
+			conn.commit()
 		if "pdf_fetched_at" not in names:
 			conn.execute(sql_text("ALTER TABLE documents ADD COLUMN pdf_fetched_at DATETIME"))
 			conn.commit()
