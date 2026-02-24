@@ -69,59 +69,134 @@ screening_profiles:
   damage_v4_2:
     positive_phrases:
       field_data:
-        - field data
-        - in situ
-        - field monitoring
-        - inspection data
+        - bridge management system
+        - national bridge inventory
         - bridge inspection
+        - in-service
+        - field performance
+        - inspection database
+        - inspection record
+        - condition rating
+        - condition state
+        - element-level inspection
+        - dot inspection
+        - bms data
+        - nbi data
+        - pontis
+        - aashto
       time_evolving_damage:
         - time series
-        - long-term
-        - over time
         - time-dependent
-        - progression
-        - deterioration rate
+        - deterioration trajectory
+        - deterioration modeling
+        - damage evolution
+        - damage index evolution
+        - condition rating progression
+        - aging curve
+        - deterioration curve
+        - multi-year
+        - service-life prediction
+        - durability performance index
+        - dpi
       data_driven_modeling:
         - data-driven
         - statistical model
         - bayesian
         - regression model
         - survival analysis
+        - markov
+        - hazard model
+        - reliability-based
+        - calibration
+      inspection_based_prediction:
+        - inspection-based prediction
+        - inspection-based condition evolution
+        - inspection-based deterioration
+        - field degradation data
+        - bridge management system data
+        - condition rating progression
     negative_phrases:
       material_enhancement_only:
         - fiber reinforced
+        - steel fiber
+        - basalt fiber
+        - hybrid fiber
         - fly ash
         - silica fume
         - nano silica
+        - nano
         - geopolymer
         - mix design
         - additive
+        - uhpc
+        - ultra-high performance
+        - high performance concrete
+        - recycled aggregate
+        - rac
+        - rca
+        - co2 curing
+        - carbonation curing
       mechanical_properties_only:
         - compressive strength
         - flexural strength
         - split tensile
         - mechanical properties
+        - upv
+        - ultrasonic pulse velocity
+        - rcpt
+        - rapid chloride permeability
+        - permeability-only
+        - permeability
+        - porosity
+        - sorptivity
       short_term_lab_only:
         - accelerated test
         - short-term
         - 28 days
         - 7 days
+        - early age
+        - curing time
+        - dosage vs strength
       simulation_only:
         - finite element
         - numerical simulation
         - computational model
         - simulation study
+        - finite element analysis
+        - fea
+      transport_properties_only:
+        - chloride diffusion
+        - diffusion coefficient
+        - chloride migration
+        - migration coefficient
+        - rapid migration test
+        - fick
+        - chloride ingress
+        - c-s-h
+        - calcium silicate hydrate
+        - capillary pores
+        - gel pores
+        - pore structure
     bonuses:
-      field_data: 0.20
-      time_evolving_damage: 0.20
+      field_data: 0.25
+      time_evolving_damage: 0.25
       data_driven_modeling: 0.10
+      inspection_based_prediction: 0.20
     penalties:
       # Multiplicative factor applied once per matched negative category (smaller = harsher)
       category_factor: 0.20
+      # Per-category tuning: stay strict on material/strength papers, softer on transport-property mentions.
+      per_category_factor:
+        material_enhancement_only: 0.20
+        mechanical_properties_only: 0.20
+        short_term_lab_only: 0.30
+        simulation_only: 0.20
+        # Keep most diffusion/transport-only papers below the default export threshold (0.5)
+        transport_properties_only: 0.49
     qualification:
       # Apply the "qualification gate" only when score is already high
       high_score_threshold: 0.75
-      must_have_any: [field_data, time_evolving_damage]
+      must_have_any: [field_data, time_evolving_damage, inspection_based_prediction]
       # If unqualified but otherwise high, cap score below typical export thresholds
       cap_if_unqualified: 0.49
 scrapy_whitelist_domains:

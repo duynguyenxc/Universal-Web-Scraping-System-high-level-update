@@ -238,19 +238,29 @@ def _damage_v4_2_defaults() -> Dict[str, Any]:
 	return {
 		"positive_phrases": {
 			"field_data": [
-				"field data",
-				"in situ",
-				"field monitoring",
-				"inspection data",
+				"bridge management system",
+				"national bridge inventory",
 				"bridge inspection",
+				"inspection database",
+				"inspection record",
+				"condition rating",
+				"dot inspection",
+				"bms data",
+				"nbi data",
 			],
 			"time_evolving_damage": [
 				"time series",
-				"long-term",
-				"over time",
 				"time-dependent",
-				"progression",
-				"deterioration rate",
+				"damage evolution",
+				"deterioration trajectory",
+				"condition rating progression",
+				"aging curve",
+				"deterioration curve",
+				"multi-year",
+				"service-life prediction",
+				"damage index",
+				"durability performance index",
+				"dpi",
 			],
 			"data_driven_modeling": [
 				"data-driven",
@@ -258,45 +268,93 @@ def _damage_v4_2_defaults() -> Dict[str, Any]:
 				"bayesian",
 				"regression model",
 				"survival analysis",
+				"markov",
+				"hazard model",
+				"reliability-based",
+				"calibration",
 			],
 		},
 		"negative_phrases": {
 			"material_enhancement_only": [
 				"fiber reinforced",
+				"steel fiber",
+				"basalt fiber",
+				"hybrid fiber",
 				"fly ash",
 				"silica fume",
 				"nano silica",
+				"nano",
 				"geopolymer",
 				"mix design",
 				"additive",
+				"uhpc",
+				"ultra-high performance",
+				"high performance concrete",
+				"recycled aggregate",
+				"rac",
+				"rca",
+				"co2 curing",
+				"carbonation curing",
 			],
 			"mechanical_properties_only": [
 				"compressive strength",
 				"flexural strength",
 				"split tensile",
 				"mechanical properties",
+				"upv",
+				"ultrasonic pulse velocity",
+				"rcpt",
+				"rapid chloride permeability",
+				"permeability",
+				"porosity",
+				"sorptivity",
 			],
 			"short_term_lab_only": [
 				"accelerated test",
 				"short-term",
 				"28 days",
 				"7 days",
+				"early age",
+				"curing time",
 			],
 			"simulation_only": [
 				"finite element",
 				"numerical simulation",
 				"computational model",
 				"simulation study",
+				"finite element analysis",
+				"fea",
+			],
+			# Mild penalty: transport-property papers often are not trajectory/inspection-focused.
+			"transport_properties_only": [
+				"chloride diffusion",
+				"diffusion coefficient",
+				"chloride migration",
+				"migration coefficient",
+				"fick",
+				"c-s-h",
+				"calcium silicate hydrate",
+				"capillary pores",
+				"gel pores",
+				"pore structure",
 			],
 		},
 		"bonuses": {
-			"field_data": 0.20,
-			"time_evolving_damage": 0.20,
+			"field_data": 0.25,
+			"time_evolving_damage": 0.25,
 			"data_driven_modeling": 0.10,
 		},
 		"penalties": {
-			# multiplicative factor applied once per matched negative category
+			# multiplicative factor applied once per matched negative category (smaller = harsher)
 			"category_factor": 0.20,
+			# optional per-category override (lets us be strict without killing recall)
+			"per_category_factor": {
+				"material_enhancement_only": 0.20,
+				"mechanical_properties_only": 0.20,
+				"short_term_lab_only": 0.30,
+				"simulation_only": 0.20,
+				"transport_properties_only": 0.70,
+			},
 		},
 		"qualification": {
 			# Only apply "qualification gate" when score is already high.
@@ -355,10 +413,18 @@ def _damage_v4_2_adjust(
 	except Exception:
 		category_factor_f = 0.20
 
+	per_cat = penalties.get("per_category_factor", {})
+	if not isinstance(per_cat, dict):
+		per_cat = {}
+
 	penalty_factor = 1.0
 	neg_categories_matched = [cat for cat, n in neg_hits.items() if n > 0]
 	for _cat in neg_categories_matched:
-		penalty_factor *= category_factor_f
+		f = per_cat.get(_cat, category_factor_f)
+		try:
+			penalty_factor *= float(f)
+		except Exception:
+			penalty_factor *= category_factor_f
 
 	raw = _clamp01(base_score + bonus)
 	final = _clamp01(raw * penalty_factor)
@@ -371,9 +437,9 @@ def _damage_v4_2_adjust(
 	must_any = [str(x) for x in must_any if str(x).strip()]
 
 	has_required_signal = any((pos_hits.get(cat, 0) or 0) > 0 for cat in must_any)
-	qualified = True
+	# V4.2 meaning: "qualified" means the paper contains at least one required signal.
+	qualified = bool(has_required_signal)
 	if final >= high_thr and not has_required_signal:
-		qualified = False
 		final = min(final, cap_unq)
 
 	meta = {
