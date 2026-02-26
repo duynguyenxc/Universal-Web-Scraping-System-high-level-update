@@ -10,7 +10,6 @@ from .mapper import map_semantic_scholar_to_document
 
 logger = logging.getLogger(__name__)
 
-# Try to import semanticscholar, but handle gracefully if not available
 try:
     from semanticscholar import SemanticScholar
 
@@ -64,10 +63,8 @@ def discover_semantic_scholar(
 		len(keywords),
 	)
 
-	# Initialize SemanticScholar client
 	sch = SemanticScholar(api_key=api_key) if api_key else SemanticScholar()
 
-	# Build search query list (allow caller to override for continuous/rotating runs)
 	if not queries:
 		is_corrosion_search = any(
 			term.lower()
@@ -94,7 +91,7 @@ def discover_semantic_scholar(
 			]
 			logger.info("Using corrosion-specific Semantic Scholar queries: %d", len(queries))
 		else:
-			# Use a focused keyword slice; allow rotation in continuous mode.
+
 			if not isinstance(keyword_start, int) or keyword_start < 0:
 				keyword_start = 0
 			if not isinstance(keyword_count, int) or keyword_count <= 0:
@@ -137,7 +134,6 @@ def discover_semantic_scholar(
 					if wait_time > 0:
 						time.sleep(wait_time)
 					continue
-				# Non-rate-limit errors: skip this query (fail-soft)
 				results = []
 				break
 
@@ -149,7 +145,6 @@ def discover_semantic_scholar(
 			if max_records is not None and count >= max_records:
 				break
 
-			# Convert Paper object to dict
 			if hasattr(paper, "to_dict"):
 				paper_dict = paper.to_dict()
 			elif hasattr(paper, "__dict__"):
