@@ -29,10 +29,26 @@ def _norm_name(s: str) -> str:
     s = re.sub(r"^\s*[\(\[]?\s*\d+[\)\].:-]\s*", "", s)
     s = re.sub(r"^\s*[-•]\s*", "", s)
     s = s.strip()
-    # collapse whitespace and strip surrounding parentheses
+    # collapse whitespace and strip surrounding wrappers (LLM sometimes adds <...>)
     s = re.sub(r"\s+", " ", s)
-    s = s.strip("()[]{}")
+    s = s.strip("()[]{}<>")
     return s.upper().strip()
+
+_GENERIC_PLACEHOLDERS = {
+    "THE STUDY",
+    "STUDY",
+    "RESULTS",
+    "THE RESULTS",
+    "INTERVENTION",
+    "LEARNING",
+    "STUDENTS",
+    "PARTICIPANTS",
+}
+
+
+def _is_generic_placeholder(s: str) -> bool:
+    u = _norm_name(s)
+    return (not u) or (u in _GENERIC_PLACEHOLDERS)
 
 
 def _parse_document_metadata(doc_text: str) -> dict[str, str]:
@@ -168,6 +184,8 @@ def main() -> int:
         doi = meta.get("doi", "")
         year = meta.get("year", "")
         title = meta.get("title", "") or ""
+        src_meta = (meta.get("source", "") or "").strip().lower()
+        is_pdf = src_meta.startswith("pdf")
 
         subj = str(r.get("subject", "") or "").strip()
         obj = str(r.get("object", "") or "").strip()
@@ -187,6 +205,16 @@ def main() -> int:
             cmo_i = _norm_name(m.group("I"))
             cmo_m = _norm_name(m.group("M"))
             cmo_o = _norm_name(m.group("O"))
+
+        # Filter obvious low-value rows (keeps verification exports readable).
+        if _is_generic_placeholder(subj) or _is_generic_placeholder(obj):
+            continue
+        if not ev:
+            continue
+        # For PDF-backed docs, page markers strongly improve auditability.
+        # We don't hard-drop missing pages here; we will prioritize later.
+        if is_pdf and (page == ""):
+            pass
 
         enriched.append(
             EnrichedClaim(
@@ -212,9 +240,50 @@ def main() -> int:
 
     # ---- Write enriched claims table (meeting/verification friendly) ----
     df_out = pd.DataFrame([c.__dict__ for c in enriched])
-    # Drop obviously incomplete rows (helps verification readability)
-    df_out = df_out[(df_out["claim_type"].fillna("").astype(str).str.strip() != "")]
-    df_out = df_out.sort_values(["doi", "doc_id", "claim_type"]).reset_index(drop=True)
+    if len(df_out) == 0:
+        # Keep downstream exports stable even when no claims are available (e.g., quota blocked GraphRAG covariates).
+        df_out = pd.DataFrame(
+            columns=[
+                "doc_id",
+                "doi",
+                "year",
+                "title",
+                "claim_type",
+                "status",
+                "subject",
+                "subject_type",
+                "object",
+                "object_type",
+                "page",
+                "evidence",
+                "description",
+                "cmo_c",
+                "cmo_i",
+                "cmo_m",
+                "cmo_o",
+            ]
+        )
+    else:
+        # Drop obviously incomplete rows (helps verification readability)
+        df_out = df_out[(df_out["claim_type"].fillna("").astype(str).str.strip() != "")]
+
+    if len(df_out):
+        # Dedupe within-doc repetitive claims (common in LLM extraction).
+        df_out["__sig"] = (
+            df_out["doc_id"].fillna("").astype(str)
+            + "|"
+            + df_out["claim_type"].fillna("").astype(str)
+            + "|"
+            + df_out["subject"].fillna("").astype(str)
+            + "|"
+            + df_out["object"].fillna("").astype(str)
+            + "|"
+            + df_out["page"].fillna("").astype(str)
+            + "|"
+            + df_out["evidence"].fillna("").astype(str).str.slice(0, 180)
+        )
+        df_out = df_out.drop_duplicates("__sig").drop(columns=["__sig"])
+        df_out = df_out.sort_values(["doi", "doc_id", "claim_type"]).reset_index(drop=True)
 
     md_claims = "## Part A — Enriched claims (verification-grade view)\n\n"
     md_claims += f"- source: `{cov_path.as_posix()}`\n"
@@ -260,7 +329,8 @@ def main() -> int:
 
         # prioritize claims that already include a CMO[...] tag in description (after prompt upgrade + re-index)
         g["has_cmo_tag"] = g["description"].fillna("").map(lambda x: "CMO[" in str(x))
-        g = g.sort_values(["has_cmo_tag", "claim_type"], ascending=[False, True])
+        g["has_page"] = g["evidence"].fillna("").map(lambda x: bool(_PAGE_RE.search(str(x))))
+        g = g.sort_values(["has_page", "has_cmo_tag", "claim_type"], ascending=[False, False, True])
 
         # build configs: 1 config per top claim (simple but auditable)
         for _, r in g.head(int(args.max_claims_per_paper)).iterrows():
@@ -288,6 +358,10 @@ def main() -> int:
                     o = str(r.get("subject", "") or "")
                 if ot == "OUTCOME":
                     o = o or str(r.get("object", "") or "")
+
+            # Skip empty CMOs (not useful for realist verification)
+            if (not c) and (not i) and (not m) and (not o):
+                continue
 
             md.append(
                 f"- **CMO candidate**: C={c or 'NONE'} | I={i or 'NONE'} | M={m or 'NONE'} | O={o or 'NONE'}"

@@ -51,7 +51,7 @@ claims_enriched.md, cmo_configurations.md
    - **Options**: `--limit N` (subset), `--only-pdf` (filter)
    - **Dependencies**: `llm_kg.parta.graphrag_input` module
 
-3. **`partA_run_graphrag.ps1`**
+3. **`partA_run_graphrag_v4.ps1`**
    - **Purpose**: **Main orchestrator** - runs the entire pipeline end-to-end
    - **Stages**:
      1. Metadata extraction
@@ -64,7 +64,7 @@ claims_enriched.md, cmo_configurations.md
      8. Verification audit
      9. CMO configuration exports
      10. Create run bundle
-   - **Options**: `-Limit N`, `-OnlyPdf`, `-SkipIndex`
+   - **Options**: `-Limit N`, `-OnlyPdf`, `-SkipIndex`, `-SkipClaims`, `-CacheDir`
    - **Dependencies**: All other Part A scripts
 
 ### Post-Processing Scripts
@@ -95,10 +95,10 @@ claims_enriched.md, cmo_configurations.md
    - **Output**: `claims_enriched.md`, `cmo_configurations.md`
    - **Use case**: Human verification against Richmond et al. (2020)
 
-8. **`partA_create_run_bundle.py`**
+8. **`partA_create_run_bundle_v3.py`**
    - **Purpose**: Create a shareable bundle of verification artifacts
    - **Input**: Output directory, artifacts directory
-   - **Output**: `artifacts/partA/share/index.md` (central entry point)
+   - **Output**: `artifacts/partA/share_v4/index.md` (central entry point)
    - **Use case**: Share results with reviewers/colleagues
 
 ### Utility Scripts
@@ -120,8 +120,8 @@ claims_enriched.md, cmo_configurations.md
 - `graphrag_export_readable.py`: Generic GraphRAG export (used by Part A pipeline)
 - `graphrag_prepare_input.py`: Generic GraphRAG input prep (not used by Part A)
 - `graphrag_smoketest.ps1`: Generic smoke test (not Part A specific)
-- `partA_generate_meeting_pack.py`: Legacy meeting pack generator
-- `partA_export_verification_summary.py`: Legacy verification summary
+- `partA_generate_meeting_pack.py`: Meeting pack generator (optional)
+- `partA_export_verification_summary.py`: Legacy verification summary (optional)
 - `show_graphrag_output.ps1`: Legacy output viewer
 
 ## Design Principles
@@ -136,13 +136,13 @@ The pipeline is **linear and sequential**. Each stage depends only on previous s
 Every stage produces **traceable artifacts** (parquet files, markdown reports). Nothing is "hidden" or implicit.
 
 ### 4. Fail-Fast
-Each stage **validates inputs** and **fails early** if prerequisites are missing (e.g., `partA_run_graphrag.ps1` checks for `entities.parquet` before proceeding).
+Each stage **validates inputs** and **fails early** if prerequisites are missing (e.g., `partA_run_graphrag_v4.ps1` checks for `entities.parquet` before proceeding).
 
 ### 5. Idempotent Post-Processing
 Post-processing scripts (repair, quality gates, audit) can be **run multiple times** safely. They read from parquet and write reports, without modifying source data.
 
 ### 6. No "Convenience Wrappers"
-We **avoid creating wrapper scripts** that just alias commands. Users should use the main orchestrator (`partA_run_graphrag.ps1`) directly with appropriate parameters.
+We **avoid creating wrapper scripts** that just alias commands. Users should use the main orchestrator (`partA_run_graphrag_v4.ps1`) directly with appropriate parameters.
 
 ## File Organization
 
@@ -153,15 +153,15 @@ LLM-Knowledge-Graph/
     partA_*.ps1         # Part A PowerShell orchestrator
     graphrag_*.py       # Generic GraphRAG utilities (shared)
   graphrag-project/
-    prompts_partA/      # Part A specific prompts
-    settings.partA.yaml # Part A GraphRAG config
+    prompts_partA_v4/         # Part A v4 prompts
+    settings.partA.v4.yaml    # Part A v4 GraphRAG config
     input_partA/        # GraphRAG input (generated)
     output_partA/       # GraphRAG output (generated)
   artifacts/partA/      # Verification artifacts (reports, bundles)
     HOW_TO_READ_OUTPUT.md  # User guide
     ARCHITECTURE.md        # This file
     verification_audit.md   # Generated audit report
-    share/                 # Shareable bundle
+    share_v4/              # Shareable bundle
 ```
 
 ## Common Patterns
@@ -191,7 +191,7 @@ All scripts use:
 
 To add new functionality:
 
-1. **New pipeline stage**: Add to `partA_run_graphrag.ps1` as a numbered step
+1. **New pipeline stage**: Add to `partA_run_graphrag_v4.ps1` as a numbered step
 2. **New quality check**: Add to `partA_quality_gates.py` (or create new script if unrelated)
 3. **New export format**: Create new `partA_export_*.py` script
 4. **New comparison metric**: Add to `partA_compare_runs.py`

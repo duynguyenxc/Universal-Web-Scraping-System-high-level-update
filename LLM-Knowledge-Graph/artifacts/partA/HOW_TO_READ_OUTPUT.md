@@ -2,7 +2,7 @@
 
 ## Tổng quan: Output gồm những gì?
 
-Sau khi chạy `partA_run_graphrag.ps1`, bạn sẽ có 2 loại file:
+Sau khi chạy `partA_run_graphrag_v4.ps1`, bạn sẽ có 2 loại file:
 
 ### 1. **File gốc (Parquet)** - Dữ liệu "máy đọc"
 - `entities.parquet`: Danh sách entities (khái niệm/đối tượng) được trích xuất
@@ -11,10 +11,10 @@ Sau khi chạy `partA_run_graphrag.ps1`, bạn sẽ có 2 loại file:
 - `community_reports.parquet`: Báo cáo tự động về mỗi community (đây là "tính năng nổi bật" của GraphRAG)
 - `covariates.parquet` / `claims_fixed.parquet`: Các claims/evidence có thể trace về source text
 
-### 2. **File human-readable (Markdown)** - Dữ liệu "người đọc"
+### 2. **File human-readable (Markdown)** - Dữ liệu "người đọc" (bạn mở trong IDE)
 - `human_readable/entities.md`: Bảng entities dễ đọc
 - `human_readable/relationships.md`: Bảng relationships dễ đọc
-- `human_readable/community_reports.md`: **ĐÂY LÀ FILE QUAN TRỌNG NHẤT** - báo cáo tự động về các "concept/principle" được phát hiện
+- `human_readable/community_reports.md`: **ĐÂY LÀ FILE QUAN TRỌNG NHẤT** - báo cáo tự động về các "concept/principle" (GraphRAG community reports)
 - `human_readable/claims_fixed.md`: Claims với evidence snippets
 
 ---
@@ -159,13 +159,13 @@ learning demonstrate significantly better diagnostic performance...
 
 ---
 
-## Workflow đọc output (recommended)
+## Workflow đọc output (recommended, v4)
 
 ### Bước 1: Đọc `quality_gates.md` (nhanh, 30 giây)
 - Xem blank types, corrupt titles, CMO-edge %
 - Nếu fail gates → cần fix prompt và rerun
 
-### Bước 2: Đọc `community_reports.md` (5-10 phút)
+### Bước 2: Đọc `human_readable/community_reports.md` (5-10 phút)
 - Đây là file quan trọng nhất
 - Đọc từng community report để hiểu "big picture"
 - Ghi chú các findings chính và so sánh với Richmond

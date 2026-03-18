@@ -112,10 +112,12 @@ def main() -> int:
 
         _write_text(export_dir / "community_reports.md", md)
 
-    # Claims / covariates (GraphRAG versions differ: some output "claims.parquet", others "covariates.parquet")
+    # Claims / covariates (GraphRAG versions differ: some output "claims.parquet", others "covariates.parquet".
+    # Our Part A pipeline may also produce a repaired/derived `claims_fixed.parquet`.)
+    fixed_p = out_dir / "claims_fixed.parquet"
     claims_p = out_dir / "claims.parquet"
     cov_p = out_dir / "covariates.parquet"
-    src_p = claims_p if claims_p.exists() else (cov_p if cov_p.exists() else None)
+    src_p = fixed_p if fixed_p.exists() else (claims_p if claims_p.exists() else (cov_p if cov_p.exists() else None))
     if src_p is not None:
         df = pd.read_parquet(src_p)
         md = "# GraphRAG Claims (sample)\n\n"

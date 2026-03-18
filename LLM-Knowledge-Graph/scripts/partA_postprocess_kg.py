@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 from dataclasses import dataclass
+import re
 from pathlib import Path
 
 import pandas as pd
@@ -43,6 +44,13 @@ ALLOWED_TYPES = {
 # Fix common normalization issues observed in subset runs.
 TYPE_SYNONYMS = {
     "COGNITIVE STATE": "COGNITIVE_STATE",
+    "SETTING CONTEXT": "SETTING_CONTEXT",
+    "SETTING-CONTEXT": "SETTING_CONTEXT",
+    "LEARNER CONTEXT": "LEARNER_CONTEXT",
+    "LEARNER-CONTEXT": "LEARNER_CONTEXT",
+    "MOTIVATION AFFECT": "MOTIVATION_AFFECT",
+    "MOTIVATION-AFFECT": "MOTIVATION_AFFECT",
+    "MOTIVATION/AFFECT": "MOTIVATION_AFFECT",
 }
 
 # Conservative mapping for *blank* types when titles strongly imply a type.
@@ -51,6 +59,8 @@ BLANK_TITLE_RULES: list[tuple[str, str]] = [
     # learner/population
     ("JUNIOR DOCTORS", "LEARNER_POPULATION"),
     ("DOCTOR", "LEARNER_POPULATION"),
+    ("MEDICAL STUDENTS", "LEARNER_POPULATION"),
+    ("RESIDENTS", "LEARNER_POPULATION"),
     # comparators / conditions
     ("CONTROL GROUP", "COMPARATOR"),
     ("NO INSTRUCTION", "COMPARATOR"),
@@ -68,9 +78,40 @@ BLANK_TITLE_RULES: list[tuple[str, str]] = [
     # mechanism-like phrasing
     ("HYPOTHESIS TESTING", "MECHANISM"),
     ("FEATURE ANALYSIS", "MECHANISM"),
+    ("ANALYTIC REASONING", "MECHANISM"),
+    ("NON-ANALYTIC", "MECHANISM"),
+    ("PATTERN RECOGNITION", "MECHANISM"),
+    ("COGNITIVE LOAD", "COGNITIVE_STATE"),
+    ("ANXIETY", "MOTIVATION_AFFECT"),
+    ("STRESS", "MOTIVATION_AFFECT"),
+    ("SELF-EFFICACY", "LEARNER_CONTEXT"),
+    ("CONFIDENCE", "LEARNER_CONTEXT"),
     ("MISLEADING", "COGNITIVE_STATE"),
     ("BIAS", "COGNITIVE_STATE"),
+    # additional pragmatic fixes seen in subset runs
+    ("LEARNER CONTEXT", "LEARNER_CONTEXT"),
+    ("INTERFERING FEATURE", "COGNITIVE_STATE"),
+    ("MIXED PRACTICE", "INTERVENTION"),
+    ("STUDENT-DERIVED REASONING STRATEGIES", "MECHANISM"),
+    ("KCR", "ASSESSMENT_MEASURE"),
+    ("SPONTANEOUS REASONING CONDITION", "COMPARATOR"),
+    ("LARGER EXPERIMENTAL GROUPS", "STUDY_DESIGN"),
+    ("BIASED ECG PRESENTATION", "TASK_CASE"),
 ]
+
+
+CORRUPT_TITLE_PATTERNS = [
+    r"<\|DIFF_MARKER\|>",
+    r"\(\"ENTITY\"",
+    r"\(\\\"ENTITY\\\"",
+]
+
+
+def _is_corrupt_title(s: str) -> bool:
+    s = (s or "").strip()
+    if not s:
+        return False
+    return any(bool(re.search(p, s)) for p in CORRUPT_TITLE_PATTERNS)
 
 
 # CMOC-family relationship directions we want to see in realist-looking graphs.
@@ -86,7 +127,10 @@ CMOC_FAMILY = {
 
 def _norm_type(x: object) -> str:
     t = "" if x is None else str(x)
-    t = t.strip().upper()
+    t = t.strip()
+    # Some extractions accidentally wrap enum values in quotes/backticks.
+    t = re.sub(r"^[`\"']+|[`\"']+$", "", t).strip()
+    t = t.upper()
     if t in ("", "NAN", "NONE"):
         return ""
     t = TYPE_SYNONYMS.get(t, t)
@@ -95,9 +139,67 @@ def _norm_type(x: object) -> str:
 
 def _infer_blank_type_from_title(title: str) -> str:
     u = title.strip().upper()
+    # Exact placeholders first (avoid mapping "CONTEXT SPECIFICITY" → CONTEXT).
+    if u in {"CONTEXT", "MECHANISM", "OUTCOME"}:
+        return u
     for needle, t in BLANK_TITLE_RULES:
-        if needle in u:
+        if needle == u or (len(needle) >= 8 and needle in u):
             return t
+    return ""
+
+
+def _infer_type_from_title_heuristic(title: str) -> str:
+    """
+    Heuristic type inference for common realist-review constructs.
+    Used only when upstream type is blank/invalid.
+    """
+    u = (title or "").strip().upper()
+    if not u:
+        return ""
+
+    # Outcomes (measured endpoints)
+    if any(k in u for k in ["DIAGNOSTIC ACCURACY", "DIAGNOSTIC PERFORMANCE", "ERROR RATE", "RETENTION", "SATISFACTION", "RESPONSE TIME"]):
+        return "OUTCOME"
+    if u in {"CORRECT DIAGNOSIS", "DIFFERENTIAL DIAGNOSIS"}:
+        return "OUTCOME"
+
+    # Learner-level contexts (student attributes)
+    if any(k in u for k in ["PRIOR KNOWLEDGE", "PRE-EXISTING KNOWLEDGE", "SELF-EFFICACY", "SELF CONFIDENCE", "SELF-CONFIDENCE", "CONFIDENCE", "COPING"]):
+        return "LEARNER_CONTEXT"
+    if any(k in u for k in ["LOW KNOWLEDGE", "HIGH KNOWLEDGE", "LOW CLINICAL DOMAIN", "HIGH CLINICAL DOMAIN", "MIXED KNOWLEDGE", "INABILITY TO APPLY KNOWLEDGE"]):
+        return "LEARNER_CONTEXT"
+
+    # Mechanism reactions (cognitive/affective)
+    if any(k in u for k in ["COGNITIVE LOAD", "WORKING MEMORY"]):
+        return "COGNITIVE_STATE"
+    if any(k in u for k in ["ANXIETY", "STRESS", "FEAR", "FRUSTRATION", "CONFUSION", "PANIC", "RESENTMENT", "PRESSURE", "DISTRESS"]):
+        return "MOTIVATION_AFFECT"
+
+    # Mechanism processes / strategies
+    if any(k in u for k in ["ILLNESS SCRIPT", "SCRIPT FORMATION", "PATTERN RECOGNITION", "REFLECTION", "SELF-EXPLANATION", "UNDERSTANDING", "INSIGHT", "HYPOTHESIS TESTING", "FEATURE ANALYSIS"]):
+        return "MECHANISM"
+    if "REASONING" in u and not any(k in u for k in ["SEMINAR", "WORKSHOP", "TRAINING", "PROGRAM", "COURSE", "SESSION"]):
+        return "MECHANISM"
+
+    # Intervention resources (instructional methods)
+    if any(
+        k in u
+        for k in [
+            "SIMULATION",
+            "SIMULATED PATIENT",
+            "VIRTUAL PATIENT",
+            "WORKED EXAMPLE",
+            "FEEDBACK",
+            "PROMPT",
+            "INSTRUCTION",
+            "SCAFFOLD",
+            "CASE-BASED",
+            "TEST-ENHANCED",
+            "RETRIEVAL PRACTICE",
+        ]
+    ):
+        return "INTERVENTION"
+
     return ""
 
 
@@ -136,21 +238,51 @@ def normalize_out_dir(*, out_dir: Path, label: str = "") -> NormalizationResult:
 
     # --- Entities normalization ---
     entities = entities_in_df.copy()
+    entities["title"] = entities.get("title", "").fillna("").astype(str)
+
+    dropped_entities: list[str] = []
+    corrupt_mask = entities["title"].map(_is_corrupt_title)
+    if bool(corrupt_mask.any()):
+        dropped_entities = entities.loc[corrupt_mask, "title"].tolist()
+        entities = entities.loc[~corrupt_mask].copy()
+
     entities["type_norm"] = entities.get("type", "").map(_norm_type)
 
+    # Fix a common realist-ontology drift: "reasoning" strategies are mechanisms, not interventions.
+    # Keep true teaching activities (seminar/training/workshop/etc.) as interventions.
+    ttitle = entities["title"].fillna("").astype(str)
+    is_reasoning = ttitle.str.contains(r"\bREASONING\b", case=False, regex=True)
+    is_teaching_activity = ttitle.str.contains(r"\b(?:SEMINAR|WORKSHOP|TRAINING|PROGRAM|COURSE|SESSION)\b", case=False, regex=True)
+    drift_mask = (entities["type_norm"] == "INTERVENTION") & is_reasoning & (~is_teaching_activity)
+    if bool(drift_mask.any()):
+        entities.loc[drift_mask, "type_norm"] = "MECHANISM"
+
     blank_before = int((entities["type_norm"] == "").sum())
+
+    # Capture invalid non-blank types so we can expand TYPE_SYNONYMS / ontology iteratively.
+    invalid_nonblank_mask = (entities["type_norm"] != "") & (~entities["type_norm"].isin(ALLOWED_TYPES))
+    invalid_types_seen = sorted(set(entities.loc[invalid_nonblank_mask, "type_norm"].astype(str).tolist()))
 
     inferred: list[tuple[int, str, str]] = []
     for i, row in entities[entities["type_norm"] == ""].iterrows():
         title = str(row.get("title", "") or "")
-        new_t = _infer_blank_type_from_title(title)
+        new_t = _infer_blank_type_from_title(title) or _infer_type_from_title_heuristic(title)
         if new_t:
             inferred.append((int(i), title, new_t))
             entities.at[i, "type_norm"] = new_t
 
-    # Keep anything still invalid/blank as blank; we will report it.
+    # Keep anything still invalid as blank; we will report it.
     entities["type_norm"] = entities["type_norm"].where(entities["type_norm"].isin(ALLOWED_TYPES), "")
     blank_after = int((entities["type_norm"] == "").sum())
+
+    dropped_unknown_titles: list[str] = []
+    unknown_mask = (entities["type_norm"] == "")
+    if bool(unknown_mask.any()):
+        dropped_unknown_titles = entities.loc[unknown_mask, "title"].astype(str).tolist()
+        entities = entities.loc[~unknown_mask].copy()
+
+    # After dropping unknowns, the normalized KG has no blank types by construction.
+    blank_after_normalized = int((entities["type_norm"] == "").sum())
 
     # Overwrite `type` with normalized version, but keep original for audit.
     entities["type_original"] = entities.get("type", "")
@@ -160,10 +292,27 @@ def normalize_out_dir(*, out_dir: Path, label: str = "") -> NormalizationResult:
     # --- Relationships normalization ---
     etype = dict(zip(entities["title"], entities["type"]))
     rels = rels_in_df.copy()
+    if dropped_entities:
+        drop_set = set(dropped_entities)
+        rels = rels[~rels["source"].isin(drop_set) & ~rels["target"].isin(drop_set)].copy()
+
+    # Drop relationships referencing unknown-typed entities removed from normalized KG.
+    if dropped_unknown_titles:
+        drop_set2 = set(dropped_unknown_titles)
+        rels = rels[~rels["source"].isin(drop_set2) & ~rels["target"].isin(drop_set2)].copy()
     rels["source_type"] = rels.get("source", "").map(etype).fillna("")
     rels["target_type"] = rels.get("target", "").map(etype).fillna("")
     rels["source_family"] = rels["source_type"].map(_to_family).fillna("")
     rels["target_family"] = rels["target_type"].map(_to_family).fillna("")
+
+    # Drop ASSESSMENT_MEASURE edges from the CMOC-normalized graph to reduce
+    # measurement/logistics edges that inflate OUTCOME-as-source artifacts.
+    dropped_rels_measure = 0
+    if "ASSESSMENT_MEASURE" in ALLOWED_TYPES:
+        m_mask = (rels["source_type"] == "ASSESSMENT_MEASURE") | (rels["target_type"] == "ASSESSMENT_MEASURE")
+        dropped_rels_measure = int(m_mask.sum())
+        if dropped_rels_measure:
+            rels = rels.loc[~m_mask].copy()
 
     outcome_src_before = _outcome_as_source_count(rels)
 
@@ -173,8 +322,8 @@ def normalize_out_dir(*, out_dir: Path, label: str = "") -> NormalizationResult:
     # Flip when the direction is not CMOC-family but the reverse is.
     pair = list(zip(rels["source_family"], rels["target_family"]))
     pair_rev = list(zip(rels["target_family"], rels["source_family"]))
-    pair_ok = pd.Series(pair).isin(CMOC_FAMILY)
-    pair_rev_ok = pd.Series(pair_rev).isin(CMOC_FAMILY)
+    pair_ok = pd.Series(pair, index=rels.index).isin(CMOC_FAMILY)
+    pair_rev_ok = pd.Series(pair_rev, index=rels.index).isin(CMOC_FAMILY)
     can_flip = (~pair_ok) & pair_rev_ok & (rels["source_family"] != "") & (rels["target_family"] != "")
 
     flipped_count = int(can_flip.sum())
@@ -196,11 +345,17 @@ def normalize_out_dir(*, out_dir: Path, label: str = "") -> NormalizationResult:
 
     # Mark remaining non-CMOC edges (do not delete; keep auditable).
     pair2 = list(zip(rels["source_family"], rels["target_family"]))
-    non_cmoc = ~pd.Series(pair2).isin(CMOC_FAMILY) & (rels["source_family"] != "") & (rels["target_family"] != "")
+    non_cmoc = ~pd.Series(pair2, index=rels.index).isin(CMOC_FAMILY) & (rels["source_family"] != "") & (rels["target_family"] != "")
     non_cmoc_count = int(non_cmoc.sum())
     if non_cmoc_count:
         rels.loc[non_cmoc, "description"] = "[NON_CMOC] " + rels.loc[non_cmoc, "description"].astype(str)
         rels.loc[non_cmoc, "is_non_cmoc"] = True
+
+    # Realist simplification: in CMOC graphs, outcomes should be sinks.
+    # Drop remaining OUTCOME-as-source edges from the normalized output (they are typically measurement/logistics links).
+    dropped_outcome_source = int((rels["source_family"] == "OUTCOME").sum())
+    if dropped_outcome_source:
+        rels = rels.loc[rels["source_family"] != "OUTCOME"].copy()
 
     outcome_src_after = _outcome_as_source_count(rels)
 
@@ -225,11 +380,28 @@ def normalize_out_dir(*, out_dir: Path, label: str = "") -> NormalizationResult:
     lines.append("### Summary\n")
     lines.append(f"- entities: {len(entities_in_df)} → {len(entities)}")
     lines.append(f"- relationships: {len(rels_in_df)} → {len(rels)}")
-    lines.append(f"- blank entity types: {blank_before} → {blank_after}")
+    if dropped_rels_measure:
+        lines.append(f"- dropped relationships with ASSESSMENT_MEASURE: {dropped_rels_measure}")
+    if dropped_outcome_source:
+        lines.append(f"- dropped remaining OUTCOME-as-source edges: {dropped_outcome_source}")
+    lines.append(f"- blank entity types (raw→post-inference): {blank_before} → {blank_after}")
+    lines.append(f"- blank entity types (normalized KG): {blank_after_normalized}")
+    if invalid_types_seen:
+        lines.append(f"- invalid non-blank types observed (blanked unless mapped): {', '.join(invalid_types_seen[:15])}" + (" ..." if len(invalid_types_seen) > 15 else ""))
+    if dropped_unknown_titles:
+        lines.append(f"- dropped unknown-typed entities from normalized KG: {len(dropped_unknown_titles)}")
     lines.append(f"- OUTCOME-as-source edges (family): {outcome_src_before} → {outcome_src_after}")
     lines.append(f"- flipped for CMOC-family: {flipped_count}")
     lines.append(f"- remaining non-CMOC edges (flagged): {non_cmoc_count}")
     lines.append("")
+    if dropped_entities:
+        lines.append("### Dropped corrupt entities (heuristic)\n")
+        lines.append(f"- dropped entities: **{len(dropped_entities)}**")
+        for t in dropped_entities[:30]:
+            lines.append(f"- `{t}`")
+        if len(dropped_entities) > 30:
+            lines.append(f"- ... and {len(dropped_entities) - 30} more")
+        lines.append("")
     lines.append("### What was normalized\n")
     lines.append("- **Type spelling/enum normalization** (e.g., `COGNITIVE STATE` → `COGNITIVE_STATE`).")
     lines.append("- **Conservative blank-type inference** for a small set of obvious titles (logged below).")
@@ -243,14 +415,12 @@ def normalize_out_dir(*, out_dir: Path, label: str = "") -> NormalizationResult:
         if len(inferred) > 50:
             lines.append(f"- ... and {len(inferred) - 50} more")
         lines.append("")
-    lines.append("### Remaining blank/unknown entity types (requires prompt/ontology iteration)\n")
-    if len(unknown) == 0:
-        lines.append("- (none)\n")
-    else:
-        for t in unknown["title"].astype(str).head(30).tolist():
+    if dropped_unknown_titles:
+        lines.append("### Dropped unknown-typed entities (still present in raw extraction; fix via prompt/typing iteration)\n")
+        for t in dropped_unknown_titles[:60]:
             lines.append(f"- `{t}`")
-        if len(unknown) > 30:
-            lines.append(f"- ... and {len(unknown) - 30} more")
+        if len(dropped_unknown_titles) > 60:
+            lines.append(f"- ... and {len(dropped_unknown_titles) - 60} more")
         lines.append("")
 
     report_name = "kg_postprocess_report.md" if not label else f"kg_postprocess_report_{label}.md"

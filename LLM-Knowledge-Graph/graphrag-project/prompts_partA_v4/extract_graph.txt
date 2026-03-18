@@ -5,6 +5,16 @@
  Realist shape we want (default):
  - Context (C) / Intervention (I) -> Mechanism (M) -> Outcome (O)
  - Context (C) may also directly moderate Outcome (O)
+
+Realist typing guidance (use these distinctions to reduce drift):
+- learner_context: learner attributes that condition what works (e.g., prior knowledge, self-efficacy/confidence, coping style, familiarity).
+- setting_context: task/environment conditions (e.g., case complexity, time pressure, misleading cues, feedback timing).
+- context: only use if it does not clearly fit learner_context or setting_context.
+- mechanism: the *why/how* (learner response or cognitive process) that links I/C to O (e.g., cognitive load, anxiety/stress, understanding/insight, script formation, reflection).
+- cognitive_state / motivation_affect: use for mechanism-like states when clearly cognitive/affective (they will later be treated as MECHANISM-family).
+- intervention: instructional resource/action introduced (teaching method, prompts, feedback, worked examples, testing, reflection activity).
+- outcome: measured endpoint (accuracy, error, retention, transfer, performance). Outcome is a sink by default.
+- study_design / clinical_domain: keep minimal; only if the paper explicitly frames them as constructs affecting C/M/O.
  
  -Critical constraints (strict)-
  0) The input document contains a METADATA block:
@@ -21,6 +31,8 @@
     - Entities MUST be "big concepts" (phenomena/constructs), not named entities.
     - DO NOT create entities for: author names, universities/schools, journals/publishers, DOI/URLs, years, tables/figures, “the study”, “results”.
     - Avoid generic placeholders: STUDENTS, EDUCATION, LEARNING, INTERVENTION (standalone).
+    - Avoid overly generic construct labels unless the paper explicitly defines them causally:
+      CLINICAL REASONING, DIAGNOSTIC REASONING, EDUCATIONAL INTERVENTION, LEARNING OUTCOMES.
  
  2) Typing is mandatory:
     - Every entity MUST have a non-empty entity_type in [{entity_types}].
@@ -42,6 +54,10 @@
     - Relationship description MUST be ONE short causal/moderation statement (max ~20 words), using an explicit cue verb:
       increases | decreases | reduces | improves | harms | moderates | enables | inhibits | triggers | leads_to
     - Do NOT write narrative summaries (avoid “complex and multifaceted”, “research indicates”, “in summary”, etc.).
+
+5) Realist preference rule (helps match Richmond-style mechanisms):
+    - When a paper reports an effect (I→O), also extract the most plausible explicit mechanism stated nearby (I→M and/or M→O) if present.
+    - Prefer learner response mechanisms (e.g., anxiety, cognitive load, understanding) over tool taxonomy or study logistics.
  
  -Steps-
  1) Identify entities matching the provided entity types: [{entity_types}]

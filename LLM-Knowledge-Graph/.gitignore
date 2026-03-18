@@ -17,14 +17,16 @@ graphrag-project/cache/
 graphrag-project/input/
 graphrag-project/input_partA/
 graphrag-project/input_partA_v2/
+graphrag-project/input_partA_*/
 graphrag-project/output/
 graphrag-project/output_meeting/
 graphrag-project/output_meeting_std/
 # Part A run outputs can be large (parquet + lancedb). We commit only lightweight snapshots under artifacts/.
 graphrag-project/output_partA/
-# Part A v2 outputs: keep parquets + human_readable in git; ignore local vector stores/caches
-graphrag-project/output_partA_v2/lancedb/
-graphrag-project/output_partA_v2/cache/
+graphrag-project/output_partA_*/
+graphrag-project/output_partA_v2/
+graphrag-project/output_partA_v2_*/
+graphrag-project/output_partA_v4*/
 
 # Local documents (papers, notes) - keep out of git history
 documents/

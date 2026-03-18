@@ -6,40 +6,29 @@ If you feel lost because there are many folders/files, this page is the single �
 
 Open:
 
-- `artifacts/partA/share/index.md`
+- `LLM-Knowledge-Graph/artifacts/partA/share_v4/index.md`
 
 It is a single page with links to everything important (no hunting across folders).
 
-### What you should read (recommended order)
+### What you should read (recommended order, v4)
 
-1) **Verification note (short narrative)**  
-`verification_note.md`  
-What it is: meeting-ready summary of what was run + what is verified/not-yet-verified.
+1) **KG health gates (entities/relationships)**  
+`graphrag-project/output_partA_richmond28_v4_run2/human_readable/quality_gates.md`
 
-2) **Selected examples (quick demo)**  
-`verification_selected_examples.md`  
-What it is: a small curated set of communities/claims to show quickly.
+2) **Gold alignment vs Richmond (Figure 1–3 targets)**  
+`artifacts/partA/gold_alignment_output_partA_richmond28_v4_run2.md`
 
-3) **Verification audit (quality gates)**  
-`verification_audit.md`  
-What it is: coverage + anti-noise + traceability checks + spot-check tables.
+3) **Scorecard (one-page summary for iteration)**  
+`artifacts/partA/scorecard_output_partA_richmond28_v4_run2.md`
 
-4) **Verification-grade claims table (paper-linked)**  
-`claims_enriched.md`  
-What it is: claims joined to paper metadata via `text_unit_id` so each row is auditable (DOI/title/year + evidence snippet).
+4) **Professor-style comparison prompt pack (Richmond expected KG → compare our KG)**  
+`artifacts/partA/professor_prompt_pack_output_partA_richmond28_v4_run2.txt`
 
-5) **Draft CMO configurations (auto-generated)**  
-`cmo_configurations.md`  
-What it is: per-paper CMO candidates derived from claims + entity typing; intended for Richmond-style mapping + human refinement.
-
-6) **GraphRAG “human_readable” exports (raw GraphRAG artifacts)**  
-`graphrag-project/output_partA_v2/human_readable/`  
-Key files:
-- `community_reports.md` (largest, most important GraphRAG artifact)
-- `claims.md` (sample view; not verification-grade)
-- `claims_fixed.md` (repaired claims view; verification helper when covariates parsing fails)
-- `entities.md`, `relationships.md`, `communities.md`, `documents.md`
-- `stats.json`
+5) **GraphRAG “human_readable” exports (community detection + community_reports)**  
+Under the run’s `human_readable/` folder:
+- `community_reports.md`
+- `communities.md`
+- `entities.md`, `relationships.md`, `documents.md`
 
 ### Notes (why outputs are split)
 

@@ -105,18 +105,19 @@ $env:OPENAI_API_KEY="YOUR_KEY"
 Then run the end-to-end script:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File LLM-Knowledge-Graph/scripts/partA_run_graphrag.ps1
+powershell -ExecutionPolicy Bypass -File LLM-Knowledge-Graph/scripts/partA_run_graphrag_v4.ps1 -OutDir "graphrag-project/output_partA_richmond28_v4_run2" -InputDir "graphrag-project/input_partA_v4" -CacheDir "C:\\grc4"
 ```
 
-Or skip indexing (if you already indexed once):
+Or skip indexing/query (if you already indexed once, and only want exports/gates):
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File LLM-Knowledge-Graph/scripts/partA_run_graphrag.ps1 -SkipIndex
+powershell -ExecutionPolicy Bypass -File LLM-Knowledge-Graph/scripts/partA_run_graphrag_v4.ps1 -OutDir "graphrag-project/output_partA_richmond28_v4_run2" -InputDir "graphrag-project/input_partA_v4" -SkipIndex -SkipQuery
 ```
 
 Notes:
-- This Part A runner uses `graphrag-project/settings.partA.yaml` (CMO-oriented entity types + claim extraction).
-- Outputs are written to `graphrag-project/output_partA/` and also exported to `output_partA/human_readable/` for easy review.
+- This Part A runner uses `graphrag-project/settings.partA.v4.yaml` (CMOC-shaped entities/relationships + evidence-local claims + community detection).
+- Outputs are written to the `-OutDir` folder and also exported to `-OutDir/human_readable/` for easy review.
+- `-CacheDir` should be a short path on Windows (prevents MAX_PATH / long filename issues).
 
 ### 1) Install GraphRAG (separate from `llm-kg`)
 

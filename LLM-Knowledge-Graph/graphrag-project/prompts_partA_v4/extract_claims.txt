@@ -28,13 +28,23 @@ Given a text document, extract CMO-relevant claims that can support verification
      * INTERVENTION_EFFECT: I→O (direct effects when mechanism is implicit)
      * OUTCOME_MEASUREMENT: (any)→O (use sparingly; only when measurement method matters)
 
+1.1) Realist fidelity (match Richmond-style CMOCs):
+   - Mechanism should be an explanatory *process/response* (e.g., cognitive load, anxiety/stress, understanding/insight, illness script formation, reflection),
+     not just a study artifact or a generic label.
+   - Context should be learner/task conditions (e.g., prior knowledge level, self-efficacy/confidence, coping, familiarity, case complexity, misleading cues).
+
 2) Anti-noise rules (strict):
    - Do NOT use generic placeholders as subject/object: THE STUDY, STUDY, STUDY 1, STUDY 2, THE RESULTS, RESULTS, INTERVENTION, LEARNING.
    - Do NOT use bibliographic items as subject/object: author names, journal names, DOI/URL, years as standalone.
+   - Do NOT output claims that are only about logistics or reporting unless they explicitly moderate mechanisms/outcomes:
+     recruitment, incentives/payments, consent/IRB, randomization procedure, sample size, attrition, schedule/calendar, session duration,
+     tool implementation details (unless they change learning mechanisms), purely descriptive demographics.
 
 3) Evidence span is mandatory:
    - In Claim Source Text, include a SHORT snippet (1–2 sentences max) and keep any "[PAGE N]" marker if present.
    - If you cannot provide a concrete evidence snippet for a claim, DO NOT output that claim.
+   - If the input text contains "[PAGE N]" markers (PDF-derived), your snippet MUST include at least one "[PAGE N]".
+     If the document is URL-only/abstract-only (no page markers exist), a page marker is not required.
 
 4) CMO field is mandatory for verification:
    - Claim Description must end with this exact template (single line):
@@ -63,6 +73,10 @@ Format each claim as:
 
 4. Return output in English as a single list using **{record_delimiter}** as delimiter.
 5. When finished, output {completion_delimiter}
+
+-Minimum usefulness constraint (prevents empty CMOs)-
+- Do NOT output a claim if all of C, I, M, O would be NONE (or effectively generic placeholders).
+- Prefer claims where at least TWO of the C/I/M/O slots are concrete and specific.
 
 -Real Data-
 Entity specification: {entity_specs}

@@ -16,8 +16,8 @@ models:
     async_mode: threaded
     retry_strategy: exponential_backoff
     max_retries: 10
-    tokens_per_minute: null
-    requests_per_minute: null
+    tokens_per_minute: 24000
+    requests_per_minute: 60
 
   cheap_chat_model:
     type: chat
@@ -31,8 +31,8 @@ models:
     async_mode: threaded
     retry_strategy: exponential_backoff
     max_retries: 10
-    tokens_per_minute: null
-    requests_per_minute: null
+    tokens_per_minute: 24000
+    requests_per_minute: 60
 
   default_embedding_model:
     type: embedding
@@ -45,8 +45,8 @@ models:
     async_mode: threaded
     retry_strategy: exponential_backoff
     max_retries: 10
-    tokens_per_minute: null
-    requests_per_minute: null
+    tokens_per_minute: 24000
+    requests_per_minute: 60
 
 input:
   storage:

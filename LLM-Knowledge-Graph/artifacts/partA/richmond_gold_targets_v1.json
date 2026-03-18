@@ -1,0 +1,42 @@
+{
+  "source": "LLM-Knowledge-Graph/artifacts/partA/paper_review_richmond_2020.md",
+  "version": "v1",
+  "notes": [
+    "This is a lightweight gold target list used for automated recall-style checks.",
+    "Targets are phrased as keywords; the evaluator uses normalized substring matching.",
+    "This does NOT replace human judgement; it supports iteration and reporting."
+  ],
+  "contexts": [
+    "LOW KNOWLEDGE",
+    "INABILITY TO APPLY KNOWLEDGE",
+    "HIGH DOMAIN-SPECIFIC KNOWLEDGE",
+    "POSITIVE COPING",
+    "NEGATIVE COPING",
+    "MIXED KNOWLEDGE LEVELS",
+    "PRIOR KNOWLEDGE",
+    "SELF-EFFICACY",
+    "CONFIDENCE"
+  ],
+  "mechanisms": [
+    "COGNITIVE LOAD",
+    "ANXIETY",
+    "STRESS",
+    "UNDERSTANDING",
+    "INSIGHT",
+    "SELF-EXPLANATION",
+    "REFLECTION",
+    "ILLNESS SCRIPTS",
+    "PATTERN RECOGNITION",
+    "ANALYTIC REASONING",
+    "NON-ANALYTIC REASONING"
+  ],
+  "outcomes": [
+    "DIAGNOSTIC ACCURACY",
+    "DIAGNOSTIC PERFORMANCE",
+    "ERROR RATE",
+    "RETENTION",
+    "CONFIDENCE RATING",
+    "SATISFACTION"
+  ]
+}
+

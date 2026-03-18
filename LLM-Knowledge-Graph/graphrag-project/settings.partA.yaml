@@ -1,8 +1,11 @@
-### Part A (Education verification) config.
+### DEPRECATED (kept for reference).
+### Use `settings.partA.v4.yaml` + `scripts/partA_run_graphrag_v4.ps1` for the Richmond verification pipeline.
+###
+### Part A (Education verification) legacy config.
 ### - Uses env vars so outputs are self-contained per run.
 ### - Enables claim extraction and uses CMO-focused entity types/prompts.
 ###
-### Required env vars (set by scripts/partA_run_graphrag.ps1):
+### Required env vars (set by scripts/partA_run_graphrag_v4.ps1):
 ###   PARTA_INPUT_DIR
 ###   PARTA_OUTPUT_DIR
 ###

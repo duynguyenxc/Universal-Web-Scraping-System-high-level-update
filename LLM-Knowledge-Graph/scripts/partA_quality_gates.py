@@ -34,8 +34,13 @@ def main() -> int:
     args = ap.parse_args()
 
     out = args.out_dir
-    ent_p = out / "entities.parquet"
-    rel_p = out / "relationships.parquet"
+    # Prefer CMOC-normalized outputs if present (postprocess step).
+    ent_p = out / "entities_cmoc_normalized.parquet"
+    if not ent_p.exists():
+        ent_p = out / "entities.parquet"
+    rel_p = out / "relationships_cmoc_normalized.parquet"
+    if not rel_p.exists():
+        rel_p = out / "relationships.parquet"
     if not ent_p.exists() or not rel_p.exists():
         raise FileNotFoundError(f"Missing entities/relationships parquet under: {out}")
 

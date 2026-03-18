@@ -4,10 +4,12 @@ Param(
   [Parameter(Mandatory=$false)][string]$PdfDir = "data-28-studies",
   [Parameter(Mandatory=$false)][string]$LinksPdf = "documents/in4-about-28-studies-paper.pdf",
   [Parameter(Mandatory=$false)][string]$Settings = "graphrag-project/settings.partA.v4.yaml",
+  [Parameter(Mandatory=$false)][string]$CacheDir = "",
   [Parameter(Mandatory=$false)][string]$UserAgent = "llm-kg/0.1 (mailto:YOUR_EMAIL_HERE)",
   [Parameter(Mandatory=$false)][string]$Query = "What educational interventions improve clinical reasoning, for whom, in what contexts, and why? Summarize contexts, mechanisms, and outcomes with evidence snippets.",
   [Parameter(Mandatory=$false)][ValidateSet("global","local","basic","drift")][string]$QueryMethod = "global",
   [Parameter(Mandatory=$false)][switch]$SkipIndex,
+  [Parameter(Mandatory=$false)][switch]$SkipQuery,
   [Parameter(Mandatory=$false)][int]$Limit = 0,
   [Parameter(Mandatory=$false)][switch]$OnlyPdf,
   [Parameter(Mandatory=$false)][switch]$SkipClaims
@@ -17,10 +19,30 @@ $ErrorActionPreference = "Stop"
 
 Write-Host "== Part A v4: metadata -> input -> GraphRAG index/query ==" -ForegroundColor Cyan
 
+# Windows robustness: ensure UTF-8 console so GraphRAG logs don't crash on unicode chars (e.g., arrows).
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
+try { chcp 65001 | Out-Null } catch {}
+$env:PYTHONUTF8 = "1"
+$env:PYTHONIOENCODING = "utf-8"
+
 # Make this script location-independent: resolve the LLM-Knowledge-Graph project root
 $ScriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $ProjectRoot = (Resolve-Path (Join-Path $ScriptRoot "..")).Path
 Set-Location $ProjectRoot
+
+# Normalize common caller mistake: passing paths prefixed with "LLM-Knowledge-Graph/".
+# This script runs from the LLM-Knowledge-Graph project root, so OutDir/InputDir should be relative to it.
+function Normalize-ProjectRelativePath([string]$p) {
+  if (-not $p) { return $p }
+  $n = $p -replace "\\", "/"
+  if ($n.ToLower().StartsWith("llm-knowledge-graph/")) {
+    return $n.Substring("llm-knowledge-graph/".Length)
+  }
+  return $p
+}
+$OutDir = Normalize-ProjectRelativePath $OutDir
+$InputDir = Normalize-ProjectRelativePath $InputDir
 
 # Ensure folders exist (Resolve-Path requires existence)
 New-Item -ItemType Directory -Force -Path $OutDir | Out-Null
@@ -36,7 +58,7 @@ $SettingsAbs = (Resolve-Path $SettingsToUse).Path
 
 $env:PARTA_OUTPUT_DIR = $OutAbs
 $env:PARTA_INPUT_DIR = $InAbs
-$env:PARTA_CACHE_DIR = (Join-Path $env:TEMP "graphrag_cache_partA_v4")
+$env:PARTA_CACHE_DIR = $(if ($CacheDir -and $CacheDir.Trim() -ne "") { $CacheDir } else { (Join-Path $env:TEMP "graphrag_cache_partA_v4") })
 $env:PARTA_LOG_DIR = (Join-Path $OutAbs "logs")
 $env:PARTA_LANCEDB_DIR = (Join-Path $OutAbs "lancedb")
 
@@ -80,17 +102,30 @@ if (-not $SkipIndex) {
 }
 
 # 4) GraphRAG query (demo question)
-if (Test-Path (Join-Path $OutAbs "entities.parquet")) {
-  graphrag query --root "$RootAbs" --config "$SettingsAbs" --data "$OutAbs" --method "$QueryMethod" --query "$Query" --response-type "Bullet list of 8-12 items"
+if (-not $SkipQuery) {
+  if (Test-Path (Join-Path $OutAbs "entities.parquet")) {
+    graphrag query --root "$RootAbs" --config "$SettingsAbs" --data "$OutAbs" --method "$QueryMethod" --query "$Query" --response-type "Bullet list of 8-12 items"
+  }
 }
 
-# 5) Export human-readable files for meeting (avoid reading parquet)
+# 5) Ensure we have community reports (GraphRAG's best feature).
+# If the LLM-based `create_community_reports` step failed (quota/rate limit), generate an offline fallback report
+# so the repo still has `community_reports.parquet` + `human_readable/community_reports.md`.
+if ((Test-Path (Join-Path $OutAbs "communities.parquet")) -and (-not (Test-Path (Join-Path $OutAbs "community_reports.parquet")))) {
+  Write-Host "community_reports.parquet missing; generating offline fallback (no LLM calls)..." -ForegroundColor Yellow
+  python "scripts/partA_generate_community_reports_offline.py" --out-dir "$OutAbs"
+}
+
+# 6) Export human-readable files for meeting (avoid reading parquet)
 python "scripts/graphrag_export_readable.py" --out-dir "$OutAbs" --export-dir "$OutAbs/human_readable" --n 15
 
 # 6) Claims normalization (robustness layer)
 if (-not $SkipClaims) {
   if (Test-Path (Join-Path $OutAbs "covariates.parquet")) {
     python "scripts/partA_repair_claims_parquet.py" --out-dir "$OutAbs" --in-parquet "covariates.parquet" --out-parquet "claims_fixed.parquet" --out-md "human_readable/claims_fixed.md"
+  } elseif ((Test-Path (Join-Path $OutAbs "relationships.parquet")) -and (Test-Path (Join-Path $OutAbs "text_units.parquet"))) {
+    Write-Host "covariates.parquet missing; generating offline claims from edges (no LLM calls)..." -ForegroundColor Yellow
+    python "scripts/partA_generate_claims_offline_from_edges.py" --out-dir "$OutAbs"
   }
 }
 

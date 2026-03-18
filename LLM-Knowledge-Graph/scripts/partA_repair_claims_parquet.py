@@ -8,6 +8,7 @@ import pandas as pd
 
 
 _PAREN_RECORD_RE = re.compile(r"\(([^()]*)\)", re.DOTALL)
+_PAGE_RE = re.compile(r"\[PAGE\s+\d+\]", re.IGNORECASE)
 
 
 def _split_records(packed: str) -> list[str]:
@@ -28,7 +29,7 @@ def _clean_field(s: str) -> str:
     s = (s or "").strip()
     s = re.sub(r"\s+", " ", s).strip()
     # remove trailing unmatched right-parens which sometimes leak from formatting
-    s = s.rstrip(" )")
+    s = s.rstrip(" )>")
     return s
 
 
@@ -101,12 +102,26 @@ def main() -> int:
     )
     ap.add_argument("--out-md", type=str, default="human_readable/claims_fixed.md")
     ap.add_argument("--max-md-rows", type=int, default=120)
+    ap.add_argument(
+        "--fill-source-from-text-units",
+        action="store_true",
+        help="If a claim's source_text is empty or missing [PAGE N], fill it from text_units.parquet using text_unit_id.",
+    )
     args = ap.parse_args()
 
     out_dir = args.out_dir
     src_path = out_dir / args.in_parquet
     if not src_path.exists():
         raise FileNotFoundError(src_path)
+
+    # Optional: load text_units map to strengthen evidence traceability without re-running LLM extraction.
+    text_unit_text: dict[str, str] = {}
+    if args.fill_source_from_text_units:
+        tu_p = out_dir / "text_units.parquet"
+        if tu_p.exists():
+            tu = pd.read_parquet(tu_p, columns=["id", "text"])
+            # Normalize to string ids
+            text_unit_text = {str(r["id"]): str(r["text"]) for _, r in tu.iterrows()}
 
     df = pd.read_parquet(src_path)
     if "subject_id" not in df.columns:
@@ -127,6 +142,19 @@ def main() -> int:
             base_id = str(r.get("id", "") or "").strip()
             rid = base_id if i == 0 else f"{base_id}__{i}"
 
+            # Evidence strengthening:
+            # - Prefer explicit source_text from the claim tuple.
+            # - If missing or no [PAGE N], fill from text_units text (which usually contains [PAGE N] markers).
+            src_text = parsed["source_text"]
+            if (not src_text) or (not _PAGE_RE.search(src_text)):
+                tu_id = str(r.get("text_unit_id", "") or "").strip()
+                if tu_id and tu_id in text_unit_text:
+                    filled = str(text_unit_text[tu_id])
+                    # keep it compact in parquet and markdown
+                    filled = re.sub(r"\s+", " ", filled).strip()
+                    # truncate to avoid huge rows; keep page markers near the start in our ingestion format
+                    src_text = filled[:9000]
+
             repaired_rows.append(
                 {
                     "id": rid,
@@ -139,7 +167,7 @@ def main() -> int:
                     "status": parsed["status"],
                     "start_date": parsed["start_date"],
                     "end_date": parsed["end_date"],
-                    "source_text": parsed["source_text"],
+                    "source_text": src_text,
                     "text_unit_id": r.get("text_unit_id"),
                     # keep provenance for debugging
                     "orig_row_id": base_id,
