@@ -1,0 +1,108 @@
+# =============================================================================
+# UWSS configuration for a systematic review of emotional awareness and
+# regulation in learning.
+#
+# WHY THIS FILE EXISTS
+# The review this supports searched OpenAlex and Crossref only, and registered
+# that pair as its entire search strategy. UWSS reaches catalogues it cannot:
+# Semantic Scholar, PubMed, arXiv, DOAJ and OpenAIRE. Running the same review
+# question through them answers two questions a methods reviewer will ask:
+#   1. how much does a two-catalogue search miss, measured rather than asserted;
+#   2. can the full texts the first pipeline could not fetch be reached through
+#      Unpaywall's direct open-access locations instead of DOI resolvers.
+#
+# The keyword list below is NOT new. It is the vocabulary of the ten boolean
+# queries already registered in that review's protocol (Q01-Q10), flattened into the
+# phrase form UWSS scores with. Inventing a different vocabulary here would make
+# the two searches incomparable and the miss-rate meaningless.
+#
+# CONTACT ADDRESS
+# Unpaywall and the polite pools of the other catalogues want a contact address.
+# It is NOT written into this file, because this file is version-controlled and
+# an address in a config is an address in a repository. Set it in the
+# environment instead, in the shell that runs the command:
+#     export UWSS_CONTACT_EMAIL='you@example.org'
+# `scripts/run_emotion_fetch.sh` reads that variable and refuses to run without
+# it, rather than silently falling back to a fake address.
+#
+# IDENTITY AND POLITENESS
+# UWSS's optional User-Agent rotation and proxy rotation are deliberately NOT
+# enabled: they switch on via UWSS_UA_FILE / UWSS_UA_LIST / UWSS_PROXY_FILE, and
+# this review does not set them. The 2026-11-17 diagnosis in the other
+# repository established that publisher 403s are a policy decision that answers
+# a browser's User-Agent identically, so rotating identity would gain nothing
+# and would mean circumventing a stated bot policy to raise a count in a methods
+# paper.
+# =============================================================================
+
+user_agent: "uwss-res/0.1 (realist evidence synthesis; academic research)"
+
+# Flattened from protocol.yaml search_strategy.queries Q01-Q10.
+domain_keywords:
+  # Q01 - regulation x higher education x intervention
+  - emotion regulation higher education intervention
+  - emotional regulation university students training
+  - emotion regulation strategies college students program
+  - self-regulation of emotion undergraduate course
+  # Q02 - awareness, labelling, emotional literacy
+  - emotional awareness students intervention
+  - emotion labelling classroom
+  - emotional literacy higher education
+  - emotional competence university students
+  # Q03 - the Pekrun frame by name
+  - achievement emotions control-value theory
+  - academic emotions students
+  - test anxiety intervention students
+  - boredom in learning intervention
+  # Q04 - the STEM focus
+  - mathematics anxiety intervention undergraduate
+  - statistics anxiety students intervention
+  - engineering students emotion regulation
+  - computing students anxiety intervention
+  # Q05 - reflective and expressive writing
+  - expressive writing academic performance students
+  - reflective writing intervention students emotion
+  # Q06 - self-regulated learning x emotion
+  - self-regulated learning emotion regulation
+  - metacognition emotion academic
+  # Q07 - feedback
+  - feedback emotional response students
+  - feedback intervention academic emotions
+  # Q08 - reappraisal and mindfulness inside teaching
+  - cognitive reappraisal students academic
+  - mindfulness intervention university students academic
+  # Q09, Q10 - prior reviews and the school-age syntheses
+  - systematic review emotion regulation education
+  - meta-analysis social emotional learning students
+  - realist review emotion education
+
+# Drawn from protocol.yaml's eligibility criteria: this review is about
+# instruction, not clinical treatment, and not about affective computing.
+negative_keywords:
+  - affective computing
+  - facial expression recognition
+  - sentiment analysis
+  - emotion detection algorithm
+  - psychotherapy trial
+  - clinical trial depression treatment
+  - pharmacological
+
+domain_sources:
+  - https://api.semanticscholar.org
+  - https://pubmed.ncbi.nlm.nih.gov
+  - https://arxiv.org
+  - https://doaj.org
+  - https://www.openaire.eu
+
+# Matches the coverage window already registered in protocol.yaml.
+year_filter: 1998
+file_types: [pdf]
+max_depth: 1
+
+rate_limits:
+  requests_per_minute: 20
+  per_domain: 6
+  throttle_sec: 1.0
+  jitter_sec: 0.4
+timeout_sec: 30
+retry_attempts: 3
