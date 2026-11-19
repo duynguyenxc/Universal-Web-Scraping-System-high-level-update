@@ -72,7 +72,20 @@ def enrich_open_access_with_unpaywall(db_path: Path, contact_email: Optional[str
 	metrics = {"unpaywall_ok": 0, "unpaywall_fail": 0, "unpaywall_429_5xx": 0}
 	updated = 0
 	try:
-		q = session.execute(select(Document).where(Document.doi != None))
+		# Only ask Unpaywall about DOIs it has not been asked about yet.
+		#
+		# This used to select every document with a DOI and stop once `limit`
+		# records had been UPDATED, which made the command non-cumulative: a second
+		# run started at the same first row, re-asked Unpaywall about DOIs already
+		# resolved, and stopped at the same place. Running it ten times therefore
+		# enriched the same 200 records ten times and sent ~1,800 pointless requests
+		# to a free service that asks callers to identify themselves.
+		#
+		# `oa_status` is the marker. It is set below for an open-access hit, and set
+		# to 'not_oa' for a definitive negative, so both outcomes take the row out
+		# of this query. A transport failure sets nothing, so it is retried next run.
+		q = session.execute(
+			select(Document).where(Document.doi != None, Document.oa_status == None))
 		for (doc,) in q:
 			if updated >= limit:
 				break
@@ -114,6 +127,15 @@ def enrich_open_access_with_unpaywall(db_path: Path, contact_email: Optional[str
 				# keep source_url as-is; downloader prefers pdf_url
 				updated += 1
 				metrics["unpaywall_ok"] += 1
+				# Progress, because silence for twenty minutes is indistinguishable
+				# from a hang and invites the operator to kill a working run.
+				if updated % 25 == 0:
+					print(f"  unpaywall: {updated} resolved, "
+					      f"{metrics['unpaywall_fail']} not found", flush=True)
+			else:
+				# A definitive "Unpaywall knows this DOI and it is not open access".
+				# Recorded so the next run skips it instead of asking again.
+				doc.oa_status = "not_oa"
 		session.commit()
 		# Structured metrics log
 		print(json.dumps({"uwss_event": "unpaywall_enrich_summary", "updated": updated, **metrics}))

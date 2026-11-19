@@ -344,9 +344,22 @@ def build_parser() -> argparse.ArgumentParser:
 					if str(lk.get("content_type") or "").lower() == "application/pdf" and lk.get("url"):
 						pdf_url = lk.get("url")
 				authors = [a.get("name") for a in ((item.get("bibjson") or {}).get("author") or []) if a.get("name")]
-				# dedupe by title
+				# DOAJ carries both of these and this command used to discard them:
+				# `doi=None` was hardcoded below, so DOAJ rows could never be deduped
+				# against a DOI-keyed corpus and every one looked new; `abstract=None`
+				# threw away the only field that makes a record screenable without
+				# paying for the full text.
+				doaj_doi = None
+				for ident in ((item.get("bibjson") or {}).get("identifier") or []):
+					if str(ident.get("type")).lower() == "doi" and ident.get("id"):
+						doaj_doi = str(ident["id"]).strip()
+						break
+				doaj_abstract = ((item.get("bibjson") or {}).get("abstract") or None)
+				# dedupe by DOI first, then title
 				exists = None
-				if title:
+				if doaj_doi:
+					exists = session.query(Document).filter(Document.doi == doaj_doi).first()
+				if exists is None and title:
 					exists = session.query(Document).filter(Document.title == title).first()
 				if exists:
 					continue
@@ -354,13 +367,13 @@ def build_parser() -> argparse.ArgumentParser:
 					source_url=landing or "",
 					landing_url=landing or None,
 					pdf_url=pdf_url or None,
-					doi=None,
+					doi=doaj_doi,
 					title=_clip(title, 1000),
 					authors=json.dumps(authors),
 					venue=_clip(journal, 255) if journal else None,
 					year=year,
 					open_access=True if pdf_url else False,
-					abstract=None,
+					abstract=doaj_abstract,
 					status="metadata_only",
 					source="doaj",
 					topic=_clip(", ".join(keywords[:3]), 100) if keywords else None,
@@ -1435,6 +1448,13 @@ def build_parser() -> argparse.ArgumentParser:
 	p_fetch.add_argument("--jitter-sec", type=float, default=None, help="Extra random jitter seconds (override env UWSS_JITTER_SEC)")
 	p_fetch.add_argument("--log-json", action="store_true")
 	p_fetch.add_argument("--db-url", default=os.getenv("UWSS_DB_URL"))
+	# Resolving publisher landing pages means opening the very pages that publisher
+	# CDNs refuse to scripted clients, three retries at a 20s timeout each. Measured
+	# 2026-11-17: it is minutes per record for links that were never going to yield a
+	# PDF, while Unpaywall answers the same question in one request against an API
+	# that wants to be asked. Off by default; pass a number to re-enable it.
+	p_fetch.add_argument("--resolve-limit", type=int, default=0,
+	                     help="Resolve this many publisher landing pages first (0 = skip).")
 
 	def _cmd_fetch(args: argparse.Namespace) -> int:
 		from src.uwss.crawl import download_open_links, enrich_open_access_with_unpaywall
@@ -1449,11 +1469,17 @@ def build_parser() -> argparse.ArgumentParser:
 		# resolve publisher links first to improve pdf_url hit rate
 		try:
 			from src.uwss.crawl import resolve_publisher_links
-			resolved = resolve_publisher_links(Path(args.db), limit=200, contact_email=contact_email, db_url=getattr(args, "db_url", None))
-			_log_json(args.log_json, "resolve_publisher_done", resolved=resolved)
+			# `--limit` now governs every stage, not just the download. It used to be
+			# hardcoded at 200 here while the download took the flag, so `fetch
+			# --limit 1500` resolved 200 links, enriched 200 DOIs, and then tried to
+			# download from a pool that had only ever been 200 records deep. The
+			# reported number came from the last stage, so the ceiling was invisible.
+			if args.resolve_limit > 0:
+				resolved = resolve_publisher_links(Path(args.db), limit=args.resolve_limit, contact_email=contact_email, db_url=getattr(args, "db_url", None))
+				_log_json(args.log_json, "resolve_publisher_done", resolved=resolved)
 		except Exception:
 			pass
-		enriched = enrich_open_access_with_unpaywall(Path(args.db), contact_email=contact_email, limit=200, db_url=getattr(args, "db_url", None))
+		enriched = enrich_open_access_with_unpaywall(Path(args.db), contact_email=contact_email, limit=args.limit, db_url=getattr(args, "db_url", None))
 		console.print(f"[blue]Enriched OA via Unpaywall: {enriched}[/blue]")
 		n = download_open_links(Path(args.db), Path(args.outdir), limit=args.limit, contact_email=contact_email, db_url=getattr(args, "db_url", None))
 		console.print(f"[green]Downloaded {n} files[/green]")
